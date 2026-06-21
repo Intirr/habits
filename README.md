@@ -7,6 +7,16 @@ automáticamente en el navegador (`localStorage`).
 
 ## Características
 
+- **Dos vistas separadas (pestañas):** **«Tracker»** para el uso diario (hábitos,
+  recordatorios e historial) y **«Personalizar»** para toda la configuración (contenido,
+  colores y edición de la interfaz). Así el día a día queda limpio y los ajustes aparte.
+- **Deshacer / Rehacer:** botones **«↶ Deshacer»** y **«↷ Rehacer»** (o `Ctrl/Cmd+Z` y
+  `Ctrl/Cmd+Mayús+Z`) revierten cualquier cambio: marcar, editar, borrar, objetivos,
+  categorías, colores, recordatorios, etc.
+- **Recordatorios de actividades programadas:** una sección donde apuntas actividades
+  con **fecha y hora**. Se ordenan por fecha, lo vencido se resalta y puedes marcarlo
+  como hecho o editarlo. Botón opcional **«🔔 Activar avisos»** para recibir
+  notificaciones del navegador (mientras la pestaña esté abierta).
 - **Seguimiento diario:** marca tus hábitos cada día. El progreso del día se muestra
   con una barra y un contador.
 - **Objetivos semanales / mensuales:** además de los hábitos diarios, cada hábito puede
@@ -24,10 +34,11 @@ automáticamente en el navegador (`localStorage`).
   acento. Hay **8 temas predefinidos** (Noche, Carbón, Medianoche, Bosque, Sepia, Vino,
   Claro, Niebla) y **selectores de color personalizados** para fondo, superficies, líneas,
   textos y títulos.
-- **Interfaz 100% editable:** pulsa **«Editar interfaz»** y cambia *cualquier* texto:
-  título, subtítulo, frase, etiquetas, textos de botones, nombres de sección y el pie
-  de página. Pulsa **«Listo»** para volver al modo de uso. «Restaurar textos» revierte
-  los textos a los originales.
+- **Interfaz 100% editable:** en la pestaña **«Personalizar»**, dentro de *Edición de la
+  interfaz*, pulsa **«Editar interfaz»** y cambia *cualquier* texto: título, subtítulo,
+  frase, etiquetas, textos de botones, nombres de sección y el pie de página. Pulsa
+  **«Listo»** para volver al modo de uso. «Restaurar textos» revierte los textos a los
+  originales.
 - **Categorías (frentes) personalizables:** crea, renombra, recolorea y elimina las
   categorías (vienen Cuerpo, Mente, Alma y Valor profesional como ejemplo).
 - **Color de acento:** elige un preset o un color personalizado.
@@ -42,10 +53,12 @@ automáticamente en el navegador (`localStorage`).
 ## Uso
 
 1. Abre `index.html` en tu navegador.
-2. Marca los hábitos que cumplas hoy. Todo se guarda solo.
-3. Personaliza con **«Personalizar»** (título, categorías, color) y con
-   **«Editar interfaz»** (cualquier texto de la pantalla).
-4. Respalda con **«Exportar datos»** cuando quieras.
+2. En la pestaña **«Tracker»**: marca los hábitos que cumplas hoy, apunta tus
+   recordatorios y revisa tu historial. Todo se guarda solo.
+3. En la pestaña **«Personalizar»**: cambia título, categorías y colores (tema), y activa
+   **«Editar interfaz»** para reescribir cualquier texto de la pantalla.
+4. ¿Te equivocaste? Usa **«↶ Deshacer»** (o `Ctrl/Cmd+Z`).
+5. Respalda con **«Exportar datos»** cuando quieras.
 
 > Los datos viven en el navegador (`localStorage`). Si borras los datos del sitio o
 > usas otro dispositivo, impórtalos desde tu respaldo `.json`.

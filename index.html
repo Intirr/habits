@@ -233,6 +233,9 @@
   .tab:hover{color:var(--text)}
   .tab.active{color:var(--on-accent);background:var(--accent);font-weight:700}
   .undo-group{display:inline-flex;gap:8px;margin-left:auto}
+  .tab-count{display:inline-flex;align-items:center;justify-content:center;min-width:16px;height:16px;padding:0 4px;margin-left:6px;border-radius:999px;background:var(--accent);color:var(--on-accent);font-size:.56rem;font-weight:700;vertical-align:middle}
+  .tab.active .tab-count{background:var(--on-accent);color:var(--accent)}
+  .tab-count[hidden]{display:none}
   .trk-bar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:20px}
   .hint{font-size:.92rem;color:var(--text-2);max-width:66ch}
   #view-settings[hidden],#view-tracker[hidden]{display:none}
@@ -251,14 +254,18 @@
   .rem.done{opacity:.62}
   .rem.done .item-text{color:var(--muted);text-decoration:line-through}
   .rem.overdue{border-left-color:var(--cuerpo)}
+  .rem .item-text{flex:1 1 220px}
   .rem-when{flex:0 0 auto;font-family:var(--mono);font-size:.62rem;letter-spacing:.03em;color:var(--text-2);background:var(--ink);border:1px solid var(--line);border-radius:7px;padding:5px 9px;white-space:nowrap}
   .rem-when b{color:var(--accent)}
   .rem.overdue .rem-when{color:var(--cuerpo);border-color:var(--cuerpo)}
   .rem.overdue .rem-when b{color:var(--cuerpo)}
-  .rem-date,.rem-time{font-family:var(--mono);font-size:.72rem;color:var(--accent);background:var(--ink);border:1px solid var(--line);border-radius:7px;padding:5px 6px;color-scheme:dark}
+  .rem-date,.rem-time,.rem-alarm{font-family:var(--mono);font-size:.72rem;color:var(--accent);background:var(--ink);border:1px solid var(--line);border-radius:7px;padding:5px 6px;color-scheme:dark}
   .rem-date{width:148px}
   .rem-time{width:96px}
-  .rem-date:focus,.rem-time:focus{outline:none;border-color:var(--accent-line)}
+  .rem-alarm{color:var(--text-2);cursor:pointer}
+  .rem-date:focus,.rem-time:focus,.rem-alarm:focus{outline:none;border-color:var(--accent-line)}
+  .rem-cal{flex:0 0 auto;width:30px;height:30px;border-radius:7px;border:1px solid var(--line);background:transparent;color:var(--text-2);font-size:.95rem;line-height:1;cursor:pointer;transition:all .15s ease}
+  .rem-cal:hover{border-color:var(--accent-line);color:var(--accent)}
   .rem-empty{color:var(--muted);font-size:.9rem;text-align:center;padding:22px;border:1px dashed var(--line);border-radius:10px}
 
   /* ACTIONS */
@@ -303,6 +310,7 @@
       <div class="topbar">
         <div class="tabs" role="tablist" aria-label="Vistas">
           <button type="button" class="tab active" id="tab-tracker" role="tab">Tracker</button>
+          <button type="button" class="tab" id="tab-reminders" role="tab">Recordatorios<span class="tab-count" id="rem-count" hidden></span></button>
           <button type="button" class="tab" id="tab-settings" role="tab">Personalizar</button>
         </div>
         <div class="undo-group">
@@ -348,20 +356,6 @@
 
       <main id="list"></main>
 
-      <section class="panel reminders" aria-label="Recordatorios">
-        <div class="rem-head">
-          <div class="panel-title" data-ui="lblReminders">Recordatorios · actividades programadas</div>
-          <button type="button" class="tool-btn" id="btn-notif" title="Avisos del navegador"><span data-ui="btnNotif">🔔 Activar avisos</span></button>
-        </div>
-        <div class="addbar rem-add">
-          <div class="field field-text"><label class="fl" for="rem-text" data-ui="lblRemNew">Nueva actividad</label><input id="rem-text" class="inp" type="text" placeholder="Ej. Llamar al dentista" autocomplete="off"></div>
-          <div class="field field-time"><label class="fl" for="rem-date" data-ui="lblRemDate">Fecha</label><input id="rem-date" class="inp" type="date"></div>
-          <div class="field field-time"><label class="fl" for="rem-time" data-ui="lblRemTime">Hora</label><input id="rem-time" class="inp" type="time"></div>
-          <button type="button" class="add-btn" id="rem-add-btn"><span data-ui="btnRemAdd">Agregar</span></button>
-        </div>
-        <ul class="rem-list" id="rem-list"></ul>
-      </section>
-
       <section class="history" aria-label="Historial y rachas">
         <div class="hist-head">
           <div class="panel-title" data-ui="histTitle">Historial y rachas</div>
@@ -385,6 +379,26 @@
         <button type="button" class="btn" id="btn-clear"><span data-ui="btnClear">Vaciar</span></button>
         <input type="file" id="file-import" accept="application/json,.json" hidden>
       </div>
+    </div>
+
+    <!-- ===================== VISTA: RECORDATORIOS ===================== -->
+    <div id="view-reminders" hidden>
+      <section class="panel reminders" aria-label="Recordatorios">
+        <div class="rem-head">
+          <div class="panel-title" data-ui="lblReminders">Recordatorios · actividades programadas</div>
+          <button type="button" class="tool-btn" id="btn-notif" title="Avisos en el navegador"><span data-ui="btnNotif">🔔 Activar avisos</span></button>
+          <button type="button" class="tool-btn" id="btn-export-ics" title="Descargar todo como evento de calendario con alarma"><span data-ui="btnExportIcs">📅 Exportar al calendario</span></button>
+        </div>
+        <p class="hint" data-ui="remHint">Conecta cada actividad con las alarmas de tu dispositivo: elige cuándo avisar y pulsa ⏰ para descargar un evento de calendario (.ics) con alarma, o activa los avisos del navegador.</p>
+        <div class="addbar rem-add">
+          <div class="field field-text"><label class="fl" for="rem-text" data-ui="lblRemNew">Nueva actividad</label><input id="rem-text" class="inp" type="text" placeholder="Ej. Llamar al dentista" autocomplete="off"></div>
+          <div class="field field-time"><label class="fl" for="rem-date" data-ui="lblRemDate">Fecha</label><input id="rem-date" class="inp" type="date"></div>
+          <div class="field field-time"><label class="fl" for="rem-time" data-ui="lblRemTime">Hora</label><input id="rem-time" class="inp" type="time"></div>
+          <div class="field field-time"><label class="fl" for="rem-alarm" data-ui="lblRemAlarm">Alarma</label><select id="rem-alarm" class="sel"></select></div>
+          <button type="button" class="add-btn" id="rem-add-btn"><span data-ui="btnRemAdd">Agregar</span></button>
+        </div>
+        <ul class="rem-list" id="rem-list"></ul>
+      </section>
     </div>
 
     <!-- ===================== VISTA: PERSONALIZAR ===================== -->
@@ -456,6 +470,8 @@
   ];
   const DEFAULT_THEME = THEMES[0];
   const GOAL_DEFAULTS = { weekly:3, monthly:12 };
+  /* alarm lead times (minutes before the activity); "" = no alarm */
+  const ALARMS = [["","Sin alarma"],["0","A la hora"],["5","5 min antes"],["10","10 min antes"],["30","30 min antes"],["60","1 h antes"],["120","2 h antes"],["1440","1 día antes"]];
   const STARTER = [
     ["Beber un vaso de agua al despertar y completar 2 litros durante el día","cuerpo"],
     ["Hacer 10 minutos de movilidad articular al levantarme","cuerpo"],
@@ -530,7 +546,7 @@
       if(Array.isArray(d.reminders)) state.reminders=d.reminders;
       if(d.theme && typeof d.theme==="object") state.theme=Object.assign(clone(DEFAULT_THEME), d.theme);
       if([1,3,6,12].includes(d.rangeMonths)) rangeMonths=d.rangeMonths;
-      if(d.view==="tracker"||d.view==="settings") currentView=d.view;
+      if(["tracker","reminders","settings"].includes(d.view)) currentView=d.view;
       return true;
     }catch(e){ return false; }
   }
@@ -540,8 +556,8 @@
     state.log = {};
     const tomorrow = dateKey(addDays(new Date(), 1));
     state.reminders = [
-      { id:uid("r"), text:"Revisar mis objetivos de la semana", date:dateKey(new Date()), time:"20:00", done:false, notified:false },
-      { id:uid("r"), text:"Llamar para agendar una cita", date:tomorrow, time:"10:30", done:false, notified:false }
+      { id:uid("r"), text:"Revisar mis objetivos de la semana", date:dateKey(new Date()), time:"20:00", alarm:0, done:false, notified:false },
+      { id:uid("r"), text:"Llamar para agendar una cita", date:tomorrow, time:"10:30", alarm:30, done:false, notified:false }
     ];
   }
 
@@ -911,6 +927,7 @@
       return rmStamp(a) - rmStamp(b);                        // then by date/time
     });
   }
+  function alarmOptions(sel){ const v=(typeof sel==="number")?String(sel):""; return ALARMS.map(a=>'<option value="'+a[0]+'"'+(a[0]===v?' selected':'')+'>'+a[1]+'</option>').join(""); }
   function reminderHTML(rm){
     const rel=rmRelative(rm);
     return '<li class="rem'+(rm.done?' done':'')+(rel.overdue?' overdue':'')+'" data-rid="'+rm.id+'">'+
@@ -919,23 +936,68 @@
       '<span class="rem-when">'+rel.txt+'</span>'+
       '<input class="rem-date" type="date" data-rdate="'+rm.id+'" value="'+(rm.date||'')+'" aria-label="Fecha">'+
       '<input class="rem-time" type="time" data-rtime="'+rm.id+'" value="'+(rm.time||'')+'" aria-label="Hora">'+
+      '<select class="rem-alarm" data-ralarm="'+rm.id+'" aria-label="Alarma">'+alarmOptions(rm.alarm)+'</select>'+
+      '<button type="button" class="rem-cal" data-rcal="'+rm.id+'" title="Añadir al calendario / alarma (.ics)" aria-label="Añadir al calendario">⏰</button>'+
       '<button type="button" class="item-del" data-rdel="'+rm.id+'" aria-label="Quitar actividad">×</button>'+
     '</li>';
+  }
+  function updateRemCount(){
+    const n=state.reminders.filter(r=>!r.done).length, el=document.getElementById("rem-count");
+    if(el){ el.textContent=n; el.hidden = n===0; }
   }
   function renderReminders(){
     const list=sortedReminders();
     remListEl.innerHTML = list.length ? list.map(reminderHTML).join("")
-      : '<li class="rem-empty">Sin actividades programadas. Agrega una arriba (texto, fecha y hora).</li>';
+      : '<li class="rem-empty">Sin actividades programadas. Agrega una arriba (texto, fecha, hora y alarma).</li>';
+    updateRemCount();
   }
   function addReminder(){
     if(editing) return;
-    const t=document.getElementById("rem-text"), dt=document.getElementById("rem-date"), tm=document.getElementById("rem-time");
+    const t=document.getElementById("rem-text"), dt=document.getElementById("rem-date"), tm=document.getElementById("rem-time"), al=document.getElementById("rem-alarm");
     const text=(t.value||"").trim(); if(!text){ t.focus(); return; }
     pushUndo("remadd");
-    state.reminders.push({ id:uid("r"), text, date: dt.value || dateKey(new Date()), time: tm.value || "", done:false, notified:false });
+    const alarm = al.value==="" ? null : parseInt(al.value,10);
+    state.reminders.push({ id:uid("r"), text, date: dt.value || dateKey(new Date()), time: tm.value || "", alarm, done:false, notified:false });
     t.value=""; dt.value=""; tm.value="";
     renderReminders(); save(); scheduleNotifications(); t.focus();
   }
+
+  /* ---- calendar / device alarms (.ics with VALARM) ---- */
+  function icsEscape(s){ return String(s).replace(/\\/g,"\\\\").replace(/;/g,"\\;").replace(/,/g,"\\,").replace(/\r?\n/g,"\\n"); }
+  function icsTrigger(min){ if(min<=0) return "-PT0M"; if(min%1440===0) return "-P"+(min/1440)+"D"; if(min%60===0) return "-PT"+(min/60)+"H"; return "-PT"+min+"M"; }
+  function z2(n){ return String(n).padStart(2,"0"); }
+  function icsStampUTC(){ const n=new Date(); return n.getUTCFullYear()+z2(n.getUTCMonth()+1)+z2(n.getUTCDate())+"T"+z2(n.getUTCHours())+z2(n.getUTCMinutes())+z2(n.getUTCSeconds())+"Z"; }
+  function icsLocal(dt){ return dt.getFullYear()+z2(dt.getMonth()+1)+z2(dt.getDate())+"T"+z2(dt.getHours())+z2(dt.getMinutes())+"00"; }
+  function icsDateOnly(dt){ return dt.getFullYear()+z2(dt.getMonth()+1)+z2(dt.getDate()); }
+  function buildICS(list){
+    const stamp=icsStampUTC();
+    const out=["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//BYMCYL//Tracker de habitos//ES","CALSCALE:GREGORIAN","METHOD:PUBLISH"];
+    list.forEach(rm=>{
+      if(!rm.date) return;
+      const d=parseKey(rm.date);
+      out.push("BEGIN:VEVENT","UID:"+rm.id+"@bymcyl","DTSTAMP:"+stamp);
+      if(rm.time){
+        const p=rm.time.split(":").map(Number);
+        const s=new Date(d.getFullYear(),d.getMonth(),d.getDate(),p[0]||0,p[1]||0,0);
+        out.push("DTSTART:"+icsLocal(s),"DTEND:"+icsLocal(new Date(s.getTime()+30*60000)));
+      } else {
+        out.push("DTSTART;VALUE=DATE:"+icsDateOnly(d),"DTEND;VALUE=DATE:"+icsDateOnly(addDays(d,1)));
+      }
+      out.push("SUMMARY:"+icsEscape(rm.text));
+      if(typeof rm.alarm==="number"){ out.push("BEGIN:VALARM","ACTION:DISPLAY","DESCRIPTION:"+icsEscape(rm.text),"TRIGGER:"+icsTrigger(rm.alarm),"END:VALARM"); }
+      out.push("END:VEVENT");
+    });
+    out.push("END:VCALENDAR");
+    return out.join("\r\n");
+  }
+  function safeName(s){ return (String(s||"").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"")||"recordatorio").slice(0,40); }
+  function downloadICS(list, name){
+    const dated=list.filter(r=>r.date);
+    if(!dated.length){ alert("No hay actividades con fecha para exportar al calendario."); return; }
+    downloadBlob(buildICS(dated), "text/calendar;charset=utf-8", name);
+  }
+  function exportRemICS(id){ const rm=state.reminders.find(r=>r.id===id); if(rm) downloadICS([rm], "alarma-"+safeName(rm.text)+".ics"); }
+  function exportAllICS(){ if(editing) return; downloadICS(state.reminders, "recordatorios-bymcyl.ics"); }
 
   /* ---- browser notifications (best-effort, while the tab is open) ---- */
   let notifTimers=[];
@@ -953,11 +1015,12 @@
     const now=Date.now();
     state.reminders.forEach(rm=>{
       if(rm.done || rm.notified || !rm.date) return;
-      const at=rmStamp(rm); if(at===Infinity) return;
+      if(typeof rm.alarm!=="number") return;        // only reminders with an alarm set
+      const at=rmStamp(rm) - rm.alarm*60000;         // fire at the lead time
       const delay=at-now;
-      if(delay<=0 || delay > 6*3600*1000) return;   // only the next 6 h get a timer
+      if(delay<=0 || delay > 6*3600*1000) return;    // only the next 6 h get a timer
       notifTimers.push(setTimeout(()=>{
-        try{ new Notification("Recordatorio", { body: rm.text + (rm.time?(" · "+rm.time):"") }); }catch(e){}
+        try{ new Notification("Recordatorio", { body: rm.text + (rm.time?(" · a las "+rm.time):"") }); }catch(e){}
         rm.notified=true; save();
       }, delay));
     });
@@ -970,12 +1033,13 @@
     }catch(e){ updateNotifBtn(); }
   }
 
-  /* ============ views (tracker / personalizar) ============ */
+  /* ============ views (tracker / recordatorios / personalizar) ============ */
+  const VIEWS = ["tracker","reminders","settings"];
   function renderView(){
-    document.getElementById("view-tracker").hidden = currentView!=="tracker";
-    document.getElementById("view-settings").hidden = currentView!=="settings";
-    document.getElementById("tab-tracker").classList.toggle("active", currentView==="tracker");
-    document.getElementById("tab-settings").classList.toggle("active", currentView==="settings");
+    VIEWS.forEach(v=>{
+      document.getElementById("view-"+v).hidden = currentView!==v;
+      document.getElementById("tab-"+v).classList.toggle("active", currentView===v);
+    });
   }
   function setView(v){ currentView=v; renderView(); save(); }
 
@@ -1149,7 +1213,9 @@
   document.getElementById("rem-add-btn").addEventListener("click", addReminder);
   document.getElementById("rem-text").addEventListener("keydown", e=>{ if(e.key==="Enter"){ e.preventDefault(); addReminder(); } });
   document.getElementById("btn-notif").addEventListener("click", requestNotif);
+  document.getElementById("btn-export-ics").addEventListener("click", exportAllICS);
   remListEl.addEventListener("click", e=>{
+    const cal=e.target.closest("[data-rcal]"); if(cal){ if(editing) return; exportRemICS(cal.getAttribute("data-rcal")); return; }
     const del=e.target.closest("[data-rdel]"); if(del){ const id=del.getAttribute("data-rdel"); pushUndo("remdel"); state.reminders=state.reminders.filter(x=>x.id!==id); renderReminders(); save(); scheduleNotifications(); }
   });
   remListEl.addEventListener("input", e=>{
@@ -1161,6 +1227,7 @@
     if(t.matches("[data-rdone]")){ rm=state.reminders.find(x=>x.id===t.getAttribute("data-rdone")); if(rm){ pushUndo("rdone"); rm.done=t.checked; if(rm.done) rm.notified=true; renderReminders(); save(); scheduleNotifications(); } }
     else if(t.matches("[data-rdate]")){ rm=state.reminders.find(x=>x.id===t.getAttribute("data-rdate")); if(rm){ pushUndo("rdate:"+rm.id); rm.date=t.value; rm.notified=false; renderReminders(); save(); scheduleNotifications(); } }
     else if(t.matches("[data-rtime]")){ rm=state.reminders.find(x=>x.id===t.getAttribute("data-rtime")); if(rm){ pushUndo("rtime:"+rm.id); rm.time=t.value; rm.notified=false; renderReminders(); save(); scheduleNotifications(); } }
+    else if(t.matches("[data-ralarm]")){ rm=state.reminders.find(x=>x.id===t.getAttribute("data-ralarm")); if(rm){ pushUndo("ralarm:"+rm.id); rm.alarm = t.value==="" ? null : parseInt(t.value,10); rm.notified=false; renderReminders(); save(); scheduleNotifications(); } }
   });
 
   /* ============ events: frentes editor ============ */
@@ -1210,6 +1277,7 @@
 
   /* ============ events: tabs + undo/redo + edit ============ */
   document.getElementById("tab-tracker").addEventListener("click", ()=>setView("tracker"));
+  document.getElementById("tab-reminders").addEventListener("click", ()=>setView("reminders"));
   document.getElementById("tab-settings").addEventListener("click", ()=>setView("settings"));
   document.getElementById("btn-undo").addEventListener("click", undo);
   document.getElementById("btn-redo").addEventListener("click", redo);
@@ -1256,6 +1324,7 @@
       ACCENTS.map(a=>'<button type="button" class="swatch" data-accent="'+a.hex+'" style="background:'+a.hex+'" title="'+a.name+'" aria-label="'+a.name+'"></button>').join("") +
       '<label class="swatch pick" title="Color personalizado" aria-label="Color personalizado"><input type="color" id="accent-pick" value="'+template.accent+'"></label>';
     document.getElementById("accent-pick").addEventListener("input", e=>{ pushUndo("accent"); applyAccent(e.target.value); saveSoon(); });
+    document.getElementById("rem-alarm").innerHTML = alarmOptions(0);   // default "A la hora"
 
     if(!load()) seedExample();
     setEditing(false);

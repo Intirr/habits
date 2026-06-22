@@ -1,23 +1,52 @@
 # Diario personal · BYMCYL
 
-Un **diario personal** todo en uno: hábitos, notas, recordatorios, progreso y dinero.
-Personalizable y con toda la interfaz editable. Es un único archivo HTML sin dependencias
-ni build: ábrelo en cualquier navegador (`index.html`) y listo. Tus datos se guardan
-automáticamente en el navegador (`localStorage`).
+Un **diario personal** todo en uno: resumen del día, hábitos, bitácora, notas,
+lecturas, recordatorios, progreso y dinero. Personalizable y con toda la interfaz
+editable. Es un único archivo HTML sin dependencias ni build: ábrelo en cualquier
+navegador (`diario-personal.html`) y listo. Tus datos se guardan automáticamente en el
+navegador (`localStorage`).
+
+> ¿Prefieres inglés? Hay una versión equivalente en `personal-diary.html`, con sus propios
+> datos (no se mezclan con los de la versión en español).
 
 ## Características
 
-- **Seis vistas separadas (pestañas):** **«Hábitos»** (rutina del día),
-  **«Notas»** (ideas y planes), **«Recordatorios»** (actividades programadas, con contador
-  de pendientes), **«Progreso»** (metas, historial y rachas), **«Dinero»** (alcancías y
-  metas) y **«Personalizar»** (contenido, colores y edición de la interfaz).
+- **Nueve vistas (pestañas):** **«Inicio»** (resumen del día), **«Hábitos»** (rutina del
+  día), **«Bitácora»** (ánimo, enfoque y diario), **«Notas»** (ideas y planes),
+  **«Lecturas»** (libros en curso), **«Recordatorios»** (actividades programadas, con
+  contador de pendientes), **«Progreso»** (reflexión semanal, historial y rachas),
+  **«Dinero»** (alcancías y metas) y **«Personalizar»** (contenido, colores y edición de la
+  interfaz).
+- **Inicio / Resumen del día:** un panel de inicio con un saludo y seis tarjetas que
+  resumen tu día y enlazan a cada sección: progreso de hábitos de hoy, ánimo y top 3,
+  recordatorios pendientes (y vencidos), lectura actual, ahorro y próxima meta, y tu racha
+  con las estadísticas de la semana.
+- **Bitácora del día:** combina tres rutinas de reflexión en una pestaña por día:
+  - **Ánimo del día:** registra cómo te sientes (1–5 con caritas) y mira una mini
+    tendencia de los últimos 30 días.
+  - **Enfoque del día (top 3):** define entre 1 y 3 prioridades para el día y márcalas.
+  - **Bitácora:** preguntas guiadas — cómo estuvo el día, una victoria, algo para mejorar
+    o aprender, y gratitud.
+  - En el calendario de Progreso, los días con entrada de bitácora llevan un puntito.
+- **Hábitos con frecuencia:** cada hábito puede ser **diario**, en **días concretos**
+  (p. ej. L–V o fin de semana) o **X veces por semana/mes**. Esto unifica los antiguos
+  objetivos semanales/mensuales dentro del propio hábito: verás su progreso del periodo y
+  su racha por periodos, y el resumen del día solo cuenta los que tocan hoy. Además puedes
+  **filtrar la lista por categoría (frente)** y **reordenar** los hábitos.
+- **Reflexión semanal:** dentro de **«Progreso»**, un repaso guiado de la semana (qué
+  salió bien, qué mejorar, qué aprendiste y tu enfoque para la próxima), con navegación por
+  semanas y un mini resumen (completados, días activos y ánimo medio).
+- **Lecturas:** lleva el registro de los libros que lees. Anota título, autor y nº de
+  páginas, marca tu página actual para ver el progreso, añade notas por libro y pásalo a
+  «leído» cuando termines. Incluye estadísticas (leyendo, leídos y páginas leídas).
+- **Notas (ideas y planes):** escribe notas con título y contenido; se ordenan por fecha,
+  se guardan solas y puedes **buscarlas** con el buscador.
 - **Descargar PNG en cada pestaña** (excepto Personalizar): genera una imagen con el estilo
-  del diario de lo que ves — tu rutina, tus notas, recordatorios, progreso o dinero.
-- **Notas (ideas y planes):** escribe notas con título y contenido; se ordenan por fecha y
-  se guardan solas. Ideal para apuntar ideas sueltas o planes futuros.
+  del diario de lo que ves — tu resumen, rutina, bitácora, notas, lecturas, recordatorios,
+  progreso o dinero.
 - **Deshacer / Rehacer:** botones **«↶ Deshacer»** y **«↷ Rehacer»** (o `Ctrl/Cmd+Z` y
-  `Ctrl/Cmd+Mayús+Z`) revierten cualquier cambio: marcar, editar, borrar, metas, notas,
-  categorías, colores, recordatorios, dinero, etc.
+  `Ctrl/Cmd+Mayús+Z`) revierten cualquier cambio: marcar, editar, borrar, frecuencia,
+  bitácora, reflexión, notas, lecturas, categorías, colores, recordatorios, dinero, etc.
 - **Recordatorios:** apunta actividades programadas con **fecha y hora**. Se ordenan por
   fecha, lo vencido se resalta, y puedes marcarlas como hechas, editarlas o borrarlas.
   La pestaña muestra un contador de pendientes.
@@ -25,14 +54,11 @@ automáticamente en el navegador (`localStorage`).
   con su precio objetivo. Guarda o retira dinero en cada una y mira el progreso hacia la
   meta, con un resumen (ahorrado total, nº de alcancías, metas cumplidas y cuánto falta).
   El símbolo de moneda es configurable.
-- **Hábitos diarios:** marca tus hábitos cada día; el progreso del día se muestra con una
-  barra y un contador, y cada hábito lleva su racha 🔥 de días seguidos.
-- **Progreso (metas + historial y rachas):** en su propia pestaña. Las **metas semanales y
-  mensuales** van aquí, separadas de los hábitos diarios: define «X veces por semana/mes»,
-  pulsa «Hecho» cada vez que la cumplas y mira tu progreso del periodo y tu racha por
-  periodos. Debajo, un calendario de actividad por meses (estilo «contribuciones») con
-  rango **Mes / 3 meses / 6 meses / Año** y estadísticas (racha actual, mejor racha, días
-  activos, completados y constancia).
+- **Progreso (historial y rachas):** un calendario de actividad por meses (estilo
+  «contribuciones») con rango **Mes / 3 meses / 6 meses / Año** y estadísticas (racha
+  actual, mejor racha, días activos, completados y constancia).
+- **Estados vacíos con ejemplos:** cuando una sección está vacía (hábitos o notas), te
+  ofrece **empezar con ejemplos** de un toque.
 - **Tema de colores de la página:** cambia los colores de *toda* la página, no solo el
   acento. Hay **8 temas predefinidos** (Noche, Carbón, Medianoche, Bosque, Sepia, Vino,
   Claro, Niebla) y **selectores de color personalizados** para fondo, superficies, líneas,
@@ -45,21 +71,24 @@ automáticamente en el navegador (`localStorage`).
 - **Categorías (frentes) personalizables:** crea, renombra, recolorea y elimina las
   categorías (vienen Cuerpo, Mente, Alma y Valor profesional como ejemplo).
 - **Color de acento:** elige un preset o un color personalizado.
-- **Hábitos con horario:** opcionalmente añade hora de inicio y fin; la lista se ordena
-  por hora.
+- **Hábitos con horario:** opcionalmente añade hora de inicio y fin.
 - **Exportar / importar:**
   - **PNG** de cualquier pestaña (botón «📷 PNG»), más **texto** de la rutina de hábitos.
   - **Exportar datos** / **Importar datos** en `.json` para respaldar o mover tus datos
-    entre dispositivos.
+    entre dispositivos (incluye bitácora, reflexiones y lecturas).
 - **Restaurar ejemplo** y **Vaciar** para empezar de cero.
 
 ## Uso
 
-1. Abre `index.html` en tu navegador.
-2. **«Hábitos»**: marca los que cumplas hoy. **«Notas»**: apunta ideas y planes.
-   **«Recordatorios»**: actividades programadas con fecha y hora.
-   **«Progreso»**: metas semanales/mensuales más historial y rachas. **«Dinero»**:
-   alcancías y metas de compra. Todo se guarda solo (y puedes bajar un PNG de cada vista).
+1. Abre `diario-personal.html` en tu navegador (o `personal-diary.html` para la versión en
+   inglés).
+2. **«Inicio»**: mira el resumen del día y salta a cualquier sección. **«Hábitos»**: marca
+   los que cumplas hoy (cada uno con su frecuencia). **«Bitácora»**: registra tu ánimo, tu
+   top 3 y tu diario del día. **«Notas»**: apunta ideas y planes (con buscador).
+   **«Lecturas»**: lleva tus libros en curso. **«Recordatorios»**: actividades programadas
+   con fecha y hora. **«Progreso»**: reflexión semanal más historial y rachas.
+   **«Dinero»**: alcancías y metas de compra. Todo se guarda solo (y puedes bajar un PNG de
+   cada vista).
 3. En la pestaña **«Personalizar»**: cambia título, categorías y colores (tema), y activa
    **«Editar interfaz»** para reescribir cualquier texto de la pantalla.
 4. ¿Te equivocaste? Usa **«↶ Deshacer»** (o `Ctrl/Cmd+Z`).

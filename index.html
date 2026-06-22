@@ -247,7 +247,6 @@
   .rem-head{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
   .rem-head .panel-title{margin-bottom:0}
   .rem-head .tool-btn{margin-left:auto}
-  .rem-head .tool-btn.on{color:var(--on-accent);background:var(--accent);border-color:var(--accent);font-weight:700}
   .rem-add{margin-top:14px}
   .rem-list{list-style:none;display:flex;flex-direction:column;gap:7px;margin-top:16px}
   .rem{display:flex;flex-wrap:wrap;align-items:center;gap:9px;background:var(--ink-1);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:10px;padding:9px 11px}
@@ -259,11 +258,10 @@
   .rem-when b{color:var(--accent)}
   .rem.overdue .rem-when{color:var(--cuerpo);border-color:var(--cuerpo)}
   .rem.overdue .rem-when b{color:var(--cuerpo)}
-  .rem-date,.rem-time,.rem-alarm{font-family:var(--mono);font-size:.72rem;color:var(--accent);background:var(--ink);border:1px solid var(--line);border-radius:7px;padding:5px 6px;color-scheme:dark}
+  .rem-date,.rem-time{font-family:var(--mono);font-size:.72rem;color:var(--accent);background:var(--ink);border:1px solid var(--line);border-radius:7px;padding:5px 6px;color-scheme:dark}
   .rem-date{width:148px}
   .rem-time{width:96px}
-  .rem-alarm{color:var(--text-2);cursor:pointer}
-  .rem-date:focus,.rem-time:focus,.rem-alarm:focus{outline:none;border-color:var(--accent-line)}
+  .rem-date:focus,.rem-time:focus{outline:none;border-color:var(--accent-line)}
   .rem-empty{color:var(--muted);font-size:.9rem;text-align:center;padding:22px;border:1px dashed var(--line);border-radius:10px}
 
   /* MONEY (alcancías y metas) */
@@ -461,15 +459,13 @@
       <section class="panel reminders" aria-label="Recordatorios">
         <div class="rem-head">
           <div class="panel-title" data-ui="lblReminders">Recordatorios · actividades programadas</div>
-          <button type="button" class="tool-btn" id="btn-notif" title="Avisos en el navegador"><span data-ui="btnNotif">🔔 Activar avisos</span></button>
           <button type="button" class="tool-btn png-btn" title="Descargar PNG de esta pestaña">📷 PNG</button>
         </div>
-        <p class="hint" data-ui="remHint">Elige cuándo quieres que te avise cada actividad y pulsa «Activar avisos» para recibir notificaciones del navegador a esa hora (mientras esta pestaña esté abierta).</p>
+        <p class="hint" data-ui="remHint">Apunta tus actividades programadas con su fecha y hora. Se ordenan por fecha y lo que ya pasó se resalta.</p>
         <div class="addbar rem-add">
           <div class="field field-text"><label class="fl" for="rem-text" data-ui="lblRemNew">Nueva actividad</label><input id="rem-text" class="inp" type="text" placeholder="Ej. Llamar al dentista" autocomplete="off"></div>
           <div class="field field-time"><label class="fl" for="rem-date" data-ui="lblRemDate">Fecha</label><input id="rem-date" class="inp" type="date"></div>
           <div class="field field-time"><label class="fl" for="rem-time" data-ui="lblRemTime">Hora</label><input id="rem-time" class="inp" type="time"></div>
-          <div class="field field-time"><label class="fl" for="rem-alarm" data-ui="lblRemAlarm">Alarma</label><select id="rem-alarm" class="sel"></select></div>
           <button type="button" class="add-btn" id="rem-add-btn"><span data-ui="btnRemAdd">Agregar</span></button>
         </div>
         <ul class="rem-list" id="rem-list"></ul>
@@ -597,8 +593,6 @@
   ];
   const DEFAULT_THEME = THEMES[0];
   const GOAL_DEFAULTS = { weekly:3, monthly:12 };
-  /* alarm lead times (minutes before the activity); "" = no alarm */
-  const ALARMS = [["","Sin alarma"],["0","A la hora"],["5","5 min antes"],["10","10 min antes"],["30","30 min antes"],["60","1 h antes"],["120","2 h antes"],["1440","1 día antes"]];
   const DEFAULT_MONEY = { currency:"$", jars:[] };
   const JAR_COLORS = ["#7FB39A","#E2785B","#69AED2","#AC92CE","#E0A458","#E08AA8","#5FC6C9","#86C28F"];
   const STARTER = [
@@ -688,8 +682,8 @@
     state.log = {};
     const tomorrow = dateKey(addDays(new Date(), 1));
     state.reminders = [
-      { id:uid("r"), text:"Revisar mis objetivos de la semana", date:dateKey(new Date()), time:"20:00", alarm:0, done:false, notified:false },
-      { id:uid("r"), text:"Llamar para agendar una cita", date:tomorrow, time:"10:30", alarm:30, done:false, notified:false }
+      { id:uid("r"), text:"Revisar mis objetivos de la semana", date:dateKey(new Date()), time:"20:00", done:false },
+      { id:uid("r"), text:"Llamar para agendar una cita", date:tomorrow, time:"10:30", done:false }
     ];
     state.money = { currency:"$", jars:[
       { id:uid("j"), name:"Fondo de emergencia", target:null, saved:0, color:JAR_COLORS[0] },
@@ -1028,7 +1022,6 @@
       return rmStamp(a) - rmStamp(b);                        // then by date/time
     });
   }
-  function alarmOptions(sel){ const v=(typeof sel==="number")?String(sel):""; return ALARMS.map(a=>'<option value="'+a[0]+'"'+(a[0]===v?' selected':'')+'>'+a[1]+'</option>').join(""); }
   function reminderHTML(rm){
     const rel=rmRelative(rm);
     return '<li class="rem'+(rm.done?' done':'')+(rel.overdue?' overdue':'')+'" data-rid="'+rm.id+'">'+
@@ -1037,7 +1030,6 @@
       '<span class="rem-when">'+rel.txt+'</span>'+
       '<input class="rem-date" type="date" data-rdate="'+rm.id+'" value="'+(rm.date||'')+'" aria-label="Fecha">'+
       '<input class="rem-time" type="time" data-rtime="'+rm.id+'" value="'+(rm.time||'')+'" aria-label="Hora">'+
-      '<select class="rem-alarm" data-ralarm="'+rm.id+'" aria-label="Alarma">'+alarmOptions(rm.alarm)+'</select>'+
       '<button type="button" class="item-del" data-rdel="'+rm.id+'" aria-label="Quitar actividad">×</button>'+
     '</li>';
   }
@@ -1048,56 +1040,17 @@
   function renderReminders(){
     const list=sortedReminders();
     remListEl.innerHTML = list.length ? list.map(reminderHTML).join("")
-      : '<li class="rem-empty">Sin actividades programadas. Agrega una arriba (texto, fecha, hora y alarma).</li>';
+      : '<li class="rem-empty">Sin actividades programadas. Agrega una arriba (texto, fecha y hora).</li>';
     updateRemCount();
   }
   function addReminder(){
     if(editing) return;
-    const t=document.getElementById("rem-text"), dt=document.getElementById("rem-date"), tm=document.getElementById("rem-time"), al=document.getElementById("rem-alarm");
+    const t=document.getElementById("rem-text"), dt=document.getElementById("rem-date"), tm=document.getElementById("rem-time");
     const text=(t.value||"").trim(); if(!text){ t.focus(); return; }
     pushUndo("remadd");
-    const alarm = al.value==="" ? null : parseInt(al.value,10);
-    state.reminders.push({ id:uid("r"), text, date: dt.value || dateKey(new Date()), time: tm.value || "", alarm, done:false, notified:false });
+    state.reminders.push({ id:uid("r"), text, date: dt.value || dateKey(new Date()), time: tm.value || "", done:false });
     t.value=""; dt.value=""; tm.value="";
-    renderReminders(); save(); scheduleNotifications(); t.focus();
-  }
-
-  /* ---- browser notifications (in-tab, fire at the reminder's alarm time) ---- */
-  let notifSince = 0;   // only fire reminders whose alarm time arrives after avisos were enabled
-  function notifAvailable(){ return typeof window!=="undefined" && "Notification" in window; }
-  function notifGranted(){ return notifAvailable() && Notification.permission==="granted"; }
-  function updateNotifBtn(){
-    const b=document.getElementById("btn-notif"); if(!b) return;
-    b.classList.toggle("on", notifGranted());
-    const span=b.querySelector("[data-ui='btnNotif']");
-    if(span && !editing && !(state.ui && state.ui.btnNotif)) span.textContent = notifGranted() ? "🔔 Avisos activados" : "🔔 Activar avisos";
-  }
-  function scheduleNotifications(){
-    if(!notifGranted()) return;
-    const now=Date.now(); let changed=false;
-    state.reminders.forEach(rm=>{
-      if(rm.done || rm.notified || !rm.date || typeof rm.alarm!=="number") return;
-      const at = rmStamp(rm) - rm.alarm*60000;           // alarm moment (lead time before the activity)
-      if(at<=now){
-        if(at>=notifSince){ try{ new Notification("Recordatorio", { body: rm.text + (rm.time?(" · a las "+rm.time):"") }); }catch(e){} }
-        rm.notified=true; changed=true;                  // mark once (also silences ones already past on enable)
-      }
-    });
-    if(changed) save();
-  }
-  function enableNotifFeedback(){
-    notifSince=Date.now(); updateNotifBtn();
-    try{ new Notification("Avisos activados ✓", { body:"Te avisaré a la hora de tus recordatorios mientras esta pestaña esté abierta." }); }catch(e){}
-    scheduleNotifications();
-  }
-  function requestNotif(){
-    if(editing) return;
-    if(!notifAvailable()){ alert("Este navegador no permite avisos en esta página. Si abriste el archivo directamente (file://), ábrelo desde un servidor http o usa otro navegador."); return; }
-    if(Notification.permission==="granted"){ enableNotifFeedback(); return; }
-    if(Notification.permission==="denied"){ alert("Los avisos están bloqueados para esta página. Actívalos en los ajustes de notificaciones del navegador (suele ser el icono a la izquierda de la barra de direcciones) e inténtalo de nuevo."); return; }
-    try{
-      Notification.requestPermission().then(p=>{ updateNotifBtn(); if(p==="granted") enableNotifFeedback(); else alert("No se concedieron permisos de avisos."); }).catch(()=>updateNotifBtn());
-    }catch(e){ updateNotifBtn(); }
+    renderReminders(); save(); t.focus();
   }
 
   /* ============ views ============ */
@@ -1320,7 +1273,7 @@
     applyUI(); renderThemeControls(); applyTheme(state.theme); applyAccent(template.accent); syncHero();
     renderFrentesEditor(); rebuildAddFrente();
     renderList(); renderNotes(); renderReminders(); renderGoals(); renderMoney(); renderDateNav(); renderHistory(); renderView();
-    updateUndoButtons(); updateNotifBtn();
+    updateUndoButtons();
   }
 
   /* ============ actions ============ */
@@ -1381,7 +1334,7 @@
         state.money = (d.money && typeof d.money==="object") ? Object.assign(clone(DEFAULT_MONEY), d.money) : clone(DEFAULT_MONEY); if(!Array.isArray(state.money.jars)) state.money.jars=[];
         state.theme = d.theme && typeof d.theme==="object" ? Object.assign(clone(DEFAULT_THEME), d.theme) : clone(DEFAULT_THEME);
         if([1,3,6,12].includes(d.rangeMonths)) rangeMonths=d.rangeMonths;
-        openGoals.clear(); selectedKey=TODAY_KEY; renderAll(); save(); scheduleNotifications();
+        openGoals.clear(); selectedKey=TODAY_KEY; renderAll(); save();
       }catch(e){ alert("No se pudo leer el archivo. Asegúrate de que sea un respaldo válido (.json)."); }
     };
     r.readAsText(file);
@@ -1484,7 +1437,6 @@
   /* ============ events: reminders ============ */
   document.getElementById("rem-add-btn").addEventListener("click", addReminder);
   document.getElementById("rem-text").addEventListener("keydown", e=>{ if(e.key==="Enter"){ e.preventDefault(); addReminder(); } });
-  document.getElementById("btn-notif").addEventListener("click", requestNotif);
   remListEl.addEventListener("click", e=>{
     const del=e.target.closest("[data-rdel]"); if(del){ const id=del.getAttribute("data-rdel"); pushUndo("remdel"); state.reminders=state.reminders.filter(x=>x.id!==id); renderReminders(); save(); }
   });
@@ -1494,10 +1446,9 @@
   });
   remListEl.addEventListener("change", e=>{
     const t=e.target; let rm;
-    if(t.matches("[data-rdone]")){ rm=state.reminders.find(x=>x.id===t.getAttribute("data-rdone")); if(rm){ pushUndo("rdone"); rm.done=t.checked; if(rm.done) rm.notified=true; renderReminders(); save(); scheduleNotifications(); } }
-    else if(t.matches("[data-rdate]")){ rm=state.reminders.find(x=>x.id===t.getAttribute("data-rdate")); if(rm){ pushUndo("rdate:"+rm.id); rm.date=t.value; rm.notified=false; renderReminders(); save(); scheduleNotifications(); } }
-    else if(t.matches("[data-rtime]")){ rm=state.reminders.find(x=>x.id===t.getAttribute("data-rtime")); if(rm){ pushUndo("rtime:"+rm.id); rm.time=t.value; rm.notified=false; renderReminders(); save(); scheduleNotifications(); } }
-    else if(t.matches("[data-ralarm]")){ rm=state.reminders.find(x=>x.id===t.getAttribute("data-ralarm")); if(rm){ pushUndo("ralarm:"+rm.id); rm.alarm = t.value==="" ? null : parseInt(t.value,10); rm.notified=false; renderReminders(); save(); scheduleNotifications(); } }
+    if(t.matches("[data-rdone]")){ rm=state.reminders.find(x=>x.id===t.getAttribute("data-rdone")); if(rm){ pushUndo("rdone"); rm.done=t.checked; renderReminders(); save(); } }
+    else if(t.matches("[data-rdate]")){ rm=state.reminders.find(x=>x.id===t.getAttribute("data-rdate")); if(rm){ pushUndo("rdate:"+rm.id); rm.date=t.value; renderReminders(); save(); } }
+    else if(t.matches("[data-rtime]")){ rm=state.reminders.find(x=>x.id===t.getAttribute("data-rtime")); if(rm){ pushUndo("rtime:"+rm.id); rm.time=t.value; renderReminders(); save(); } }
   });
 
   /* ============ events: money (alcancías y metas) ============ */
@@ -1634,8 +1585,8 @@
   document.getElementById("btn-export").addEventListener("click", exportData);
   document.getElementById("btn-import").addEventListener("click", ()=>{ if(editing) return; document.getElementById("file-import").click(); });
   document.getElementById("file-import").addEventListener("change", e=>{ const f=e.target.files[0]; if(f) importData(f); e.target.value=""; });
-  document.getElementById("btn-reset").addEventListener("click", ()=>{ if(editing) return; if(!confirm("¿Restaurar los hábitos de ejemplo? Esto reemplaza tus hábitos y borra el historial.")) return; pushUndo("reset"); seedExample(); selectedKey=TODAY_KEY; renderAll(); save(); scheduleNotifications(); });
-  document.getElementById("btn-clear").addEventListener("click", ()=>{ if(editing) return; if(!confirm("¿Vaciar el tracker? Se eliminan los hábitos, el historial y los recordatorios.")) return; pushUndo("clear"); state.habits=[]; state.log={}; state.reminders=[]; openGoals.clear(); renderAll(); save(); scheduleNotifications(); });
+  document.getElementById("btn-reset").addEventListener("click", ()=>{ if(editing) return; if(!confirm("¿Restaurar los hábitos de ejemplo? Esto reemplaza tus hábitos y borra el historial.")) return; pushUndo("reset"); seedExample(); selectedKey=TODAY_KEY; renderAll(); save(); });
+  document.getElementById("btn-clear").addEventListener("click", ()=>{ if(editing) return; if(!confirm("¿Vaciar el tracker? Se eliminan los hábitos, el historial y los recordatorios.")) return; pushUndo("clear"); state.habits=[]; state.log={}; state.reminders=[]; openGoals.clear(); renderAll(); save(); });
 
   /* ============ events: swatches ============ */
   document.getElementById("swatches").addEventListener("click", e=>{ if(editing) return; const s=e.target.closest("[data-accent]"); if(s){ pushUndo("accent"); applyAccent(s.getAttribute("data-accent")); save(); } });
@@ -1647,14 +1598,10 @@
       ACCENTS.map(a=>'<button type="button" class="swatch" data-accent="'+a.hex+'" style="background:'+a.hex+'" title="'+a.name+'" aria-label="'+a.name+'"></button>').join("") +
       '<label class="swatch pick" title="Color personalizado" aria-label="Color personalizado"><input type="color" id="accent-pick" value="'+template.accent+'"></label>';
     document.getElementById("accent-pick").addEventListener("input", e=>{ pushUndo("accent"); applyAccent(e.target.value); saveSoon(); });
-    document.getElementById("rem-alarm").innerHTML = alarmOptions(0);   // default "A la hora"
 
     if(!load()) seedExample();
     setEditing(false);
     renderAll();
-    if(notifGranted()) notifSince = Date.now();        // only ping reminders whose time arrives from now on
-    scheduleNotifications();
-    setInterval(scheduleNotifications, 15000);          // check due reminders every 15 s while the tab is open
   }
   init();
 </script>

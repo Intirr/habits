@@ -17,12 +17,10 @@ automáticamente en el navegador (`localStorage`).
   se guardan solas. Ideal para apuntar ideas sueltas o planes futuros.
 - **Deshacer / Rehacer:** botones **«↶ Deshacer»** y **«↷ Rehacer»** (o `Ctrl/Cmd+Z` y
   `Ctrl/Cmd+Mayús+Z`) revierten cualquier cambio: marcar, editar, borrar, metas, notas,
-  categorías, colores, recordatorios, alarmas, dinero, etc.
-- **Recordatorios + avisos:** apunta actividades con **fecha, hora y alarma** (a la
-  hora, 5/10/30 min, 1–2 h o 1 día antes). Se ordenan por fecha y lo vencido se resalta.
-  Pulsa **«🔔 Activar avisos»** para recibir **notificaciones del navegador** a la hora
-  de la alarma elegida (mientras la pestaña esté abierta). Si el navegador los bloquea,
-  la app te indica cómo habilitarlos.
+  categorías, colores, recordatorios, dinero, etc.
+- **Recordatorios:** apunta actividades programadas con **fecha y hora**. Se ordenan por
+  fecha, lo vencido se resalta, y puedes marcarlas como hechas, editarlas o borrarlas.
+  La pestaña muestra un contador de pendientes.
 - **Dinero (alcancías y metas):** crea **alcancías** para ahorrar y **metas de compra**
   con su precio objetivo. Guarda o retira dinero en cada una y mira el progreso hacia la
   meta, con un resumen (ahorrado total, nº de alcancías, metas cumplidas y cuánto falta).
@@ -59,7 +57,7 @@ automáticamente en el navegador (`localStorage`).
 
 1. Abre `index.html` en tu navegador.
 2. **«Hábitos»**: marca los que cumplas hoy. **«Notas»**: apunta ideas y planes.
-   **«Recordatorios»**: actividades con fecha/hora/alarma y avisos del navegador.
+   **«Recordatorios»**: actividades programadas con fecha y hora.
    **«Progreso»**: metas semanales/mensuales más historial y rachas. **«Dinero»**:
    alcancías y metas de compra. Todo se guarda solo (y puedes bajar un PNG de cada vista).
 3. En la pestaña **«Personalizar»**: cambia título, categorías y colores (tema), y activa

@@ -1,18 +1,22 @@
-# Tracker de hábitos · BYMCYL
+# Diario personal · BYMCYL
 
-Un tracker de hábitos **personalizable** con seguimiento diario, rachas e historial.
-Toda la interfaz es editable. Es un único archivo HTML sin dependencias ni build:
-ábrelo en cualquier navegador (`index.html`) y listo. Tus datos se guardan
+Un **diario personal** todo en uno: hábitos, notas, recordatorios, progreso y dinero.
+Personalizable y con toda la interfaz editable. Es un único archivo HTML sin dependencias
+ni build: ábrelo en cualquier navegador (`index.html`) y listo. Tus datos se guardan
 automáticamente en el navegador (`localStorage`).
 
 ## Características
 
-- **Cinco vistas separadas (pestañas):** **«Tracker»** (hábitos del día),
-  **«Recordatorios»** (actividades programadas, con contador de pendientes),
-  **«Progreso»** (historial y rachas), **«Dinero»** (alcancías y metas) y
-  **«Personalizar»** (contenido, colores y edición de la interfaz).
+- **Seis vistas separadas (pestañas):** **«Hábitos»** (rutina del día),
+  **«Notas»** (ideas y planes), **«Recordatorios»** (actividades programadas, con contador
+  de pendientes), **«Progreso»** (metas, historial y rachas), **«Dinero»** (alcancías y
+  metas) y **«Personalizar»** (contenido, colores y edición de la interfaz).
+- **Descargar PNG en cada pestaña** (excepto Personalizar): genera una imagen con el estilo
+  del diario de lo que ves — tu rutina, tus notas, recordatorios, progreso o dinero.
+- **Notas (ideas y planes):** escribe notas con título y contenido; se ordenan por fecha y
+  se guardan solas. Ideal para apuntar ideas sueltas o planes futuros.
 - **Deshacer / Rehacer:** botones **«↶ Deshacer»** y **«↷ Rehacer»** (o `Ctrl/Cmd+Z` y
-  `Ctrl/Cmd+Mayús+Z`) revierten cualquier cambio: marcar, editar, borrar, objetivos,
+  `Ctrl/Cmd+Mayús+Z`) revierten cualquier cambio: marcar, editar, borrar, metas, notas,
   categorías, colores, recordatorios, alarmas, dinero, etc.
 - **Recordatorios + avisos:** apunta actividades con **fecha, hora y alarma** (a la
   hora, 5/10/30 min, 1–2 h o 1 día antes). Se ordenan por fecha y lo vencido se resalta.
@@ -23,18 +27,14 @@ automáticamente en el navegador (`localStorage`).
   con su precio objetivo. Guarda o retira dinero en cada una y mira el progreso hacia la
   meta, con un resumen (ahorrado total, nº de alcancías, metas cumplidas y cuánto falta).
   El símbolo de moneda es configurable.
-- **Seguimiento diario:** marca tus hábitos cada día. El progreso del día se muestra
-  con una barra y un contador.
-- **Objetivos semanales / mensuales:** además de los hábitos diarios, cada hábito puede
-  tener una meta de **«X veces por semana»** o **«X veces por mes»** (pulsa el 🎯 del
-  hábito). Verás una barra de progreso del periodo (ej. *2/3 esta semana*) y la racha 🔥
-  se mide en el periodo correspondiente (días, semanas o meses seguidos cumpliendo la meta).
-- **Rachas (streaks):** cada hábito muestra 🔥 con su racha; el panel calcula la racha
-  actual y la mejor racha global.
-- **Progreso (historial y rachas):** en su propia pestaña, un calendario de actividad por
-  meses (estilo «contribuciones») con rango seleccionable **Mes / 3 meses / 6 meses / Año**
-  y estadísticas: racha actual, mejor racha, días activos, total de completados, constancia
-  del rango y objetivos cumplidos. Toca cualquier día para revisarlo o completarlo.
+- **Hábitos diarios:** marca tus hábitos cada día; el progreso del día se muestra con una
+  barra y un contador, y cada hábito lleva su racha 🔥 de días seguidos.
+- **Progreso (metas + historial y rachas):** en su propia pestaña. Las **metas semanales y
+  mensuales** van aquí, separadas de los hábitos diarios: define «X veces por semana/mes»,
+  pulsa «Hecho» cada vez que la cumplas y mira tu progreso del periodo y tu racha por
+  periodos. Debajo, un calendario de actividad por meses (estilo «contribuciones») con
+  rango **Mes / 3 meses / 6 meses / Año** y estadísticas (racha actual, mejor racha, días
+  activos, completados y constancia).
 - **Tema de colores de la página:** cambia los colores de *toda* la página, no solo el
   acento. Hay **8 temas predefinidos** (Noche, Carbón, Medianoche, Bosque, Sepia, Vino,
   Claro, Niebla) y **selectores de color personalizados** para fondo, superficies, líneas,
@@ -50,7 +50,7 @@ automáticamente en el navegador (`localStorage`).
 - **Hábitos con horario:** opcionalmente añade hora de inicio y fin; la lista se ordena
   por hora.
 - **Exportar / importar:**
-  - **PNG** y **texto** del día seleccionado (para compartir o imprimir).
+  - **PNG** de cualquier pestaña (botón «📷 PNG»), más **texto** de la rutina de hábitos.
   - **Exportar datos** / **Importar datos** en `.json` para respaldar o mover tus datos
     entre dispositivos.
 - **Restaurar ejemplo** y **Vaciar** para empezar de cero.
@@ -58,10 +58,10 @@ automáticamente en el navegador (`localStorage`).
 ## Uso
 
 1. Abre `index.html` en tu navegador.
-2. **«Tracker»**: marca los hábitos que cumplas hoy. **«Recordatorios»**: apunta
-   actividades con fecha/hora/alarma y activa los avisos del navegador. **«Progreso»**:
-   mira tu historial y rachas. **«Dinero»**: crea alcancías y metas de compra y guarda
-   dinero. Todo se guarda solo.
+2. **«Hábitos»**: marca los que cumplas hoy. **«Notas»**: apunta ideas y planes.
+   **«Recordatorios»**: actividades con fecha/hora/alarma y avisos del navegador.
+   **«Progreso»**: metas semanales/mensuales más historial y rachas. **«Dinero»**:
+   alcancías y metas de compra. Todo se guarda solo (y puedes bajar un PNG de cada vista).
 3. En la pestaña **«Personalizar»**: cambia título, categorías y colores (tema), y activa
    **«Editar interfaz»** para reescribir cualquier texto de la pantalla.
 4. ¿Te equivocaste? Usa **«↶ Deshacer»** (o `Ctrl/Cmd+Z`).

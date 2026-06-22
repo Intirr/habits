@@ -155,16 +155,101 @@
   .day-dot.sel{box-shadow:0 0 0 2px var(--ink),0 0 0 3px var(--text-2)}
   .item-frente{flex:0 0 auto;font-family:var(--mono);font-size:.66rem;letter-spacing:.04em;color:var(--text-2);background:var(--ink);border:1px solid var(--line);border-radius:7px;padding:6px 8px;color-scheme:dark;cursor:pointer}
   .item-frente:focus{outline:none;border-color:var(--accent-line)}
-  .item-del{flex:0 0 auto;width:28px;height:28px;border-radius:7px;border:1px solid var(--line);background:transparent;color:var(--muted);font-size:1.2rem;line-height:1;cursor:pointer;transition:all .15s ease}
+  .item-del{flex:0 0 auto;order:2;width:28px;height:28px;border-radius:7px;border:1px solid var(--line);background:transparent;color:var(--muted);font-size:1.2rem;line-height:1;cursor:pointer;transition:all .15s ease}
   .item-del:hover{border-color:var(--cuerpo);color:var(--cuerpo)}
   .item-time{display:inline-flex;align-items:center;gap:5px;flex:0 0 auto}
   .item-time input{font-family:var(--mono);font-size:.73rem;color:var(--accent);background:var(--ink);border:1px solid var(--line);border-radius:7px;padding:5px 6px;color-scheme:dark;width:92px}
   .item-time input:focus{outline:none;border-color:var(--accent-line)}
   .item-sep{color:var(--muted)}
+  .item-meta{display:flex;flex-wrap:wrap;align-items:center;gap:8px;flex:1 1 100%;order:3}
+  .item-order{display:inline-flex;flex-direction:column;gap:2px;flex:0 0 auto}
+  .item-order button{width:24px;height:15px;border:1px solid var(--line);background:transparent;color:var(--muted);font-size:.62rem;line-height:1;cursor:pointer;border-radius:5px;display:inline-flex;align-items:center;justify-content:center;transition:all .15s ease;padding:0}
+  .item-order button:hover:not(:disabled){border-color:var(--accent-line);color:var(--text)}
+  .item-order button:disabled{opacity:.3;cursor:not-allowed}
+  .item.extra{opacity:.5}
+  .item.extra .item-text{color:var(--muted)}
+  .wd-row{display:inline-flex;gap:4px;flex-wrap:wrap}
+  .wd-chip{width:28px;height:28px;border-radius:7px;border:1px solid var(--line);background:var(--ink);color:var(--text-2);font-family:var(--mono);font-size:.66rem;font-weight:700;cursor:pointer;transition:all .15s ease;padding:0}
+  .wd-chip:hover{border-color:var(--accent-line);color:var(--text)}
+  .wd-chip.on{color:var(--on-accent);background:var(--accent);border-color:var(--accent)}
 
-  .empty{color:var(--muted);font-size:.92rem;text-align:center;padding:30px;border:1px dashed var(--line);border-radius:12px;margin-top:22px}
+  /* JOURNAL (journal · mood · top 3) */
+  .bita-panel .rem-head .datenav{margin-left:auto}
+  .bita-block{margin-top:24px}
+  .bita-block:first-of-type{margin-top:16px}
+  .bita-block>.fl{margin-bottom:9px}
+  .bita-block .hint{margin:-3px 0 10px}
+  .mood-row{display:flex;gap:8px;flex-wrap:wrap}
+  .mood-btn{width:48px;height:48px;border-radius:12px;border:1px solid var(--line);background:var(--ink);font-size:1.5rem;cursor:pointer;transition:all .15s ease;display:inline-flex;align-items:center;justify-content:center;opacity:.65;filter:grayscale(.35)}
+  .mood-btn:hover{border-color:var(--accent-line);transform:translateY(-2px);opacity:1;filter:none}
+  .mood-btn.on{border-color:var(--accent);background:var(--accent-soft);opacity:1;filter:none;box-shadow:0 0 0 1px var(--accent)}
+  .top3-list{list-style:none;display:flex;flex-direction:column;gap:8px}
+  .top3-item{display:flex;align-items:center;gap:9px;background:var(--ink-1);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:10px;padding:9px 11px}
+  .top3-item.done .item-text{color:var(--muted);text-decoration:line-through}
+  .top3-add{margin-top:2px;font-family:var(--mono);font-size:.64rem;letter-spacing:.07em;text-transform:uppercase;color:var(--text-2);background:transparent;border:1px dashed var(--line);padding:9px 14px;border-radius:9px;cursor:pointer;transition:all .15s ease;align-self:flex-start}
+  .top3-add:hover{border-color:var(--accent-line);color:var(--accent)}
+  .top3-empty{color:var(--muted);font-size:.88rem}
+  .jr-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .jr-grid .field.full{grid-column:auto}
+  .jr-grid textarea.inp{min-height:76px;resize:vertical}
+  .mood-trend{display:flex;gap:3px;align-items:flex-end;height:48px;border-bottom:1px solid var(--line);padding-bottom:1px}
+  .mt-cell{flex:1 1 0;min-width:4px;height:100%;display:flex;align-items:flex-end;cursor:pointer}
+  .mt-bar{width:100%;border-radius:3px 3px 0 0;background:var(--c,var(--accent));min-height:3px;transition:height .2s ease}
+  .mt-cell.sel .mt-bar{box-shadow:0 0 0 2px var(--ink),0 0 0 3px var(--text-2)}
+  .cal-cell.has-journal::after{content:"";position:absolute;top:3px;right:3px;width:5px;height:5px;border-radius:50%;background:var(--accent)}
+  /* weekly reflection */
+  .weekly-reflect{margin-bottom:18px}
+  .weekly-reflect .rem-head .datenav{margin-left:auto}
+  .weekly-reflect .hint{margin:-2px 0 14px}
+  .wk-stats{margin-bottom:16px}
+  @media(max-width:640px){ .jr-grid{grid-template-columns:1fr} }
 
-  /* GOALS (per-habit objectives — legacy) */
+  /* HOME / SUMMARY (home dashboard) */
+  .home-greet{font-family:var(--serif);font-size:1.05rem;color:var(--text-2);margin:2px 0 20px}
+  .home-greet b{color:var(--head);font-weight:600}
+  .home-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(248px,1fr));gap:14px}
+  .home-card{display:flex;flex-direction:column;gap:8px;text-align:left;background:var(--ink-1);border:1px solid var(--line);border-left:3px solid var(--c,var(--accent));border-radius:13px;padding:15px 16px;cursor:pointer;font:inherit;color:inherit;transition:transform .15s ease,border-color .15s ease,background .15s ease}
+  .home-card:hover{transform:translateY(-2px);border-color:var(--accent-line);background:var(--ink-2)}
+  .home-card:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  .hc-top{display:flex;align-items:center;gap:8px}
+  .hc-label{font-family:var(--mono);font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+  .hc-go{margin-left:auto;color:var(--accent);font-size:1.1rem;line-height:1;opacity:.7;transition:transform .15s ease}
+  .home-card:hover .hc-go{transform:translateX(2px);opacity:1}
+  .hc-big{font-family:var(--serif);font-weight:600;font-size:1.7rem;color:var(--head);line-height:1.05}
+  .hc-big small{font-size:1rem;color:var(--muted);font-weight:400}
+  .hc-face{font-size:1.6rem}
+  .hc-sub{font-size:.84rem;color:var(--text-2)}
+  .hc-list{list-style:none;display:flex;flex-direction:column;gap:4px;margin-top:1px}
+  .hc-list li{font-size:.86rem;color:var(--text);display:flex;align-items:center;gap:7px;line-height:1.3}
+  .hc-list li::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--accent);flex:0 0 auto}
+  .hc-list li.done{color:var(--muted);text-decoration:line-through}
+  .hc-list li.done::before{background:var(--muted)}
+  .hc-list li.over::before{background:var(--cuerpo)}
+  .hc-empty{font-size:.86rem;color:var(--muted);font-style:italic}
+  .home-card .progress{margin:2px 0 0}
+
+  /* empty states with call-to-action */
+  .empty,.empty-state{color:var(--muted);font-size:.92rem;text-align:center;border:1px dashed var(--line);border-radius:12px;margin-top:22px}
+  .empty{padding:30px}
+  .empty-state{display:flex;flex-direction:column;align-items:center;gap:12px;padding:34px 22px}
+  .empty-state .es-emoji{font-size:1.9rem;line-height:1}
+  .empty-state .es-msg{font-size:.95rem;color:var(--text-2);max-width:42ch}
+  .empty-cta{font-family:var(--mono);font-size:.66rem;letter-spacing:.07em;text-transform:uppercase;font-weight:700;color:var(--on-accent);background:var(--accent);border:0;border-radius:999px;padding:10px 18px;cursor:pointer;transition:filter .15s ease}
+  .empty-cta:hover{filter:brightness(1.08)}
+
+  /* habit filter chips + search */
+  .list-toolbar{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin:20px 0 2px}
+  .chips{display:flex;gap:6px;flex-wrap:wrap}
+  .chip{font-family:var(--mono);font-size:.6rem;letter-spacing:.05em;text-transform:uppercase;color:var(--text-2);background:transparent;border:1px solid var(--line);border-radius:999px;padding:6px 11px;cursor:pointer;transition:all .15s ease;display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+  .chip:hover{border-color:var(--accent-line);color:var(--text)}
+  .chip.active{color:var(--on-accent);background:var(--accent);border-color:var(--accent);font-weight:700}
+  .chip .chip-dot{width:8px;height:8px;border-radius:50%;background:var(--cc,var(--accent));flex:0 0 auto}
+  .chip.active .chip-dot{background:var(--on-accent)}
+  .search-inp{font-family:var(--sans);font-size:.92rem;color:var(--text);background:var(--ink);border:1px solid var(--line);border-radius:9px;padding:9px 12px;color-scheme:dark;width:100%}
+  .search-inp:focus{outline:none;border-color:var(--accent-line)}
+  .notes-search{margin-top:14px;position:relative}
+
+  /* GOALS (per-habit objectives) */
   .goal-badge{flex:0 0 auto;display:inline-flex;align-items:center;gap:5px;font-family:var(--mono);font-size:.64rem;font-weight:700;color:var(--text-2);background:var(--ink);border:1px solid var(--line);border-radius:7px;padding:5px 8px;cursor:pointer;transition:all .15s ease}
   .goal-badge:hover{border-color:var(--accent-line);color:var(--text)}
   .goal-badge.add{color:var(--muted)}
@@ -299,6 +384,31 @@
   .jar-del:hover{border-color:var(--cuerpo);color:var(--cuerpo)}
   .jar-empty{grid-column:1/-1;color:var(--muted);font-size:.9rem;text-align:center;padding:24px;border:1px dashed var(--line);border-radius:12px}
 
+  /* READING (books in progress) */
+  .reading-add{margin-top:14px}
+  .book-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;margin-top:18px}
+  .book-card{background:var(--ink-1);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:9px}
+  .book-card.done{border-left-color:var(--valor)}
+  .book-head{display:flex;align-items:flex-start;gap:9px}
+  .book-titles{flex:1 1 auto;min-width:0;display:flex;flex-direction:column;gap:2px}
+  .book-title{font-family:var(--serif);font-weight:600;font-size:1.08rem;color:var(--head);background:transparent;border:1px solid transparent;border-radius:7px;padding:3px 7px}
+  .book-title:hover{background:var(--ink-2)}
+  .book-title:focus{outline:none;background:var(--ink);border-color:var(--accent-line)}
+  .book-author{font-family:var(--sans);font-size:.84rem;color:var(--text-2);background:transparent;border:1px solid transparent;border-radius:7px;padding:2px 7px}
+  .book-author:hover{background:var(--ink-2)}
+  .book-author:focus{outline:none;background:var(--ink);border-color:var(--accent-line)}
+  .book-del{flex:0 0 auto;width:28px;height:28px;border-radius:7px;border:1px solid var(--line);background:transparent;color:var(--muted);font-size:1.2rem;line-height:1;cursor:pointer;transition:all .15s ease}
+  .book-del:hover{border-color:var(--cuerpo);color:var(--cuerpo)}
+  .book-pages{display:flex;align-items:center;gap:7px;font-family:var(--mono);font-size:.78rem;color:var(--text-2);flex-wrap:wrap}
+  .book-pages input{font-family:var(--mono);font-size:.8rem;color:var(--text);background:var(--ink);border:1px solid var(--line);border-radius:7px;padding:5px 7px;width:64px;color-scheme:dark}
+  .book-pages input:focus{outline:none;border-color:var(--accent-line)}
+  .book-pct{margin-left:auto;color:var(--accent);font-weight:700}
+  .book-card.done .book-pct{color:var(--valor)}
+  .book-foot{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+  .book-notes{flex:1 1 100%;min-height:0;height:34px;font-family:var(--sans);font-size:.84rem;line-height:1.4;color:var(--text);background:var(--ink);border:1px solid var(--line);border-radius:8px;padding:7px 9px;resize:vertical;transition:height .15s ease}
+  .book-notes:focus{outline:none;border-color:var(--accent-line);height:72px}
+  .book-empty{grid-column:1/-1;color:var(--muted);font-size:.9rem;text-align:center;padding:24px;border:1px dashed var(--line);border-radius:12px}
+
   /* NOTES (diary · ideas and plans) */
   textarea.inp{min-height:88px;resize:vertical;line-height:1.5;font-family:var(--sans)}
   .note-add{margin-top:14px;display:flex;flex-direction:column;padding:16px;background:rgba(0,0,0,.18);border:1px solid var(--line);border-radius:12px}
@@ -349,6 +459,10 @@
   .foot-mark{font-family:var(--serif);font-weight:600;font-size:1.12rem;color:var(--accent)}
   .foot-sub{font-family:var(--mono);font-size:.64rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-top:8px}
 
+  @media (max-width:760px){
+    .stats{grid-template-columns:repeat(3,1fr)}
+    .cal-months{grid-template-columns:1fr}
+  }
   @media (max-width:560px){
     .wrap{padding:0 16px}
     .hero{padding:40px 0 18px}
@@ -360,6 +474,9 @@
     .add-btn{flex:1 1 100%}
     .stats{grid-template-columns:1fr 1fr}
     .toolbar .datenav{order:3}
+    .item-time input{width:84px}
+    .item-frente{flex:1 1 auto}
+    .jar-list,.notes-list{grid-template-columns:1fr}
   }
   @media (prefers-reduced-motion:reduce){
     *{transition:none!important;animation:none!important;scroll-behavior:auto!important}
@@ -376,8 +493,11 @@
 
       <div class="topbar">
         <div class="tabs" role="tablist" aria-label="Views">
-          <button type="button" class="tab active" id="tab-tracker" role="tab">Habits</button>
+          <button type="button" class="tab active" id="tab-inicio" role="tab">Home</button>
+          <button type="button" class="tab" id="tab-tracker" role="tab">Habits</button>
+          <button type="button" class="tab" id="tab-bita" role="tab">Journal</button>
           <button type="button" class="tab" id="tab-notes" role="tab">Notes</button>
+          <button type="button" class="tab" id="tab-reading" role="tab">Reading</button>
           <button type="button" class="tab" id="tab-reminders" role="tab">Reminders<span class="tab-count" id="rem-count" hidden></span></button>
           <button type="button" class="tab" id="tab-progress" role="tab">Progress</button>
           <button type="button" class="tab" id="tab-money" role="tab">Money</button>
@@ -395,6 +515,18 @@
         <button type="button" class="eb-btn solid" id="btn-edit-done">Done</button>
       </div>
     </header>
+
+    <!-- ===================== VIEW: HOME ===================== -->
+    <div id="view-inicio" hidden>
+      <section class="panel home" aria-label="Today’s summary">
+        <div class="rem-head">
+          <div class="panel-title" data-ui="lblHome">Today’s summary</div>
+          <button type="button" class="tool-btn png-btn" title="Download PNG of this tab">📷 PNG</button>
+        </div>
+        <p class="home-greet" id="home-greet"></p>
+        <div class="home-grid" id="home-grid"></div>
+      </section>
+    </div>
 
     <!-- ===================== VIEW: HABITS ===================== -->
     <div id="view-tracker">
@@ -416,6 +548,8 @@
         <div class="field field-time"><label class="fl" for="add-start" data-ui="lblStart">Start</label><input id="add-start" class="inp" type="time"></div>
         <div class="field field-time"><label class="fl" for="add-end" data-ui="lblEnd">End</label><input id="add-end" class="inp" type="time"></div>
         <div class="field field-frente"><label class="fl" for="add-frente" data-ui="lblFrente">Area</label><select id="add-frente" class="sel"></select></div>
+        <div class="field field-frente"><label class="fl" for="add-freq" data-ui="lblFreq">Frequency</label><select id="add-freq" class="sel"><option value="daily">Daily</option><option value="weekdays">Mon–Fri</option><option value="weekend">Weekend</option><option value="weekly">N× per week</option><option value="monthly">N× per month</option></select></div>
+        <div class="field field-time" id="add-freq-n-wrap" hidden><label class="fl" for="add-freq-n" data-ui="lblFreqN">Times</label><input id="add-freq-n" class="inp" type="number" min="1" value="3"></div>
         <button type="button" class="add-btn" id="add-btn"><span data-ui="btnAdd">Add</span></button>
       </div>
 
@@ -423,6 +557,8 @@
         <span class="progress-label"><span data-ui="lblProgress">Today’s progress</span> · <b id="count-text">0 / 0</b></span>
         <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
       </div>
+
+      <div class="list-toolbar" id="habit-filter" hidden></div>
 
       <main id="list"></main>
 
@@ -437,20 +573,81 @@
       </div>
     </div>
 
+    <!-- ===================== VIEW: JOURNAL ===================== -->
+    <div id="view-bita" hidden>
+      <section class="panel bita-panel" aria-label="Journal">
+        <div class="rem-head">
+          <div class="panel-title" data-ui="lblBita">Daily journal</div>
+          <div class="datenav" aria-label="Navigate days">
+            <button type="button" id="bita-prev" aria-label="Previous day">‹</button>
+            <span class="date" id="bita-date">Today</span>
+            <button type="button" id="bita-next" aria-label="Next day">›</button>
+          </div>
+          <button type="button" class="tool-btn png-btn" title="Download PNG of this tab">📷 PNG</button>
+        </div>
+
+        <div class="bita-block">
+          <div class="fl" data-ui="lblMood">How do you feel?</div>
+          <div class="mood-row" id="mood-row" role="group" aria-label="Mood of the day"></div>
+        </div>
+
+        <div class="bita-block">
+          <div class="fl" data-ui="lblTop3">Focus of the day · top 3</div>
+          <p class="hint" data-ui="top3Hint">The 1–3 most important things today (separate from your habits).</p>
+          <ul class="top3-list" id="top3-list"></ul>
+        </div>
+
+        <div class="bita-block">
+          <div class="fl" data-ui="lblJournal">Journal</div>
+          <div class="jr-grid">
+            <div class="field full"><label class="fl" for="jr-summary" data-ui="lblJrSummary">How was your day?</label><textarea id="jr-summary" class="inp" data-jr="summary" placeholder="In a few lines…"></textarea></div>
+            <div class="field full"><label class="fl" for="jr-win" data-ui="lblJrWin">A win</label><textarea id="jr-win" class="inp" data-jr="win" placeholder="Something that went well…"></textarea></div>
+            <div class="field full"><label class="fl" for="jr-improve" data-ui="lblJrImprove">Something to improve or learn</label><textarea id="jr-improve" class="inp" data-jr="improve" placeholder="A lesson or adjustment…"></textarea></div>
+            <div class="field full"><label class="fl" for="jr-gratitude" data-ui="lblJrGratitude">Gratitude</label><textarea id="jr-gratitude" class="inp" data-jr="gratitude" placeholder="Something you’re grateful for…"></textarea></div>
+          </div>
+        </div>
+
+        <div class="bita-block">
+          <div class="fl" data-ui="lblMoodTrend">Mood trend · last 30 days</div>
+          <div class="mood-trend" id="mood-trend"></div>
+        </div>
+      </section>
+    </div>
+
     <!-- ===================== VIEW: NOTES ===================== -->
     <div id="view-notes" hidden>
       <section class="panel notes-panel" aria-label="Notes">
         <div class="rem-head">
           <div class="panel-title" data-ui="lblNotes">Notes · ideas and plans</div>
-          <button type="button" class="tool-btn png-btn" title="Download a PNG of this tab">📷 PNG</button>
+          <button type="button" class="tool-btn png-btn" title="Download PNG of this tab">📷 PNG</button>
         </div>
         <p class="hint" data-ui="notesHint">Your space to jot down ideas and future plans. Write whatever you want to remember; everything saves automatically.</p>
         <div class="note-add">
-          <div class="field full"><label class="fl" for="note-title" data-ui="lblNoteTitle">Title (optional)</label><input id="note-title" class="inp" type="text" placeholder="e.g. Idea for the project" autocomplete="off"></div>
+          <div class="field full"><label class="fl" for="note-title" data-ui="lblNoteTitle">Title (optional)</label><input id="note-title" class="inp" type="text" placeholder="E.g. Idea for the project" autocomplete="off"></div>
           <div class="field full" style="margin-top:10px"><label class="fl" for="note-text" data-ui="lblNoteText">Content</label><textarea id="note-text" class="inp" placeholder="Write your idea or plan…"></textarea></div>
           <button type="button" class="add-btn" id="note-add-btn" style="margin-top:11px;align-self:flex-start"><span data-ui="btnNoteAdd">Add note</span></button>
         </div>
+        <div class="notes-search" id="notes-search-wrap" hidden><input id="note-search" class="search-inp" type="search" placeholder="Search your notes…" aria-label="Search notes" autocomplete="off"></div>
         <div class="notes-list" id="notes-list"></div>
+      </section>
+    </div>
+
+    <!-- ===================== VIEW: READING ===================== -->
+    <div id="view-reading" hidden>
+      <section class="panel reading" aria-label="Reading">
+        <div class="rem-head">
+          <div class="panel-title" data-ui="lblReading">Reading · books in progress</div>
+          <button type="button" class="tool-btn png-btn" title="Download PNG of this tab">📷 PNG</button>
+        </div>
+        <p class="hint" data-ui="readingHint">Keep track of what you read. Note your current page to see your progress; when you finish, mark it as read.</p>
+        <div class="stats" id="reading-stats"></div>
+        <div class="addbar reading-add">
+          <div class="field field-text"><label class="fl" for="book-title" data-ui="lblBookTitle">New book</label><input id="book-title" class="inp" type="text" placeholder="Book title" autocomplete="off"></div>
+          <div class="field field-text"><label class="fl" for="book-author" data-ui="lblBookAuthor">Author</label><input id="book-author" class="inp" type="text" placeholder="Author (optional)" autocomplete="off"></div>
+          <div class="field field-time"><label class="fl" for="book-total" data-ui="lblBookTotal">Pages</label><input id="book-total" class="inp" type="number" min="0" step="1" placeholder="0"></div>
+          <button type="button" class="add-btn" id="book-add-btn"><span data-ui="btnBookAdd">Add</span></button>
+        </div>
+        <div class="book-list" id="book-list"></div>
       </section>
     </div>
 
@@ -459,11 +656,11 @@
       <section class="panel reminders" aria-label="Reminders">
         <div class="rem-head">
           <div class="panel-title" data-ui="lblReminders">Reminders · scheduled activities</div>
-          <button type="button" class="tool-btn png-btn" title="Download a PNG of this tab">📷 PNG</button>
+          <button type="button" class="tool-btn png-btn" title="Download PNG of this tab">📷 PNG</button>
         </div>
         <p class="hint" data-ui="remHint">Jot down your scheduled activities with a date and time. They’re sorted by date and overdue ones are highlighted.</p>
         <div class="addbar rem-add">
-          <div class="field field-text"><label class="fl" for="rem-text" data-ui="lblRemNew">New activity</label><input id="rem-text" class="inp" type="text" placeholder="e.g. Call the dentist" autocomplete="off"></div>
+          <div class="field field-text"><label class="fl" for="rem-text" data-ui="lblRemNew">New activity</label><input id="rem-text" class="inp" type="text" placeholder="E.g. Call the dentist" autocomplete="off"></div>
           <div class="field field-time"><label class="fl" for="rem-date" data-ui="lblRemDate">Date</label><input id="rem-date" class="inp" type="date"></div>
           <div class="field field-time"><label class="fl" for="rem-time" data-ui="lblRemTime">Time</label><input id="rem-time" class="inp" type="time"></div>
           <button type="button" class="add-btn" id="rem-add-btn"><span data-ui="btnRemAdd">Add</span></button>
@@ -474,25 +671,29 @@
 
     <!-- ===================== VIEW: PROGRESS ===================== -->
     <div id="view-progress" hidden>
-      <section class="panel goals" aria-label="Weekly and monthly goals">
+      <section class="panel weekly-reflect" aria-label="Weekly reflection">
         <div class="rem-head">
-          <div class="panel-title" data-ui="lblGoals">Weekly and monthly goals</div>
-          <button type="button" class="tool-btn png-btn" title="Download a PNG of this tab">📷 PNG</button>
+          <div class="panel-title" data-ui="lblWeekly">Weekly reflection</div>
+          <div class="datenav" aria-label="Navigate weeks">
+            <button type="button" id="wknav-prev" aria-label="Previous week">‹</button>
+            <span class="date" id="wk-label">This week</span>
+            <button type="button" id="wknav-next" aria-label="Next week">›</button>
+          </div>
         </div>
-        <p class="hint" data-ui="goalsHint">Goals that aren’t daily: do them X times per week or per month. Press «Done» each time you complete one; you’ll see your period progress and your streak.</p>
-        <div class="addbar goal-add">
-          <div class="field field-text"><label class="fl" for="goal-text" data-ui="lblGoalNew">New goal</label><input id="goal-text" class="inp" type="text" placeholder="e.g. Strength training, Read a book…" autocomplete="off"></div>
-          <div class="field field-time"><label class="fl" for="goal-period" data-ui="lblGoalPeriod">Period</label><select id="goal-period" class="sel"><option value="weekly">Per week</option><option value="monthly">Per month</option></select></div>
-          <div class="field field-time"><label class="fl" for="goal-target" data-ui="lblGoalTarget">Times</label><input id="goal-target" class="inp" type="number" min="1" value="3"></div>
-          <button type="button" class="add-btn" id="goal-add-btn"><span data-ui="btnGoalAdd">Add</span></button>
+        <p class="hint" data-ui="weeklyHint">Every Sunday (or whenever you like) review your week: what worked, what to adjust, and your focus for the next one.</p>
+        <div class="stats wk-stats" id="wk-stats"></div>
+        <div class="jr-grid">
+          <div class="field full"><label class="fl" for="wk-went" data-ui="lblWkWent">What went well?</label><textarea id="wk-went" class="inp" data-wk="went" placeholder="Wins, good moments, things that worked…"></textarea></div>
+          <div class="field full"><label class="fl" for="wk-improve" data-ui="lblWkImprove">What to improve?</label><textarea id="wk-improve" class="inp" data-wk="improve" placeholder="What didn’t go as you hoped…"></textarea></div>
+          <div class="field full"><label class="fl" for="wk-learned" data-ui="lblWkLearned">What did you learn?</label><textarea id="wk-learned" class="inp" data-wk="learned" placeholder="A lesson or idea from the week…"></textarea></div>
+          <div class="field full"><label class="fl" for="wk-next" data-ui="lblWkNext">Focus for next week</label><textarea id="wk-next" class="inp" data-wk="next" placeholder="1–3 priorities for the coming week…"></textarea></div>
         </div>
-        <div class="goal-list" id="goal-list"></div>
       </section>
-
       <section class="history" aria-label="History and streaks">
         <div class="hist-head">
           <div class="panel-title" data-ui="histTitle">Habit history and streaks</div>
           <div class="seg" id="range-seg" role="group" aria-label="Time range"></div>
+          <button type="button" class="tool-btn png-btn" title="Download PNG of this tab">📷 PNG</button>
         </div>
         <div class="stats" id="stats"></div>
         <div class="cal-months" id="cal-months"></div>
@@ -509,13 +710,13 @@
       <section class="panel money" aria-label="Money">
         <div class="rem-head">
           <div class="panel-title" data-ui="lblMoney">Money · jars and goals</div>
-          <button type="button" class="tool-btn png-btn" title="Download a PNG of this tab">📷 PNG</button>
+          <button type="button" class="tool-btn png-btn" title="Download PNG of this tab">📷 PNG</button>
           <label class="cur-field"><span class="fl" data-ui="lblCurrency">Currency</span><input id="cur-input" class="inp" type="text" maxlength="3" aria-label="Currency symbol"></label>
         </div>
         <p class="hint" data-ui="moneyHint">Create jars to save and goals for your purchases. Set a target (goal price) and deposit or withdraw money; you’ll see your progress toward each goal.</p>
         <div class="stats" id="money-stats"></div>
         <div class="addbar money-add">
-          <div class="field field-text"><label class="fl" for="jar-name" data-ui="lblJarName">New jar / goal</label><input id="jar-name" class="inp" type="text" placeholder="e.g. Vacation, New phone…" autocomplete="off"></div>
+          <div class="field field-text"><label class="fl" for="jar-name" data-ui="lblJarName">New jar / goal</label><input id="jar-name" class="inp" type="text" placeholder="E.g. Vacation, New phone…" autocomplete="off"></div>
           <div class="field field-time"><label class="fl" for="jar-target" data-ui="lblJarTarget">Target (optional)</label><input id="jar-target" class="inp" type="number" min="0" step="any" placeholder="0"></div>
           <div class="field field-frente"><label class="fl" for="jar-color" data-ui="lblJarColor">Color</label><input id="jar-color" class="inp jar-color-pick" type="color" value="#7FB39A"></div>
           <button type="button" class="add-btn" id="jar-add-btn"><span data-ui="btnJarAdd">Create</span></button>
@@ -526,12 +727,12 @@
 
     <!-- ===================== VIEW: CUSTOMIZE ===================== -->
     <div id="view-settings" hidden>
-      <section class="panel" aria-label="Customize diary">
+      <section class="panel" aria-label="Customize">
         <div class="panel-title" data-ui="panelTitle">Customize your diary</div>
         <div class="pgrid">
           <div class="field full"><label class="fl" for="in-title" data-ui="lblTitle">Title</label><input id="in-title" class="inp" type="text" maxlength="60" placeholder="My personal diary"></div>
           <div class="field full"><label class="fl" for="in-subtitle" data-ui="lblSubtitle">Subtitle</label><input id="in-subtitle" class="inp" type="text" maxlength="140" placeholder="A short description of your diary"></div>
-          <div class="field full"><label class="fl" for="in-quote" data-ui="lblQuote">Motivational quote (optional)</label><input id="in-quote" class="inp" type="text" maxlength="140" placeholder="e.g. One step at a time builds the path"></div>
+          <div class="field full"><label class="fl" for="in-quote" data-ui="lblQuote">Motivational quote (optional)</label><input id="in-quote" class="inp" type="text" maxlength="140" placeholder="E.g. One step at a time builds the path"></div>
           <div class="field full"><label class="fl" data-ui="lblFrentes">Categories (areas)</label><div id="cf-list" class="cf-list"></div><button type="button" class="cf-add" id="cf-add"><span data-ui="btnAddFrente">+ Add category</span></button></div>
           <div class="field full"><label class="fl" data-ui="lblAccent">Accent color</label><div class="swatches" id="swatches" role="group" aria-label="Accent color"></div></div>
           <div class="field full"><label class="fl" data-ui="lblTheme">Page theme (colors)</label><div class="theme-presets" id="theme-presets" role="group" aria-label="Theme"></div><div class="theme-advanced" id="theme-advanced"></div></div>
@@ -623,10 +824,12 @@
   /* ============ state ============ */
   const DEFAULT_UI = {};   // captured from DOM
   const template = Object.assign({}, DEFAULT_TEMPLATE);
-  let state = { ui:{}, frentes: clone(DEFAULT_FRENTES), habits: [], log: {}, reminders: [], notes: [], goals: [], theme: clone(DEFAULT_THEME), money: clone(DEFAULT_MONEY) };
+  let state = { ui:{}, frentes: clone(DEFAULT_FRENTES), habits: [], log: {}, reminders: [], notes: [], goals: [], journal: {}, weekly: {}, books: [], theme: clone(DEFAULT_THEME), money: clone(DEFAULT_MONEY) };
   let editing = false;
   let rangeMonths = 3;          // history range (1, 3, 6 or 12 months) — view setting
-  let currentView = "tracker";  // "tracker" | "settings" — view setting
+  let currentView = "inicio";  // landing view (home dashboard)
+  let habitFilter = null;       // area id to filter the habit list (view setting)
+  let noteQuery = "";           // notes search query (view setting)
   const openGoals = new Set();  // ids with their goal editor expanded (not persisted)
   const undoStack = [], redoStack = [];   // snapshots of editable data
   let undoTag = null, undoTagTime = 0;
@@ -641,17 +844,20 @@
   function parseKey(k){ const p=k.split("-").map(Number); return new Date(p[0], p[1]-1, p[2]); }
   function addDays(d,n){ const x=new Date(d); x.setHours(0,0,0,0); x.setDate(x.getDate()+n); return x; }
   const TODAY_KEY = dateKey(new Date());
+  const THIS_WEEK_KEY = dateKey(startOfWeek(new Date()));
   let selectedKey = TODAY_KEY;
+  let selectedWeek = THIS_WEEK_KEY;
 
   const DOW = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+  const DOW_FULL = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
   const MON = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
   const MON_FULL = ["January","February","March","April","May","June","July","August","September","October","November","December"];
-  function prettyDate(k){ const d=parseKey(k); return DOW[d.getDay()]+", "+MON[d.getMonth()]+" "+d.getDate(); }
+  function prettyDate(k){ const d=parseKey(k); return DOW[d.getDay()]+" "+d.getDate()+" "+MON[d.getMonth()]; }
   function startOfWeek(d){ const x=new Date(d); x.setHours(0,0,0,0); x.setDate(x.getDate()-((x.getDay()+6)%7)); return x; }   // Monday
   function startOfMonth(d){ return new Date(d.getFullYear(), d.getMonth(), 1); }
 
   /* ============ persistence ============ */
-  function dataPayload(){ return { ui:state.ui, template, frentes:state.frentes, habits:state.habits, log:state.log, reminders:state.reminders, notes:state.notes, goals:state.goals, theme:state.theme, money:state.money }; }
+  function dataPayload(){ return { ui:state.ui, template, frentes:state.frentes, habits:state.habits, log:state.log, reminders:state.reminders, notes:state.notes, goals:state.goals, journal:state.journal, weekly:state.weekly, books:state.books, theme:state.theme, money:state.money }; }
   function save(){
     try{ localStorage.setItem(STORE_KEY, JSON.stringify(Object.assign({ v:1 }, dataPayload(), { rangeMonths, view:currentView }))); }catch(e){}
   }
@@ -668,17 +874,24 @@
       if(d.log && typeof d.log==="object") state.log=d.log;
       if(Array.isArray(d.reminders)) state.reminders=d.reminders;
       if(Array.isArray(d.notes)) state.notes=d.notes;
+      if(d.journal && typeof d.journal==="object") state.journal=d.journal;
+      if(d.weekly && typeof d.weekly==="object") state.weekly=d.weekly;
+      if(Array.isArray(d.books)) state.books=d.books;
       if(Array.isArray(d.goals)) state.goals=d.goals;
       if(d.money && typeof d.money==="object"){ state.money=Object.assign(clone(DEFAULT_MONEY), d.money); if(!Array.isArray(state.money.jars)) state.money.jars=[]; }
       if(d.theme && typeof d.theme==="object") state.theme=Object.assign(clone(DEFAULT_THEME), d.theme);
       if([1,3,6,12].includes(d.rangeMonths)) rangeMonths=d.rangeMonths;
-      if(["tracker","notes","reminders","progress","money","settings"].includes(d.view)) currentView=d.view;
+      if(["inicio","tracker","bita","notes","reading","reminders","progress","money","settings"].includes(d.view)) currentView=d.view;
       return true;
     }catch(e){ return false; }
   }
   function seedExample(){
     state.frentes = clone(DEFAULT_FRENTES);
-    state.habits = STARTER.map(s=>({ id:uid("h"), text:s[0], domain:s[1], start:"", end:"" }));
+    state.habits = STARTER.map(s=>({ id:uid("h"), text:s[0], domain:s[1], start:"", end:"", freq:{type:"daily"} }));
+    // a few habits with different frequencies (unified model)
+    state.habits.push({ id:uid("h"), text:"Strength session at the gym", domain:"cuerpo", start:"", end:"", freq:{type:"weekly", target:3} });
+    state.habits.push({ id:uid("h"), text:"Hike or nature outing", domain:"alma", start:"", end:"", freq:{type:"monthly", target:2} });
+    state.habits.push({ id:uid("h"), text:"Plan the week", domain:"valor", start:"", end:"", freq:{type:"days", days:[0]} });
     state.log = {};
     const tomorrow = dateKey(addDays(new Date(), 1));
     state.reminders = [
@@ -689,13 +902,35 @@
       { id:uid("j"), name:"Emergency fund", target:null, saved:0, color:JAR_COLORS[0] },
       { id:uid("j"), name:"New phone", target:1200000, saved:150000, color:JAR_COLORS[1] }
     ] };
-    state.goals = [
-      { id:uid("g"), text:"Strength training", period:"weekly", target:3, marks:[] },
-      { id:uid("g"), text:"Time in nature", period:"monthly", target:2, marks:[] }
-    ];
+    state.goals = [];
     state.notes = [
       { id:uid("n"), title:"Ideas", text:"Jot down loose ideas, plans or things you don’t want to forget.", date:dateKey(new Date()) }
     ];
+    state.journal = {};
+    state.journal[dateKey(new Date())] = {
+      mood:4,
+      top3:[ { id:uid("p"), text:"Set today’s priorities", done:false } ],
+      note:{ summary:"", win:"", improve:"", gratitude:"Starting this diary." }
+    };
+    state.weekly = {};
+    state.weekly[dateKey(startOfWeek(new Date()))] = {
+      went:"", improve:"", learned:"", next:"Set a clear focus for the week."
+    };
+    state.books = [
+      { id:uid("b"), title:"Atomic Habits", author:"James Clear", total:320, current:120, status:"reading", notes:"" },
+      { id:uid("b"), title:"The Power of Now", author:"Eckhart Tolle", total:240, current:240, status:"done", notes:"Reread the final chapters." }
+    ];
+  }
+  /* migrate old separate goals (weekly/monthly) into habits with frequency */
+  function migrateGoals(){
+    if(!Array.isArray(state.goals) || !state.goals.length) return;
+    const dom=firstFrenteId();
+    state.goals.forEach(g=>{
+      const id=uid("h");
+      state.habits.push({ id, text:g.text||"Goal", domain:dom, start:"", end:"", freq:{ type:g.period==="monthly"?"monthly":"weekly", target:Math.max(1,g.target||1) } });
+      (g.marks||[]).forEach(k=>{ if(k) setDone(id, k, true); });
+    });
+    state.goals=[];
   }
 
   /* ============ undo / redo ============ */
@@ -710,6 +945,9 @@
     state.reminders = Array.isArray(d.reminders) ? d.reminders : [];
     state.notes = Array.isArray(d.notes) ? d.notes : [];
     state.goals = Array.isArray(d.goals) ? d.goals : [];
+    state.journal = (d.journal && typeof d.journal==="object") ? d.journal : {};
+    state.weekly = (d.weekly && typeof d.weekly==="object") ? d.weekly : {};
+    state.books = Array.isArray(d.books) ? d.books : [];
     state.money = Object.assign(clone(DEFAULT_MONEY), (d.money && typeof d.money==="object") ? d.money : {}); if(!Array.isArray(state.money.jars)) state.money.jars=[];
     state.theme = Object.assign(clone(DEFAULT_THEME), d.theme || {});
   }
@@ -760,7 +998,13 @@
     else if(state.log[key]){ delete state.log[key][habitId]; if(!Object.keys(state.log[key]).length) delete state.log[key]; }
   }
   function dayDoneCount(key){ const m=state.log[key]; if(!m) return 0; let n=0; for(const id in m){ if(m[id] && state.habits.some(h=>h.id===id)) n++; } return n; }
-  function dayRatio(key){ const total=state.habits.length; if(!total) return 0; return Math.min(1, dayDoneCount(key)/total); }
+  /* heat ratio: only daily + matching-weekday habits count toward a day (weekly/monthly are period-based) */
+  function dayRatio(key){
+    const list=state.habits.filter(h=>scheduledDaily(h,key));
+    if(!list.length) return 0;
+    const done=list.filter(h=>isDone(h.id,key)).length;
+    return Math.min(1, done/list.length);
+  }
 
   /* current streak for one habit (today counts; if today not yet done it doesn't break) */
   function habitStreak(habitId){
@@ -797,25 +1041,78 @@
     return n? Math.round(sum/n*100):0;
   }
 
-  /* ---- weekly / monthly goals (independent from habits) ---- */
-  function goalPeriodBounds(period, ref){
-    if(period==="monthly") return [startOfMonth(ref), new Date(ref.getFullYear(), ref.getMonth()+1, 1)];
+  /* ---- per-habit frequency (daily / specific weekdays / Nx per week / Nx per month) ---- */
+  const WD = ["S","M","T","W","T","F","S"];                 // getDay() 0=Sun..6=Sat
+  const WEEK_ORDER = [1,2,3,4,5,6,0];                        // Mon..Sun for display
+  function habitFreq(it){ return (it.freq && it.freq.type) ? it.freq : { type:"daily" }; }
+  function freqTarget(it){ return Math.max(1, habitFreq(it).target||1); }
+  function freqDays(it){ const d=habitFreq(it).days; return Array.isArray(d)?d:[]; }
+  function periodBoundsFor(type, ref){
+    if(type==="monthly") return [startOfMonth(ref), new Date(ref.getFullYear(), ref.getMonth()+1, 1)];
     const s=startOfWeek(ref); return [s, addDays(s,7)];
   }
-  function marksInRange(g, start, endEx){ let n=0; (g.marks||[]).forEach(k=>{ const d=parseKey(k); if(d>=start && d<endEx) n++; }); return n; }
-  function goalProgress(g){ const b=goalPeriodBounds(g.period, new Date()); return { count: marksInRange(g, b[0], b[1]), target: Math.max(1, g.target||1) }; }
-  /* streak in the meta's own period: weeks / months meeting the target in a row */
-  function goalStreak(g){
-    const target=Math.max(1, g.target||1); let s=0, first=true;
-    let cur = g.period==="monthly" ? startOfMonth(new Date()) : startOfWeek(new Date());
+  function habitPeriodCount(it, refKey){
+    const f=habitFreq(it), b=periodBoundsFor(f.type, parseKey(refKey)); let n=0;
+    for(let d=new Date(b[0]); d<b[1]; d=addDays(d,1)){ if(isDone(it.id, dateKey(d))) n++; }
+    return n;
+  }
+  function periodProgress(it, refKey){ return { count: habitPeriodCount(it, refKey), target: freqTarget(it) }; }
+  /* counts toward the daily heat map */
+  function scheduledDaily(it, key){
+    const f=habitFreq(it);
+    if(f.type==="daily") return true;
+    if(f.type==="days") return freqDays(it).includes(parseKey(key).getDay());
+    return false;                                            // weekly/monthly excluded from daily heat
+  }
+  /* is the habit "due" on the selected day (for the today list + progress ring) */
+  function dueOn(it, key){
+    const f=habitFreq(it);
+    if(f.type==="daily") return true;
+    if(f.type==="days") return freqDays(it).includes(parseKey(key).getDay());
+    return habitPeriodCount(it, key) < freqTarget(it);       // weekly/monthly: due until target met
+  }
+  /* period-aware current streak */
+  function habitPeriodStreak(it){
+    const f=habitFreq(it);
+    if(f.type==="daily") return habitStreak(it.id);
+    if(f.type==="days") return scheduledStreak(it);
+    const target=freqTarget(it); let s=0, first=true;
+    let cur = f.type==="monthly" ? startOfMonth(new Date()) : startOfWeek(new Date());
     for(let i=0;i<260;i++){
-      const endEx = g.period==="monthly" ? new Date(cur.getFullYear(), cur.getMonth()+1, 1) : addDays(cur,7);
-      const met = marksInRange(g, cur, endEx) >= target;
-      if(met) s++; else if(!first) break;
+      const endEx = f.type==="monthly" ? new Date(cur.getFullYear(), cur.getMonth()+1, 1) : addDays(cur,7);
+      let cnt=0; for(let d=new Date(cur); d<endEx; d=addDays(d,1)){ if(isDone(it.id,dateKey(d))) cnt++; }
+      if(cnt>=target) s++; else if(!first) break;
       first=false;
-      cur = g.period==="monthly" ? new Date(cur.getFullYear(), cur.getMonth()-1, 1) : addDays(cur,-7);
+      cur = f.type==="monthly" ? new Date(cur.getFullYear(), cur.getMonth()-1, 1) : addDays(cur,-7);
     }
     return s;
+  }
+  function scheduledStreak(it){
+    const days=freqDays(it); if(!days.length) return 0;
+    let d=new Date(); d.setHours(0,0,0,0); let s=0, seen=false;
+    for(let i=0;i<400;i++){
+      if(days.includes(d.getDay())){
+        if(isDone(it.id, dateKey(d))) s++;
+        else if(seen) break;                                 // first scheduled day may be "not done yet"
+        seen=true;
+      }
+      d=addDays(d,-1);
+    }
+    return s;
+  }
+  function freqLabel(it){
+    const f=habitFreq(it);
+    if(f.type==="weekly") return f.target+"×/wk";
+    if(f.type==="monthly") return f.target+"×/mo";
+    if(f.type==="days"){
+      const ds=freqDays(it).slice().sort((a,b)=>WEEK_ORDER.indexOf(a)-WEEK_ORDER.indexOf(b));
+      if(ds.length===0) return "No days";
+      if(ds.length===7) return "Daily";
+      if(ds.join()===[1,2,3,4,5].join()) return "Mon–Fri";
+      if(ds.join()===[0,6].join()) return "Weekend";
+      return ds.map(i=>WD[i]).join("·");
+    }
+    return "Daily";
   }
 
   /* ============ accent + theme ============ */
@@ -883,7 +1180,7 @@
     document.getElementById("in-quote").value = template.quote||"";
   }
 
-  /* ============ render: frentes editor + add bar ============ */
+  /* ============ render: areas editor + add bar ============ */
   function frenteOptions(sel){ return allFrentes().map(f=>'<option value="'+f.id+'"'+(f.id===sel?' selected':'')+'>'+escapeHTML(f.name)+'</option>').join(""); }
   function rebuildAddFrente(){
     const sel=document.getElementById("add-frente");
@@ -894,7 +1191,7 @@
   function renderFrentesEditor(){
     document.getElementById("cf-list").innerHTML = state.frentes.map(f=>
       '<div class="cf-row" data-cf="'+f.id+'">'+
-        '<input type="color" class="cf-color" data-cf-color="'+f.id+'" value="'+f.color+'" title="Color" aria-label="Color of '+escapeHTML(f.name)+'">'+
+        '<input type="color" class="cf-color" data-cf-color="'+f.id+'" value="'+f.color+'" title="Color" aria-label="Color de '+escapeHTML(f.name)+'">'+
         '<input class="inp cf-name" type="text" data-cf-name="'+f.id+'" value="'+escapeHTML(f.name)+'" maxlength="28" aria-label="Area name">'+
         '<button type="button" class="cf-del" data-cf-del="'+f.id+'" aria-label="Remove area" title="Remove">×</button>'+
       '</div>'
@@ -907,38 +1204,90 @@
     for(let i=6;i>=0;i--){ const k=dateKey(addDays(new Date(), -i)); const on=isDone(habitId,k); h+='<span class="day-dot'+(on?' on':'')+(k===selectedKey?' sel':'')+'" data-jump="'+k+'" title="'+prettyDate(k)+'"></span>'; }
     return '<span class="dots" aria-hidden="true">'+h+'</span>';
   }
-  function itemHTML(it){
-    const done=isDone(it.id, selectedKey), st=habitStreak(it.id);
-    return '<li class="item'+(done?' done':'')+'" style="--c:'+frenteColor(it.domain)+'" data-id="'+it.id+'">'+
-      '<label class="chk"><input type="checkbox" data-done="'+it.id+'"'+(done?' checked':'')+' aria-label="Completed"><span class="box" aria-hidden="true"></span></label>'+
+  function freqBadge(it){
+    const f=habitFreq(it);
+    if(f.type==="weekly" || f.type==="monthly"){
+      const p=periodProgress(it, selectedKey), pct=Math.min(100,Math.round(p.count/p.target*100)), met=p.count>=p.target, lab=f.type==="weekly"?"wk":"mo";
+      return '<button type="button" class="goal-badge'+(met?' met':'')+'" data-freq-toggle="'+it.id+'" title="Frequency"><span class="gb-bar"><span style="width:'+pct+'%"></span></span>'+p.count+'/'+p.target+' '+lab+'</button>';
+    }
+    return '<button type="button" class="goal-badge'+(f.type==="daily"?' add':'')+'" data-freq-toggle="'+it.id+'" title="Frequency">'+freqLabel(it)+'</button>';
+  }
+  function freqEditor(it){
+    const f=habitFreq(it), opt=(v,l)=>'<option value="'+v+'"'+(f.type===v?' selected':'')+'>'+l+'</option>';
+    const DAYNAME=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+    let extra;
+    if(f.type==="days"){
+      const sel=freqDays(it);
+      extra='<span class="wd-row">'+WEEK_ORDER.map(i=>'<button type="button" class="wd-chip'+(sel.includes(i)?' on':'')+'" data-wd-day="'+i+'" data-wd-id="'+it.id+'" title="'+DAYNAME[i]+'" aria-label="'+DAYNAME[i]+'">'+WD[i]+'</button>').join("")+'</span>';
+    } else if(f.type==="weekly" || f.type==="monthly"){
+      const p=periodProgress(it, selectedKey);
+      extra='<input class="ig-target" type="number" min="1" max="'+(f.type==="weekly"?7:31)+'" value="'+f.target+'" data-freq-target="'+it.id+'" aria-label="Times per period"><span class="ig-hint">times per '+(f.type==="weekly"?"week":"month")+' · <b>'+p.count+'/'+f.target+'</b> '+(f.type==="weekly"?"this week":"this month")+'</span>';
+    } else {
+      extra='<span class="ig-hint">You do this every day.</span>';
+    }
+    return '<div class="item-goal"><span class="ig-label">Frequency</span>'+
+      '<select class="ig-type" data-freq-type="'+it.id+'" aria-label="Frequency type">'+opt("daily","Daily")+opt("days","Days of the week")+opt("weekly","Per week")+opt("monthly","Per month")+'</select>'+
+      extra+'</div>';
+  }
+  function itemHTML(it, idx, len){
+    const done=isDone(it.id, selectedKey), st=habitPeriodStreak(it), f=habitFreq(it);
+    const unit = f.type==="weekly"?" wk":f.type==="monthly"?" mo":"";
+    const word = f.type==="weekly"?plural(st,"week","weeks"):f.type==="monthly"?plural(st,"month","months"):plural(st,"day","days");
+    const extra = (!done && !dueOn(it, selectedKey));
+    return '<li class="item'+(done?' done':'')+(extra?' extra':'')+(openGoals.has(it.id)?' goal-open':'')+'" style="--c:'+frenteColor(it.domain)+'" data-id="'+it.id+'">'+
+      '<label class="chk"><input type="checkbox" data-done="'+it.id+'"'+(done?' checked':'')+' aria-label="Done"><span class="box" aria-hidden="true"></span></label>'+
       '<input class="item-text" type="text" data-text="'+it.id+'" value="'+escapeHTML(it.text)+'" aria-label="Edit habit">'+
-      (st>0?'<span class="streak" title="Streak of '+st+' '+plural(st,"day","days")+'">🔥'+st+'</span>':'')+
-      dotsHTML(it.id)+
-      '<span class="item-time"><input type="time" data-time-start="'+it.id+'" value="'+(it.start||'')+'" aria-label="Start time"><span class="item-sep">–</span><input type="time" data-time-end="'+it.id+'" value="'+(it.end||'')+'" aria-label="End time"></span>'+
-      '<select class="item-frente" data-frente="'+it.id+'" aria-label="Habit area">'+frenteOptions(it.domain)+'</select>'+
+      '<span class="item-meta">'+
+        (st>0?'<span class="streak" title="Streak of '+st+' '+word+'">🔥'+st+unit+'</span>':'')+
+        freqBadge(it)+
+        dotsHTML(it.id)+
+        '<span class="item-time"><input type="time" data-time-start="'+it.id+'" value="'+(it.start||'')+'" aria-label="Start time"><span class="item-sep">–</span><input type="time" data-time-end="'+it.id+'" value="'+(it.end||'')+'" aria-label="End time"></span>'+
+        '<select class="item-frente" data-frente="'+it.id+'" aria-label="Habit area">'+frenteOptions(it.domain)+'</select>'+
+        '<span class="item-order"><button type="button" data-move-up="'+it.id+'"'+(idx===0?' disabled':'')+' aria-label="Move up" title="Move up">▲</button><button type="button" data-move-down="'+it.id+'"'+(idx===len-1?' disabled':'')+' aria-label="Move down" title="Move down">▼</button></span>'+
+      '</span>'+
       '<button type="button" class="item-del" data-del="'+it.id+'" aria-label="Remove habit">×</button>'+
+      freqEditor(it)+
     '</li>';
   }
   function groupHTML(f, list){
     const done=list.filter(i=>isDone(i.id, selectedKey)).length;
     return '<section class="group" style="--c:'+f.color+'" data-frente="'+f.id+'">'+
       '<div class="group-head"><span class="g-dot"></span><span class="g-name">'+escapeHTML(f.name)+'</span><span class="g-count">'+done+'/'+list.length+'</span></div>'+
-      '<ul class="items">'+list.map(itemHTML).join("")+'</ul>'+
+      '<ul class="items">'+list.map((it,i)=>itemHTML(it,i,list.length)).join("")+'</ul>'+
     '</section>';
+  }
+  function emptyStateHTML(kind){
+    const m = {
+      habits: ["🌱","You don’t have any habits yet. Start with an example routine and tailor it to your liking.","Start with examples","habits"],
+      notes:  ["📝","You don’t have any notes yet. Jot down an idea or a plan… or start with an example.","Start with an example","notes"]
+    }[kind];
+    return '<div class="empty-state"><span class="es-emoji" aria-hidden="true">'+m[0]+'</span><span class="es-msg">'+m[1]+'</span><button type="button" class="empty-cta" data-seed="'+m[3]+'">'+m[2]+'</button></div>';
+  }
+  function renderHabitFilter(groupsAll){
+    const el=document.getElementById("habit-filter");
+    if(groupsAll.length<=1){ el.hidden=true; el.innerHTML=""; return; }
+    el.hidden=false;
+    el.innerHTML = '<button type="button" class="chip'+(habitFilter==null?' active':'')+'" data-filter="">All</button>'+
+      groupsAll.map(g=>'<button type="button" class="chip'+(habitFilter===g.f.id?' active':'')+'" data-filter="'+g.f.id+'" style="--cc:'+g.f.color+'"><span class="chip-dot"></span>'+escapeHTML(g.f.name)+' · '+g.list.length+'</button>').join("");
   }
   const listEl=document.getElementById("list");
   function renderList(){
-    const groups = allFrentes().map(f=>({f, list:sortByTime(state.habits.filter(it=>it.domain===f.id))})).filter(g=>g.list.length);
-    listEl.innerHTML = groups.length
-      ? groups.map(g=>groupHTML(g.f, g.list)).join("")
-      : '<div class="empty">Your diary is empty. Add a habit above or restore the example.</div>';
+    const groupsAll = allFrentes().map(f=>({f, list:state.habits.filter(it=>it.domain===f.id)})).filter(g=>g.list.length);
+    if(habitFilter && !groupsAll.some(g=>g.f.id===habitFilter)) habitFilter=null;
+    renderHabitFilter(groupsAll);
+    const groups = habitFilter ? groupsAll.filter(g=>g.f.id===habitFilter) : groupsAll;
+    if(!state.habits.length) listEl.innerHTML = emptyStateHTML('habits');
+    else if(!groups.length) listEl.innerHTML = '<div class="empty">No habits in this area.</div>';
+    else listEl.innerHTML = groups.map(g=>groupHTML(g.f, g.list)).join("");
     updateProgress();
   }
   function updateProgress(){
-    const total=state.habits.length, done=state.habits.filter(i=>isDone(i.id, selectedKey)).length;
+    // ring counts only habits due (or already done) on the selected day
+    const sched=state.habits.filter(i=>dueOn(i, selectedKey) || isDone(i.id, selectedKey));
+    const total=sched.length, done=sched.filter(i=>isDone(i.id, selectedKey)).length;
     document.getElementById("count-text").textContent = done+" / "+total;
     document.getElementById("progress-fill").style.width = total ? Math.round(done/total*100)+"%" : "0%";
-    const empty = total===0;
+    const empty = state.habits.length===0;
     document.getElementById("btn-png").disabled = empty;
     document.getElementById("btn-txt").disabled = empty;
   }
@@ -956,7 +1305,7 @@
   function selectDate(key){
     if(key>TODAY_KEY) key=TODAY_KEY;
     selectedKey=key;
-    renderList(); renderDateNav(); renderHistory();
+    renderList(); renderDateNav(); renderHistory(); renderBitacora();
   }
 
   /* ============ render: history ============ */
@@ -986,7 +1335,7 @@
   }
   function renderCalendar(){
     const today=new Date(); today.setHours(0,0,0,0); const a=template.accent;
-    const dows=["M","T","W","T","F","S","S"]; let html="";
+    const dows=["L","M","X","J","V","S","D"]; let html="";
     for(let mi=rangeMonths-1; mi>=0; mi--){
       const m=new Date(today.getFullYear(), today.getMonth()-mi, 1);
       const year=m.getFullYear(), mon=m.getMonth();
@@ -996,7 +1345,7 @@
       for(let day=1; day<=days; day++){
         const d=new Date(year,mon,day), k=dateKey(d), future=d>today, r=dayRatio(k);
         const bg=(future||r<=0)?"transparent":hexToRgba(a,.14+r*0.86);
-        const cls="cal-cell"+(future?" future":"")+(k===TODAY_KEY?" today":"")+(k===selectedKey?" sel":"");
+        const cls="cal-cell"+(future?" future":"")+(k===TODAY_KEY?" today":"")+(k===selectedKey?" sel":"")+(dayHasJournal(k)?" has-journal":"");
         cells+='<span class="'+cls+'"'+(future?'':' data-jump="'+k+'"')+' title="'+prettyDate(k)+' · '+dayDoneCount(k)+'/'+state.habits.length+'" style="background:'+bg+'"><span class="n">'+day+'</span></span>';
       }
       html+='<div class="cal-month"><div class="cal-mh">'+MON_FULL[mon]+' '+year+'</div><div class="cal-grid">'+cells+'</div></div>';
@@ -1004,7 +1353,7 @@
     document.getElementById("cal-months").innerHTML=html;
     paintHeatScale();
   }
-  function renderHistory(){ renderRangeSeg(); renderStats(); renderCalendar(); }
+  function renderHistory(){ renderRangeSeg(); renderStats(); renderCalendar(); renderWeekly(); }
 
   /* ============ reminders (scheduled activities) ============ */
   const remListEl = document.getElementById("rem-list");
@@ -1054,7 +1403,7 @@
   }
 
   /* ============ views ============ */
-  const VIEWS = ["tracker","notes","reminders","progress","money","settings"];
+  const VIEWS = ["inicio","tracker","bita","notes","reading","reminders","progress","money","settings"];
   function renderView(){
     VIEWS.forEach(v=>{
       const view=document.getElementById("view-"+v), tab=document.getElementById("tab-"+v);
@@ -1062,7 +1411,7 @@
       if(tab) tab.classList.toggle("active", currentView===v);
     });
   }
-  function setView(v){ currentView=v; renderView(); save(); }
+  function setView(v){ currentView=v; if(v==="inicio") renderHome(); renderView(); save(); }
 
   /* ============ money (savings jars and purchase goals) ============ */
   const jarListEl = document.getElementById("jar-list");
@@ -1084,7 +1433,7 @@
         '<button type="button" class="jbtn dep" data-jdep="'+j.id+'">+ Save</button>'+
         '<button type="button" class="jbtn" data-jwd="'+j.id+'">– Withdraw</button>'+
         '<span class="jar-meta"><span class="fl">Target</span>'+
-          '<input class="jar-target" type="number" min="0" step="any" data-jtarget="'+j.id+'" value="'+(t?j.target:"")+'" placeholder="—" aria-label="Purchase target">'+
+          '<input class="jar-target" type="number" min="0" step="any" data-jtarget="'+j.id+'" value="'+(t?j.target:"")+'" placeholder="—" aria-label="Purchase goal">'+
           '<input class="jar-color" type="color" data-jcolor="'+j.id+'" value="'+(j.color||"#7FB39A")+'" aria-label="Color">'+
         '</span>'+
       '</div>'+
@@ -1099,7 +1448,7 @@
       {k:"Total saved", v:fmtMoney(totalSaved)},
       {k:"Jars", v:jars.length},
       {k:"Goals reached", v: withT.length? done+"/"+withT.length : "—"},
-      {k:"Left for goals", v:fmtMoney(remaining)}
+      {k:"Left to goals", v:fmtMoney(remaining)}
     ];
     document.getElementById("money-stats").innerHTML = stats.map(t=>'<div class="stat"><span class="v">'+t.v+'</span><span class="k">'+t.k+'</span></div>').join("");
   }
@@ -1129,6 +1478,130 @@
     renderMoney(); save();
   }
 
+  /* ============ reading (books in progress) ============ */
+  const bookListEl = document.getElementById("book-list");
+  function bookById(id){ return state.books.find(b=>b.id===id); }
+  function bookPct(b){ const tot=+b.total||0; if(b.status==="done") return 100; if(tot<=0) return 0; return Math.min(100, Math.round((+b.current||0)/tot*100)); }
+  function bookHTML(b){
+    const done=b.status==="done", pct=bookPct(b);
+    return '<div class="book-card'+(done?' done':'')+'" data-bid="'+b.id+'">'+
+      '<div class="book-head">'+
+        '<div class="book-titles">'+
+          '<input class="book-title" type="text" data-btitle="'+b.id+'" value="'+escapeHTML(b.title||"")+'" placeholder="Title" aria-label="Book title">'+
+          '<input class="book-author" type="text" data-bauthor="'+b.id+'" value="'+escapeHTML(b.author||"")+'" placeholder="Author" aria-label="Author">'+
+        '</div>'+
+        '<button type="button" class="book-del" data-bdel="'+b.id+'" aria-label="Delete book">×</button>'+
+      '</div>'+
+      '<div class="progress"><div class="progress-track"><div class="progress-fill" style="width:'+pct+'%"></div></div></div>'+
+      '<div class="book-pages">'+
+        '<span>Pg.</span>'+
+        '<input type="number" min="0" step="1" data-bcur="'+b.id+'" value="'+(b.current||0)+'" aria-label="Current page">'+
+        '<span>of</span>'+
+        '<input type="number" min="0" step="1" data-btot="'+b.id+'" value="'+(b.total||"")+'" placeholder="—" aria-label="Total pages">'+
+        '<span class="book-pct">'+pct+'%</span>'+
+      '</div>'+
+      '<div class="book-foot">'+
+        '<button type="button" class="jbtn'+(done?'':' dep')+'" data-bdone="'+b.id+'">'+(done?'↺ Resume':'✓ Mark read')+'</button>'+
+        '<textarea class="book-notes" data-bnote="'+b.id+'" placeholder="Notes, quotes, ideas…">'+escapeHTML(b.notes||"")+'</textarea>'+
+      '</div>'+
+    '</div>';
+  }
+  function renderReadingStats(){
+    const bs=state.books, reading=bs.filter(b=>b.status!=="done").length, done=bs.filter(b=>b.status==="done").length;
+    const pages=bs.reduce((s,b)=>s+(b.status==="done"?(+b.total||0):(+b.current||0)),0);
+    const stats=[ {k:"Reading", v:reading}, {k:"Read", v:done}, {k:"Pages read", v:pages} ];
+    document.getElementById("reading-stats").innerHTML = stats.map(t=>'<div class="stat"><span class="v">'+t.v+'</span><span class="k">'+t.k+'</span></div>').join("");
+  }
+  function renderReading(){
+    renderReadingStats();
+    const list=state.books.slice().sort((a,b)=>(a.status==="done"?1:0)-(b.status==="done"?1:0));
+    bookListEl.innerHTML = state.books.length ? list.map(bookHTML).join("")
+      : '<div class="book-empty">You don’t have any books yet. Add one above: title, author and page count; then track your progress.</div>';
+  }
+  function updateBookProgress(id){
+    const b=bookById(id); if(!b) return; const card=bookListEl.querySelector('[data-bid="'+id+'"]'); if(!card) return;
+    const pct=bookPct(b);
+    const fill=card.querySelector(".progress-fill"); if(fill) fill.style.width=pct+"%";
+    const pe=card.querySelector(".book-pct"); if(pe) pe.textContent=pct+"%";
+    renderReadingStats();
+  }
+  function addBook(){
+    if(editing) return;
+    const t=document.getElementById("book-title"), a=document.getElementById("book-author"), tot=document.getElementById("book-total");
+    const title=(t.value||"").trim(); if(!title){ t.focus(); return; }
+    pushUndo("bookadd");
+    state.books.push({ id:uid("b"), title, author:(a.value||"").trim(), total:Math.max(0,parseInt(tot.value,10)||0), current:0, status:"reading", notes:"" });
+    t.value=""; a.value=""; tot.value="";
+    renderReading(); save(); t.focus();
+  }
+
+  /* ============ inicio / resumen (home dashboard) ============ */
+  function homeBar(ratio){ return '<div class="progress"><div class="progress-track"><div class="progress-fill" style="width:'+Math.round(Math.min(1,Math.max(0,ratio))*100)+'%"></div></div></div>'; }
+  function homeCard(goto, color, label, bodyHTML){
+    return '<button type="button" class="home-card" data-goto="'+goto+'"'+(color?(' style="--c:'+color+'"'):'')+'>'+
+      '<div class="hc-top"><span class="hc-label">'+label+'</span><span class="hc-go" aria-hidden="true">›</span></div>'+bodyHTML+'</button>';
+  }
+  function renderHome(){
+    const d=new Date(), hr=d.getHours();
+    const part = (hr<6||hr>=20)?"Good evening":hr<12?"Good morning":hr<19?"Good afternoon":"Good evening";
+    const greet=document.getElementById("home-greet");
+    if(greet) greet.innerHTML = part+" · <b>"+DOW_FULL[d.getDay()]+", "+MON_FULL[d.getMonth()]+" "+d.getDate()+"</b>";
+    const cards=[];
+
+    // 1) Today’s routine
+    const sched=state.habits.filter(x=>scheduledDaily(x,TODAY_KEY));
+    const doneN=sched.filter(x=>isDone(x.id,TODAY_KEY)).length;
+    const periodicDue=state.habits.filter(x=>{const t=habitFreq(x).type; return (t==="weekly"||t==="monthly")&&dueOn(x,TODAY_KEY);}).length;
+    let rutina;
+    if(sched.length){
+      rutina='<div class="hc-big">'+doneN+'<small>/'+sched.length+'</small></div>'+homeBar(doneN/sched.length)+
+        '<div class="hc-sub">'+(doneN>=sched.length?'Routine complete! ✓':'habits done today')+(periodicDue?(' · '+periodicDue+' period goal'+(periodicDue>1?'s':'')):'')+'</div>';
+    } else { rutina='<div class="hc-big">—</div><div class="hc-sub">No habits for today</div>'; }
+    cards.push(homeCard("tracker", template.accent, "Today’s routine", rutina));
+
+    // 2) Mood & focus
+    const j=state.journal[TODAY_KEY]||{}, mood=j.mood?MOODS[j.mood-1]:null;
+    const top=(j.top3||[]).filter(t=>(t.text||"").trim());
+    let bita='<div class="hc-big"><span class="hc-face">'+(mood?mood[1]:"·")+'</span> <small>'+(mood?mood[2]:"no mood")+'</small></div>';
+    bita += top.length ? ('<ul class="hc-list">'+top.slice(0,3).map(t=>'<li'+(t.done?' class="done"':'')+'>'+escapeHTML(t.text)+'</li>').join("")+'</ul>') : '<div class="hc-empty">No priorities for today</div>';
+    cards.push(homeCard("bita", null, "Mood & focus", bita));
+
+    // 3) Pending
+    const pend=sortedReminders().filter(r=>!r.done), overdue=pend.filter(r=>rmRelative(r).overdue).length;
+    let rem;
+    if(pend.length){
+      rem='<div class="hc-big">'+pend.length+'<small> pending</small></div>'+
+        '<ul class="hc-list">'+pend.slice(0,3).map(r=>{const rel=rmRelative(r); return '<li'+(rel.overdue?' class="over"':'')+'>'+escapeHTML(r.text)+' · '+rel.txt.replace(/<\/?b>/g,"")+'</li>';}).join("")+'</ul>'+
+        (overdue?('<div class="hc-sub">'+overdue+' overdue</div>'):'');
+    } else { rem='<div class="hc-big">0</div><div class="hc-sub">Nothing pending ✓</div>'; }
+    cards.push(homeCard("reminders", null, "Pending", rem));
+
+    // 4) Reading
+    const reading=state.books.filter(b=>b.status!=="done");
+    let read;
+    if(reading.length){ const b=reading[0];
+      read='<div class="hc-big">'+escapeHTML(b.title)+'</div>'+homeBar(bookPct(b)/100)+
+        '<div class="hc-sub">'+(b.author?escapeHTML(b.author)+' · ':'')+bookPct(b)+'%'+(reading.length>1?(' · +'+(reading.length-1)+' more'):'')+'</div>';
+    } else { read='<div class="hc-big">—</div><div class="hc-sub">No active reading</div>'; }
+    cards.push(homeCard("reading", null, "Reading", read));
+
+    // 5) Money
+    const jars=state.money.jars, totalSaved=jars.reduce((s,jr)=>s+(+jr.saved||0),0);
+    const nextGoal=jars.filter(jr=>hasTarget(jr)&&jr.saved<jr.target).sort((a,b)=>jarPct(b)-jarPct(a))[0];
+    let money='<div class="hc-big">'+fmtMoney(totalSaved)+'</div>';
+    money += nextGoal ? (homeBar(jarPct(nextGoal)/100)+'<div class="hc-sub">'+escapeHTML(nextGoal.name)+' · '+jarPct(nextGoal)+'%</div>')
+      : ('<div class="hc-sub">'+(jars.length?('saved in '+jars.length+' jar'+(jars.length>1?'s':'')):'No jars yet')+'</div>');
+    cards.push(homeCard("money", null, "Money", money));
+
+    // 6) Consistency
+    const gs=globalStreak(), ws=weekStats(THIS_WEEK_KEY);
+    cards.push(homeCard("progress", null, "Consistency",
+      '<div class="hc-big">'+gs+'<small> '+plural(gs,"day","days")+' 🔥</small></div>'+
+      '<div class="hc-sub">Current streak · this week '+ws.comp+' completed, '+ws.active+' active day'+(ws.active===1?'':'s')+'</div>'));
+
+    document.getElementById("home-grid").innerHTML = cards.join("");
+  }
+
   /* ============ notes (diary · ideas and plans) ============ */
   const notesListEl = document.getElementById("notes-list");
   function noteById(id){ return state.notes.find(n=>n.id===id); }
@@ -1140,9 +1613,13 @@
     '</div>';
   }
   function renderNotes(){
-    const list=state.notes.slice().sort((a,b)=>(b.date||"").localeCompare(a.date||""));
-    notesListEl.innerHTML = list.length ? list.map(noteHTML).join("")
-      : '<div class="note-empty">You don’t have any notes yet. Write an idea or plan above and press «Add note».</div>';
+    const all=state.notes.slice().sort((a,b)=>(b.date||"").localeCompare(a.date||""));
+    document.getElementById("notes-search-wrap").hidden = all.length < 3;
+    const q=noteQuery.trim().toLowerCase();
+    const list = q ? all.filter(n=>((n.title||"")+" "+(n.text||"")).toLowerCase().includes(q)) : all;
+    if(!all.length) notesListEl.innerHTML = emptyStateHTML('notes');
+    else if(!list.length) notesListEl.innerHTML = '<div class="note-empty">No results for «'+escapeHTML(noteQuery.trim())+'».</div>';
+    else notesListEl.innerHTML = list.map(noteHTML).join("");
   }
   function addNote(){
     if(editing) return;
@@ -1154,40 +1631,105 @@
     ti.value=""; tx.value="";
     renderNotes(); save();
   }
-
-  /* ============ weekly/monthly goals (Progress) ============ */
-  const goalListEl = document.getElementById("goal-list");
-  function goalById(id){ return state.goals.find(g=>g.id===id); }
-  function goalItemHTML(g){
-    const p=goalProgress(g), pct=Math.min(100, Math.round(p.count/p.target*100)), met=p.count>=p.target;
-    const lab = g.period==="monthly" ? "this month" : "this week", st=goalStreak(g);
-    return '<div class="goal-item" data-gid="'+g.id+'">'+
-      '<input class="item-text" type="text" data-gtext="'+g.id+'" value="'+escapeHTML(g.text)+'" aria-label="Goal">'+
-      '<button type="button" class="gbtn add" data-gmark="'+g.id+'" title="Log that you did it today">+ Done</button>'+
-      '<button type="button" class="gbtn" data-gunmark="'+g.id+'" title="Remove the last entry">–</button>'+
-      '<span class="goal-bar"><span style="width:'+pct+'%"></span></span>'+
-      '<span class="goal-prog'+(met?' met':'')+'">'+p.count+'/'+p.target+' '+lab+'</span>'+
-      (st>0?'<span class="goal-streak" title="Periods in a row hitting the goal">🔥'+st+'</span>':'')+
-      '<select class="goal-period" data-gperiod="'+g.id+'" aria-label="Period"><option value="weekly"'+(g.period!=="monthly"?" selected":"")+'>Weekly</option><option value="monthly"'+(g.period==="monthly"?" selected":"")+'>Monthly</option></select>'+
-      '<input class="goal-target" type="number" min="1" data-gtarget="'+g.id+'" value="'+Math.max(1,g.target||1)+'" aria-label="Times per period">'+
-      '<button type="button" class="goal-del" data-gdel="'+g.id+'" aria-label="Delete goal">×</button>'+
-    '</div>';
-  }
-  function renderGoals(){
-    goalListEl.innerHTML = state.goals.length ? state.goals.map(goalItemHTML).join("")
-      : '<div class="goal-empty">You don’t have any goals yet. Create one above (text, period and number of times).</div>';
-  }
-  function addGoal(){
+  function loadStarterNote(){
     if(editing) return;
-    const tx=document.getElementById("goal-text"), pe=document.getElementById("goal-period"), tg=document.getElementById("goal-target");
-    const text=(tx.value||"").trim(); if(!text){ tx.focus(); return; }
-    pushUndo("goaladd");
-    state.goals.push({ id:uid("g"), text, period: pe.value==="monthly"?"monthly":"weekly", target: Math.max(1, parseInt(tg.value,10)||1), marks:[] });
-    tx.value="";
-    renderGoals(); save();
+    pushUndo("seednote");
+    state.notes.push({ id:uid("n"), title:"Ideas", text:"Jot down loose ideas, plans or things you don’t want to forget.", date:dateKey(new Date()) });
+    renderNotes(); save();
   }
-  function markGoal(id){ if(editing) return; const g=goalById(id); if(!g) return; pushUndo("gmark"); (g.marks=g.marks||[]).push(TODAY_KEY); renderGoals(); save(); }
-  function unmarkGoal(id){ if(editing) return; const g=goalById(id); if(!g||!(g.marks&&g.marks.length)) return; pushUndo("gunmark"); g.marks.pop(); renderGoals(); save(); }
+  function loadStarterHabits(){
+    if(editing) return;
+    pushUndo("seedhabits");
+    DEFAULT_FRENTES.forEach(df=>{ if(!state.frentes.some(f=>f.id===df.id)) state.frentes.push(clone(df)); });
+    STARTER.forEach(sx=> state.habits.push({ id:uid("h"), text:sx[0], domain:sx[1], start:"", end:"" }));
+    renderFrentesEditor(); rebuildAddFrente(); renderList(); renderHistory(); save();
+  }
+  function moveHabit(id, dir){
+    if(editing) return;
+    const it=state.habits.find(x=>x.id===id); if(!it) return;
+    const sib=state.habits.filter(h=>h.domain===it.domain), pos=sib.indexOf(it), swap=sib[pos+dir];
+    if(!swap) return;
+    pushUndo("hmove");
+    const i=state.habits.indexOf(it), j=state.habits.indexOf(swap);
+    state.habits[i]=swap; state.habits[j]=it;
+    renderList(); save();
+  }
+
+  /* ============ journal (journal · mood · top 3) ============ */
+  const MOODS = [ [1,"😞","Very bad"], [2,"😕","Bad"], [3,"😐","Okay"], [4,"🙂","Good"], [5,"😄","Great"] ];
+  const JR_FIELDS = ["summary","win","improve","gratitude"];
+  function ensureJournal(key){ if(!state.journal[key]) state.journal[key]={ mood:null, top3:[], note:{summary:"",win:"",improve:"",gratitude:""} }; const j=state.journal[key]; if(!j.note) j.note={summary:"",win:"",improve:"",gratitude:""}; if(!Array.isArray(j.top3)) j.top3=[]; return j; }
+  function journalHasEntry(j){ return !!(j && (j.mood!=null || (j.top3&&j.top3.some(t=>t&&(t.text||"").trim())) || (j.note && JR_FIELDS.some(f=>(j.note[f]||"").trim())))); }
+  function dayHasJournal(key){ return journalHasEntry(state.journal[key]); }
+  function pruneJournal(key){ if(state.journal[key] && !journalHasEntry(state.journal[key])) delete state.journal[key]; }
+  function moodColor(m){ const c=["","#E2785B","#E0A458","#BABEC5","#7FB39A","#86C28F"]; return c[m]||"var(--line)"; }
+
+  function renderBitaDate(){
+    const lbl=document.getElementById("bita-date");
+    lbl.innerHTML = selectedKey===TODAY_KEY ? "<b>Today</b> · "+prettyDate(selectedKey) : prettyDate(selectedKey);
+    document.getElementById("bita-next").disabled = selectedKey>=TODAY_KEY;
+  }
+  function renderMoodRow(){
+    const j=state.journal[selectedKey]||{};
+    document.getElementById("mood-row").innerHTML = MOODS.map(m=>'<button type="button" class="mood-btn'+(j.mood===m[0]?' on':'')+'" data-mood="'+m[0]+'" title="'+m[2]+'" aria-label="'+m[2]+'" aria-pressed="'+(j.mood===m[0]?"true":"false")+'">'+m[1]+'</button>').join("");
+  }
+  function renderTop3(){
+    const j=state.journal[selectedKey]||{}, list=Array.isArray(j.top3)?j.top3:[];
+    let h = list.map(t=>'<li class="top3-item'+(t.done?' done':'')+'" data-tid="'+t.id+'">'+
+        '<label class="chk"><input type="checkbox" data-tdone="'+t.id+'"'+(t.done?' checked':'')+' aria-label="Done"><span class="box" aria-hidden="true"></span></label>'+
+        '<input class="item-text" type="text" data-ttext="'+t.id+'" value="'+escapeHTML(t.text||"")+'" placeholder="Priority…" aria-label="Priority">'+
+        '<button type="button" class="item-del" data-tdel="'+t.id+'" aria-label="Remove priority">×</button>'+
+      '</li>').join("");
+    document.getElementById("top3-list").innerHTML = h + (list.length<3 ? '<button type="button" class="top3-add" id="top3-add">+ Add priority</button>' : '');
+  }
+  function renderJournalFields(){
+    const j=state.journal[selectedKey]||{}, note=(j.note)||{};
+    JR_FIELDS.forEach(f=>{ const el=document.getElementById("jr-"+f); if(el && document.activeElement!==el) el.value=note[f]||""; });
+  }
+  function renderMoodTrend(){
+    let h=""; const today=new Date(); today.setHours(0,0,0,0);
+    for(let i=29;i>=0;i--){ const k=dateKey(addDays(today,-i)), j=state.journal[k], m=j&&j.mood; const ht=m?(20+m*16):4;
+      h+='<span class="mt-cell'+(k===selectedKey?' sel':'')+'" data-jump="'+k+'" title="'+prettyDate(k)+(m?(" · "+MOODS[m-1][1]):" · no mood")+'"><span class="mt-bar" style="height:'+ht+'%;--c:'+(m?moodColor(m):'var(--line)')+'"></span></span>'; }
+    document.getElementById("mood-trend").innerHTML=h;
+  }
+  function renderBitacora(){ renderBitaDate(); renderMoodRow(); renderTop3(); renderJournalFields(); renderMoodTrend(); }
+
+  function setMood(m){ if(editing) return; pushUndo("mood"); const j=ensureJournal(selectedKey); j.mood = (j.mood===m)?null:m; pruneJournal(selectedKey); renderMoodRow(); renderMoodTrend(); renderHistory(); save(); }
+  function addTop3(){ if(editing) return; const j=ensureJournal(selectedKey); if(j.top3.length>=3) return; pushUndo("top3add"); j.top3.push({ id:uid("p"), text:"", done:false }); renderTop3(); const inps=document.querySelectorAll('#top3-list [data-ttext]'); const inp=inps[inps.length-1]; if(inp) inp.focus(); save(); }
+
+  /* ============ weekly reflection ============ */
+  const WK_FIELDS = ["went","improve","learned","next"];
+  function ensureWeekly(key){ if(!state.weekly[key]) state.weekly[key]={went:"",improve:"",learned:"",next:""}; return state.weekly[key]; }
+  function weeklyHasEntry(w){ return !!w && WK_FIELDS.some(f=>(w[f]||"").trim()); }
+  function pruneWeekly(key){ if(state.weekly[key] && !weeklyHasEntry(state.weekly[key])) delete state.weekly[key]; }
+  function weekRangeLabel(key){
+    if(key===THIS_WEEK_KEY) return "This week";
+    const a=parseKey(key), b=addDays(a,6);
+    if(a.getMonth()===b.getMonth()) return a.getDate()+"–"+b.getDate()+" "+MON[a.getMonth()];
+    return a.getDate()+" "+MON[a.getMonth()]+" – "+b.getDate()+" "+MON[b.getMonth()];
+  }
+  function weekStats(key){
+    const start=parseKey(key); let comp=0, active=0, moodSum=0, moodN=0;
+    for(let i=0;i<7;i++){ const k=dateKey(addDays(start,i)); if(k>TODAY_KEY) break;
+      const c=dayDoneCount(k); comp+=c; if(c>0) active++;
+      const j=state.journal[k]; if(j && j.mood){ moodSum+=j.mood; moodN++; } }
+    return { comp, active, mood: moodN?(moodSum/moodN):null };
+  }
+  function renderWeekly(){
+    const lbl=document.getElementById("wk-label"); if(lbl) lbl.textContent=weekRangeLabel(selectedWeek);
+    const nx=document.getElementById("wknav-next"); if(nx) nx.disabled = selectedWeek>=THIS_WEEK_KEY;
+    const s=weekStats(selectedWeek);
+    const stats=[
+      {k:"Completed", v:s.comp, s:""},
+      {k:"Active days", v:s.active, s:plural(s.active,"day","days")},
+      {k:"Avg. mood", v:(s.mood!=null?s.mood.toFixed(1):"—"), s:""}
+    ];
+    const se=document.getElementById("wk-stats");
+    if(se) se.innerHTML = stats.map(t=>'<div class="stat"><span class="v">'+t.v+(t.s?'<small> '+t.s+'</small>':'')+'</span><span class="k">'+t.k+'</span></div>').join("");
+    const w=state.weekly[selectedWeek]||{};
+    WK_FIELDS.forEach(f=>{ const el=document.getElementById("wk-"+f); if(el && document.activeElement!==el) el.value=w[f]||""; });
+  }
+  function shiftWeek(delta){ if(editing) return; const n=dateKey(addDays(parseKey(selectedWeek), delta*7)); if(n>THIS_WEEK_KEY) return; selectedWeek=n; renderWeekly(); }
 
   /* ============ PNG of any tab (generic card renderer) ============ */
   function rrect(ctx,x,y,w,h,r){ if(ctx.roundRect){ ctx.beginPath(); ctx.roundRect(x,y,w,h,r); } else { ctx.beginPath(); ctx.rect(x,y,w,h); } ctx.fill(); }
@@ -1247,7 +1789,6 @@
   }
   function pngReminders(){ const list=sortedReminders(); return [{ heading:"Reminders", items: list.map(rm=>({ text:rm.text, done:!!rm.done, meta: rm.date? rmRelative(rm).txt.replace(/<\/?b>/g,"") : "" })), empty:"No scheduled activities." }]; }
   function pngProgress(){
-    const metas=state.goals.map(g=>{ const p=goalProgress(g); return { text:g.text+"  ("+(g.period==="monthly"?"monthly":"weekly")+")", meta:p.count+"/"+p.target, bar: p.count/p.target }; });
     const gs=globalStreak(), bs=bestGlobalStreak();
     const resumen=[
       {text:"Current streak", meta:gs+" "+plural(gs,"day","days")},
@@ -1256,14 +1797,56 @@
       {text:"Habits completed", meta:String(totalCompletions())},
       {text:"Consistency", meta:consistencyRange()+"%"}
     ];
-    return [{ heading:"Weekly and monthly goals", items:metas, empty:"No goals." }, { heading:"Habits · summary", items:resumen }];
+    const periodic=state.habits.filter(h=>{const t=habitFreq(h).type; return t==="weekly"||t==="monthly";})
+      .map(h=>{ const p=periodProgress(h, TODAY_KEY); return { text:h.text+"  ("+freqLabel(h)+")", meta:p.count+"/"+p.target, bar:p.count/p.target }; });
+    const secs=[{ heading:"Habit summary", items:resumen }];
+    if(periodic.length) secs.push({ heading:"Habits by period", items:periodic });
+    const w=state.weekly[selectedWeek];
+    if(weeklyHasEntry(w)){
+      const wl={went:"What went well",improve:"What to improve",learned:"What I learned",next:"Next week"};
+      const items=WK_FIELDS.filter(f=>(w[f]||"").trim()).map(f=>({ text:wl[f]+": "+w[f] }));
+      secs.push({ heading:"Reflection · "+weekRangeLabel(selectedWeek), items });
+    }
+    return secs;
   }
   function pngMoney(){ return [{ heading:"Jars and goals", items: state.money.jars.map(j=>({ text:j.name, meta: fmtMoney(j.saved)+(hasTarget(j)?(" / "+fmtMoney(j.target)):""), bar: hasTarget(j)? j.saved/j.target : null })), empty:"No jars." }]; }
+  function pngReading(){
+    const reading=state.books.filter(b=>b.status!=="done"), done=state.books.filter(b=>b.status==="done"), secs=[];
+    if(reading.length) secs.push({ heading:"Reading now", items: reading.map(b=>({ text:b.title+(b.author?" — "+b.author:""), meta: bookPct(b)+"%", bar: bookPct(b)/100 })) });
+    if(done.length) secs.push({ heading:"Read", items: done.map(b=>({ text:b.title+(b.author?" — "+b.author:""), done:true })) });
+    if(!secs.length) secs.push({ heading:"Reading", items:[], empty:"No books." });
+    return secs;
+  }
+  function pngHome(){
+    const sched=state.habits.filter(x=>scheduledDaily(x,TODAY_KEY)), doneN=sched.filter(x=>isDone(x.id,TODAY_KEY)).length;
+    const j=state.journal[TODAY_KEY]||{}, gs=globalStreak();
+    const items=[ { text:"Today’s routine", meta:doneN+"/"+sched.length, bar: sched.length?doneN/sched.length:null },
+                  { text:"Current streak", meta:gs+" "+plural(gs,"day","days") } ];
+    if(j.mood) items.push({ text:"Today’s mood", meta:MOODS[j.mood-1][2] });
+    items.push({ text:"Pending", meta:String(state.reminders.filter(r=>!r.done).length) });
+    const reading=state.books.filter(b=>b.status!=="done"); if(reading.length) items.push({ text:"Reading: "+reading[0].title, meta:bookPct(reading[0])+"%", bar:bookPct(reading[0])/100 });
+    items.push({ text:"Saved", meta:fmtMoney(state.money.jars.reduce((s,jr)=>s+(+jr.saved||0),0)) });
+    const secs=[{ heading:"Today’s summary", items }];
+    const top=(j.top3||[]).filter(t=>(t.text||"").trim());
+    if(top.length) secs.push({ heading:"Focus · top 3", items: top.map(t=>({ text:t.text, done:!!t.done })) });
+    return secs;
+  }
   function pngNotes(){ const list=state.notes.slice().sort((a,b)=>(b.date||"").localeCompare(a.date||"")); return list.length ? list.map(n=>({ heading:(n.title||"Note"), note:n.date?prettyDate(n.date):"", items:[{ text:n.text||"—" }] })) : [{ heading:"Notes", items:[], empty:"No notes." }]; }
+  function pngBita(){
+    const j=state.journal[selectedKey]||{}, secs=[];
+    if(j.mood!=null) secs.push({ heading:"Mood", items:[{ text:MOODS[j.mood-1][1]+"  "+MOODS[j.mood-1][2] }] });
+    const top=(j.top3||[]).filter(t=>(t.text||"").trim());
+    if(top.length) secs.push({ heading:"Focus · top 3", items: top.map(t=>({ text:t.text, done:!!t.done })) });
+    const lbl={summary:"How was your day?",win:"A win",improve:"Improve / learn",gratitude:"Gratitude"};
+    const note=j.note||{}; const noteItems=JR_FIELDS.filter(f=>(note[f]||"").trim()).map(f=>({ text:lbl[f]+": "+note[f] }));
+    if(noteItems.length) secs.push({ heading:"Journal", items:noteItems });
+    if(!secs.length) secs.push({ heading:"Journal", items:[], empty:"No entry for this day." });
+    return secs;
+  }
   function downloadCurrentPNG(){
     if(editing) return;
     if(currentView==="tracker"){ downloadPNG(); return; }
-    const M={ notes:["Notes","Ideas and plans","notes",pngNotes], reminders:["Reminders","Scheduled activities","reminders",pngReminders], progress:["Progress","Goals, history and streaks","progress",pngProgress], money:["Money","Jars and goals","money",pngMoney] };
+    const M={ inicio:["Home","Today’s summary","home",pngHome], bita:["Journal", prettyDate(selectedKey), "journal", pngBita], notes:["Notes","Ideas and plans","notes",pngNotes], reading:["Reading","Books in progress","reading",pngReading], reminders:["Reminders","Scheduled activities","reminders",pngReminders], progress:["Progress","Goals, history and streaks","progress",pngProgress], money:["Money","Jars and goals","money",pngMoney] };
     const m=M[currentView]; if(!m) return;
     downloadCardPNG({ eyebrow:"BYMCYL · "+m[0], title:(template.title||"My personal diary").trim()||"My personal diary", subtitle:m[1], sections:m[3](), filename:"diary-"+m[2]+".png" });
   }
@@ -1272,17 +1855,25 @@
   function renderAll(){
     applyUI(); renderThemeControls(); applyTheme(state.theme); applyAccent(template.accent); syncHero();
     renderFrentesEditor(); rebuildAddFrente();
-    renderList(); renderNotes(); renderReminders(); renderGoals(); renderMoney(); renderDateNav(); renderHistory(); renderView();
+    renderList(); renderBitacora(); renderNotes(); renderReading(); renderReminders(); renderMoney(); renderDateNav(); renderHistory(); renderHome(); renderView();
     updateUndoButtons();
   }
 
   /* ============ actions ============ */
+  function freqFromAddBar(){
+    const v=document.getElementById("add-freq").value, n=Math.max(1, parseInt(document.getElementById("add-freq-n").value,10)||1);
+    if(v==="weekdays") return { type:"days", days:[1,2,3,4,5] };
+    if(v==="weekend")  return { type:"days", days:[0,6] };
+    if(v==="weekly")   return { type:"weekly", target:n };
+    if(v==="monthly")  return { type:"monthly", target:n };
+    return { type:"daily" };
+  }
   function addItem(){
     if(editing) return;
     const t=document.getElementById("add-text"), f=document.getElementById("add-frente"), s=document.getElementById("add-start"), e=document.getElementById("add-end");
     const text=(t.value||"").trim(); if(!text){ t.focus(); return; }
     pushUndo("habitadd");
-    state.habits.push({ id:uid("h"), text, domain:f.value||firstFrenteId(), start:s.value||"", end:e.value||"" });
+    state.habits.push({ id:uid("h"), text, domain:f.value||firstFrenteId(), start:s.value||"", end:e.value||"", freq:freqFromAddBar() });
     t.value=""; s.value=""; e.value="";
     renderList(); renderHistory(); save(); t.focus();
   }
@@ -1314,7 +1905,7 @@
 
   function exportData(){
     if(editing) return;
-    downloadBlob(JSON.stringify(Object.assign({ v:1 }, dataPayload(), { rangeMonths, view:currentView }),null,2), "application/json", "diary-bymcyl-backup.json");
+    downloadBlob(JSON.stringify(Object.assign({ v:1 }, dataPayload(), { rangeMonths, view:currentView }),null,2), "application/json", "tracker-bymcyl-backup.json");
   }
   function importData(file){
     const r=new FileReader();
@@ -1330,11 +1921,14 @@
         state.log = d.log && typeof d.log==="object" ? d.log : {};
         state.reminders = Array.isArray(d.reminders) ? d.reminders : [];
         state.notes = Array.isArray(d.notes) ? d.notes : [];
+        state.journal = (d.journal && typeof d.journal==="object") ? d.journal : {};
+        state.weekly = (d.weekly && typeof d.weekly==="object") ? d.weekly : {};
+        state.books = Array.isArray(d.books) ? d.books : [];
         state.goals = Array.isArray(d.goals) ? d.goals : [];
         state.money = (d.money && typeof d.money==="object") ? Object.assign(clone(DEFAULT_MONEY), d.money) : clone(DEFAULT_MONEY); if(!Array.isArray(state.money.jars)) state.money.jars=[];
         state.theme = d.theme && typeof d.theme==="object" ? Object.assign(clone(DEFAULT_THEME), d.theme) : clone(DEFAULT_THEME);
         if([1,3,6,12].includes(d.rangeMonths)) rangeMonths=d.rangeMonths;
-        openGoals.clear(); selectedKey=TODAY_KEY; renderAll(); save();
+        migrateGoals(); openGoals.clear(); selectedKey=TODAY_KEY; renderAll(); save();
       }catch(e){ alert("Couldn’t read the file. Make sure it’s a valid backup (.json)."); }
     };
     r.readAsText(file);
@@ -1413,15 +2007,22 @@
     const totalDone=state.habits.filter(i=>isDone(i.id, selectedKey)).length;
     ctx.fillStyle=T.muted; ctx.font='400 12px "Space Mono", monospace'; ctx.textAlign="right";
     ctx.fillText(totalDone+"/"+state.habits.length+" · streak "+globalStreak()+"d", W-padX, cy+32); ctx.textAlign="left";
-    const a=document.createElement("a"); a.href=cv.toDataURL("image/png"); a.download="my-diary-bymcyl.png";
+    const a=document.createElement("a"); a.href=cv.toDataURL("image/png"); a.download="mi-tracker-bymcyl.png";
     document.body.appendChild(a); a.click(); a.remove();
   }
 
   /* ============ events: list ============ */
+  function habitById(id){ return state.habits.find(x=>x.id===id); }
   listEl.addEventListener("click", e=>{
+    const seed=e.target.closest("[data-seed]"); if(seed){ if(seed.getAttribute("data-seed")==="habits") loadStarterHabits(); return; }
+    const ft=e.target.closest("[data-freq-toggle]"); if(ft){ const id=ft.getAttribute("data-freq-toggle"); if(openGoals.has(id)) openGoals.delete(id); else openGoals.add(id); renderList(); return; }
+    const wd=e.target.closest("[data-wd-day]"); if(wd){ const it=habitById(wd.getAttribute("data-wd-id")), day=+wd.getAttribute("data-wd-day"); if(it){ pushUndo("hfreqdays:"+it.id); let days=(habitFreq(it).type==="days")?freqDays(it).slice():[]; days=days.includes(day)?days.filter(x=>x!==day):days.concat(day); it.freq={type:"days",days}; openGoals.add(it.id); renderList(); renderHistory(); save(); } return; }
+    const mu=e.target.closest("[data-move-up]"); if(mu){ moveHabit(mu.getAttribute("data-move-up"), -1); return; }
+    const md=e.target.closest("[data-move-down]"); if(md){ moveHabit(md.getAttribute("data-move-down"), 1); return; }
     const jump=e.target.closest("[data-jump]"); if(jump){ selectDate(jump.getAttribute("data-jump")); return; }
-    const del=e.target.closest("[data-del]"); if(del){ const id=del.getAttribute("data-del"); pushUndo("habitdel"); state.habits=state.habits.filter(x=>x.id!==id); renderList(); renderHistory(); save(); }
+    const del=e.target.closest("[data-del]"); if(del){ const id=del.getAttribute("data-del"); pushUndo("habitdel"); openGoals.delete(id); state.habits=state.habits.filter(x=>x.id!==id); renderList(); renderHistory(); save(); }
   });
+  document.getElementById("habit-filter").addEventListener("click", e=>{ const c=e.target.closest("[data-filter]"); if(c){ const v=c.getAttribute("data-filter"); habitFilter=v||null; renderList(); } });
   listEl.addEventListener("input", e=>{
     const t=e.target;
     if(t.matches("[data-text]")){ const it=state.habits.find(x=>x.id===t.getAttribute("data-text")); if(it){ pushUndo("htext:"+it.id); it.text=t.value; saveSoon(); } }
@@ -1432,7 +2033,12 @@
     else if(t.matches("[data-frente]")){ const it=state.habits.find(x=>x.id===t.getAttribute("data-frente")); if(it){ pushUndo("frente"); it.domain=t.value; renderList(); save(); } }
     else if(t.matches("[data-time-start]")){ const it=state.habits.find(x=>x.id===t.getAttribute("data-time-start")); if(it){ pushUndo("htime:"+it.id); it.start=t.value; renderList(); save(); } }
     else if(t.matches("[data-time-end]")){ const it=state.habits.find(x=>x.id===t.getAttribute("data-time-end")); if(it){ pushUndo("htime:"+it.id); it.end=t.value; renderList(); save(); } }
+    else if(t.matches("[data-freq-type]")){ const it=habitById(t.getAttribute("data-freq-type")); if(it){ pushUndo("hfreqtype:"+it.id); const v=t.value;
+      it.freq = v==="days" ? {type:"days",days:(freqDays(it).length?freqDays(it):[1,2,3,4,5])} : v==="weekly" ? {type:"weekly",target:freqTarget(it)} : v==="monthly" ? {type:"monthly",target:freqTarget(it)} : {type:"daily"};
+      openGoals.add(it.id); renderList(); renderHistory(); save(); } }
+    else if(t.matches("[data-freq-target]")){ const it=habitById(t.getAttribute("data-freq-target")); if(it){ pushUndo("hfreqtarget:"+it.id); const f=habitFreq(it), max=f.type==="weekly"?7:31; it.freq={type:f.type,target:Math.min(max,Math.max(1,parseInt(t.value,10)||1))}; openGoals.add(it.id); renderList(); renderHistory(); save(); } }
   });
+  document.getElementById("add-freq").addEventListener("change", e=>{ const v=e.target.value; document.getElementById("add-freq-n-wrap").hidden = !(v==="weekly"||v==="monthly"); });
 
   /* ============ events: reminders ============ */
   document.getElementById("rem-add-btn").addEventListener("click", addReminder);
@@ -1470,8 +2076,54 @@
     else if(t.matches("[data-jcolor]")){ j=jarById(t.getAttribute("data-jcolor")); if(j){ pushUndo("jcolor:"+j.id); j.color=t.value; renderMoney(); save(); } }
   });
 
+  /* ============ events: reading (books) ============ */
+  document.getElementById("book-add-btn").addEventListener("click", addBook);
+  ["book-title","book-author","book-total"].forEach(id=>{ document.getElementById(id).addEventListener("keydown", e=>{ if(e.key==="Enter"){ e.preventDefault(); addBook(); } }); });
+  bookListEl.addEventListener("input", e=>{
+    const t=e.target;
+    if(t.matches("[data-btitle]")){ const b=bookById(t.getAttribute("data-btitle")); if(b){ pushUndo("btitle:"+b.id); b.title=t.value; saveSoon(); } }
+    else if(t.matches("[data-bauthor]")){ const b=bookById(t.getAttribute("data-bauthor")); if(b){ pushUndo("bauthor:"+b.id); b.author=t.value; saveSoon(); } }
+    else if(t.matches("[data-bnote]")){ const b=bookById(t.getAttribute("data-bnote")); if(b){ pushUndo("bnote:"+b.id); b.notes=t.value; saveSoon(); } }
+    else if(t.matches("[data-bcur]")){ const b=bookById(t.getAttribute("data-bcur")); if(b){ pushUndo("bcur:"+b.id); b.current=Math.max(0,parseInt(t.value,10)||0); updateBookProgress(b.id); saveSoon(); } }
+    else if(t.matches("[data-btot]")){ const b=bookById(t.getAttribute("data-btot")); if(b){ pushUndo("btot:"+b.id); b.total=Math.max(0,parseInt(t.value,10)||0); updateBookProgress(b.id); saveSoon(); } }
+  });
+  bookListEl.addEventListener("click", e=>{
+    const done=e.target.closest("[data-bdone]"); if(done){ if(editing) return; const b=bookById(done.getAttribute("data-bdone")); if(b){ pushUndo("bdone"); b.status=(b.status==="done")?"reading":"done"; if(b.status==="done" && (+b.total||0)>0) b.current=b.total; renderReading(); save(); } return; }
+    const del=e.target.closest("[data-bdel]"); if(del){ if(editing) return; const id=del.getAttribute("data-bdel"), b=bookById(id); if(b && (b.title||b.author) && !confirm("Delete this book from your reading list?")) return; pushUndo("bdel"); state.books=state.books.filter(x=>x.id!==id); renderReading(); save(); }
+  });
+
+  /* ============ events: journal ============ */
+  document.getElementById("bita-prev").addEventListener("click", ()=>{ if(editing) return; selectDate(dateKey(addDays(parseKey(selectedKey),-1))); });
+  document.getElementById("bita-next").addEventListener("click", ()=>{ if(editing) return; selectDate(dateKey(addDays(parseKey(selectedKey),1))); });
+  document.getElementById("mood-row").addEventListener("click", e=>{ const m=e.target.closest("[data-mood]"); if(m) setMood(+m.getAttribute("data-mood")); });
+  document.getElementById("mood-trend").addEventListener("click", e=>{ const c=e.target.closest("[data-jump]"); if(c) selectDate(c.getAttribute("data-jump")); });
+  const top3El=document.getElementById("top3-list");
+  top3El.addEventListener("click", e=>{
+    if(e.target.closest("#top3-add")){ addTop3(); return; }
+    const del=e.target.closest("[data-tdel]"); if(del){ if(editing) return; const id=del.getAttribute("data-tdel"); pushUndo("top3del"); const j=ensureJournal(selectedKey); j.top3=j.top3.filter(x=>x.id!==id); pruneJournal(selectedKey); renderTop3(); renderHistory(); save(); }
+  });
+  top3El.addEventListener("input", e=>{
+    const t=e.target; if(t.matches("[data-ttext]")){ const id=t.getAttribute("data-ttext"); pushUndo("top3text:"+id); const j=ensureJournal(selectedKey), it=j.top3.find(x=>x.id===id); if(it){ it.text=t.value; saveSoon(); } }
+  });
+  top3El.addEventListener("change", e=>{
+    const t=e.target; if(t.matches("[data-tdone]")){ const id=t.getAttribute("data-tdone"); pushUndo("top3done"); const j=ensureJournal(selectedKey), it=j.top3.find(x=>x.id===id); if(it){ it.done=t.checked; renderTop3(); save(); } }
+  });
+  document.querySelectorAll("[data-jr]").forEach(el=>{
+    el.addEventListener("input", e=>{ const f=el.getAttribute("data-jr"); pushUndo("jr:"+f); const j=ensureJournal(selectedKey); j.note[f]=el.value; saveSoon(); });
+    el.addEventListener("blur", ()=>{ pruneJournal(selectedKey); renderMoodTrend(); renderHistory(); });
+  });
+
+  /* ============ events: weekly reflection ============ */
+  document.getElementById("wknav-prev").addEventListener("click", ()=>shiftWeek(-1));
+  document.getElementById("wknav-next").addEventListener("click", ()=>shiftWeek(1));
+  document.querySelectorAll("[data-wk]").forEach(el=>{
+    el.addEventListener("input", ()=>{ if(editing) return; const f=el.getAttribute("data-wk"); pushUndo("wk:"+f); const w=ensureWeekly(selectedWeek); w[f]=el.value; saveSoon(); });
+    el.addEventListener("blur", ()=>{ pruneWeekly(selectedWeek); });
+  });
+
   /* ============ events: notes ============ */
   document.getElementById("note-add-btn").addEventListener("click", addNote);
+  document.getElementById("note-search").addEventListener("input", e=>{ noteQuery=e.target.value; renderNotes(); });
   notesListEl.addEventListener("input", e=>{
     const t=e.target, id=t.getAttribute("data-ntitle")||t.getAttribute("data-nbody"); if(!id) return;
     const n=noteById(id); if(!n) return;
@@ -1479,28 +2131,11 @@
     else if(t.matches("[data-nbody]")){ pushUndo("nbody:"+id); n.text=t.value; saveSoon(); }
   });
   notesListEl.addEventListener("click", e=>{
+    const seed=e.target.closest("[data-seed]"); if(seed){ if(seed.getAttribute("data-seed")==="notes") loadStarterNote(); return; }
     const del=e.target.closest("[data-ndel]"); if(del){ const id=del.getAttribute("data-ndel"); const n=noteById(id); if(n && (n.title||n.text) && !confirm("Delete this note?")) return; pushUndo("ndel"); state.notes=state.notes.filter(x=>x.id!==id); renderNotes(); save(); }
   });
 
-  /* ============ events: goals (Progress) ============ */
-  document.getElementById("goal-add-btn").addEventListener("click", addGoal);
-  document.getElementById("goal-text").addEventListener("keydown", e=>{ if(e.key==="Enter"){ e.preventDefault(); addGoal(); } });
-  goalListEl.addEventListener("click", e=>{
-    const mk=e.target.closest("[data-gmark]"); if(mk){ markGoal(mk.getAttribute("data-gmark")); return; }
-    const un=e.target.closest("[data-gunmark]"); if(un){ unmarkGoal(un.getAttribute("data-gunmark")); return; }
-    const del=e.target.closest("[data-gdel]"); if(del){ if(editing) return; const id=del.getAttribute("data-gdel"); const g=goalById(id); if(g && !confirm("Delete the goal «"+g.text+"»?")) return; pushUndo("gdel"); state.goals=state.goals.filter(x=>x.id!==id); renderGoals(); save(); }
-  });
-  goalListEl.addEventListener("input", e=>{
-    const t=e.target;
-    if(t.matches("[data-gtext]")){ const g=goalById(t.getAttribute("data-gtext")); if(g){ pushUndo("gtext:"+g.id); g.text=t.value; saveSoon(); } }
-  });
-  goalListEl.addEventListener("change", e=>{
-    const t=e.target; let g;
-    if(t.matches("[data-gperiod]")){ g=goalById(t.getAttribute("data-gperiod")); if(g){ pushUndo("gperiod:"+g.id); g.period = t.value==="monthly"?"monthly":"weekly"; renderGoals(); save(); } }
-    else if(t.matches("[data-gtarget]")){ g=goalById(t.getAttribute("data-gtarget")); if(g){ pushUndo("gtarget:"+g.id); g.target=Math.max(1, parseInt(t.value,10)||1); renderGoals(); save(); } }
-  });
-
-  /* ============ events: frentes editor ============ */
+  /* ============ events: areas editor ============ */
   document.getElementById("cf-add").addEventListener("click", ()=>{
     if(editing) return;
     pushUndo("cfadd");
@@ -1546,8 +2181,12 @@
   });
 
   /* ============ events: tabs + undo/redo + edit ============ */
+  document.getElementById("tab-inicio").addEventListener("click", ()=>setView("inicio"));
   document.getElementById("tab-tracker").addEventListener("click", ()=>setView("tracker"));
+  document.getElementById("home-grid").addEventListener("click", e=>{ const c=e.target.closest("[data-goto]"); if(c) setView(c.getAttribute("data-goto")); });
+  document.getElementById("tab-bita").addEventListener("click", ()=>setView("bita"));
   document.getElementById("tab-notes").addEventListener("click", ()=>setView("notes"));
+  document.getElementById("tab-reading").addEventListener("click", ()=>setView("reading"));
   document.getElementById("tab-reminders").addEventListener("click", ()=>setView("reminders"));
   document.getElementById("tab-progress").addEventListener("click", ()=>setView("progress"));
   document.getElementById("tab-money").addEventListener("click", ()=>setView("money"));
@@ -1596,10 +2235,11 @@
     captureDefaults();
     document.getElementById("swatches").innerHTML =
       ACCENTS.map(a=>'<button type="button" class="swatch" data-accent="'+a.hex+'" style="background:'+a.hex+'" title="'+a.name+'" aria-label="'+a.name+'"></button>').join("") +
-      '<label class="swatch pick" title="Custom color" aria-label="Custom color"><input type="color" id="accent-pick" value="'+template.accent+'"></label>';
+      '<label class="swatch pick" title="Color personalizado" aria-label="Color personalizado"><input type="color" id="accent-pick" value="'+template.accent+'"></label>';
     document.getElementById("accent-pick").addEventListener("input", e=>{ pushUndo("accent"); applyAccent(e.target.value); saveSoon(); });
 
     if(!load()) seedExample();
+    migrateGoals();
     setEditing(false);
     renderAll();
   }

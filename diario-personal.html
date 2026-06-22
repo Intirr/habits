@@ -204,6 +204,30 @@
   .wk-stats{margin-bottom:16px}
   @media(max-width:640px){ .jr-grid{grid-template-columns:1fr} }
 
+  /* INICIO / RESUMEN (home dashboard) */
+  .home-greet{font-family:var(--serif);font-size:1.05rem;color:var(--text-2);margin:2px 0 20px}
+  .home-greet b{color:var(--head);font-weight:600}
+  .home-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(248px,1fr));gap:14px}
+  .home-card{display:flex;flex-direction:column;gap:8px;text-align:left;background:var(--ink-1);border:1px solid var(--line);border-left:3px solid var(--c,var(--accent));border-radius:13px;padding:15px 16px;cursor:pointer;font:inherit;color:inherit;transition:transform .15s ease,border-color .15s ease,background .15s ease}
+  .home-card:hover{transform:translateY(-2px);border-color:var(--accent-line);background:var(--ink-2)}
+  .home-card:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  .hc-top{display:flex;align-items:center;gap:8px}
+  .hc-label{font-family:var(--mono);font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+  .hc-go{margin-left:auto;color:var(--accent);font-size:1.1rem;line-height:1;opacity:.7;transition:transform .15s ease}
+  .home-card:hover .hc-go{transform:translateX(2px);opacity:1}
+  .hc-big{font-family:var(--serif);font-weight:600;font-size:1.7rem;color:var(--head);line-height:1.05}
+  .hc-big small{font-size:1rem;color:var(--muted);font-weight:400}
+  .hc-face{font-size:1.6rem}
+  .hc-sub{font-size:.84rem;color:var(--text-2)}
+  .hc-list{list-style:none;display:flex;flex-direction:column;gap:4px;margin-top:1px}
+  .hc-list li{font-size:.86rem;color:var(--text);display:flex;align-items:center;gap:7px;line-height:1.3}
+  .hc-list li::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--accent);flex:0 0 auto}
+  .hc-list li.done{color:var(--muted);text-decoration:line-through}
+  .hc-list li.done::before{background:var(--muted)}
+  .hc-list li.over::before{background:var(--cuerpo)}
+  .hc-empty{font-size:.86rem;color:var(--muted);font-style:italic}
+  .home-card .progress{margin:2px 0 0}
+
   /* empty states with call-to-action */
   .empty,.empty-state{color:var(--muted);font-size:.92rem;text-align:center;border:1px dashed var(--line);border-radius:12px;margin-top:22px}
   .empty{padding:30px}
@@ -469,7 +493,8 @@
 
       <div class="topbar">
         <div class="tabs" role="tablist" aria-label="Vistas">
-          <button type="button" class="tab active" id="tab-tracker" role="tab">Hábitos</button>
+          <button type="button" class="tab active" id="tab-inicio" role="tab">Inicio</button>
+          <button type="button" class="tab" id="tab-tracker" role="tab">Hábitos</button>
           <button type="button" class="tab" id="tab-bita" role="tab">Bitácora</button>
           <button type="button" class="tab" id="tab-notes" role="tab">Notas</button>
           <button type="button" class="tab" id="tab-reading" role="tab">Lecturas</button>
@@ -490,6 +515,18 @@
         <button type="button" class="eb-btn solid" id="btn-edit-done">Listo</button>
       </div>
     </header>
+
+    <!-- ===================== VISTA: INICIO ===================== -->
+    <div id="view-inicio" hidden>
+      <section class="panel home" aria-label="Resumen de hoy">
+        <div class="rem-head">
+          <div class="panel-title" data-ui="lblHome">Resumen de hoy</div>
+          <button type="button" class="tool-btn png-btn" title="Descargar PNG de esta pestaña">📷 PNG</button>
+        </div>
+        <p class="home-greet" id="home-greet"></p>
+        <div class="home-grid" id="home-grid"></div>
+      </section>
+    </div>
 
     <!-- ===================== VISTA: TRACKER ===================== -->
     <div id="view-tracker">
@@ -790,7 +827,7 @@
   let state = { ui:{}, frentes: clone(DEFAULT_FRENTES), habits: [], log: {}, reminders: [], notes: [], goals: [], journal: {}, weekly: {}, books: [], theme: clone(DEFAULT_THEME), money: clone(DEFAULT_MONEY) };
   let editing = false;
   let rangeMonths = 3;          // history range (1, 3, 6 or 12 months) — view setting
-  let currentView = "tracker";  // "tracker" | "settings" — view setting
+  let currentView = "inicio";  // landing view (home dashboard)
   let habitFilter = null;       // frente id to filter the habit list (view setting)
   let noteQuery = "";           // notes search query (view setting)
   const openGoals = new Set();  // ids with their goal editor expanded (not persisted)
@@ -812,6 +849,7 @@
   let selectedWeek = THIS_WEEK_KEY;
 
   const DOW = ["dom","lun","mar","mié","jue","vie","sáb"];
+  const DOW_FULL = ["domingo","lunes","martes","miércoles","jueves","viernes","sábado"];
   const MON = ["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
   const MON_FULL = ["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"];
   function prettyDate(k){ const d=parseKey(k); return DOW[d.getDay()]+" "+d.getDate()+" "+MON[d.getMonth()]; }
@@ -843,7 +881,7 @@
       if(d.money && typeof d.money==="object"){ state.money=Object.assign(clone(DEFAULT_MONEY), d.money); if(!Array.isArray(state.money.jars)) state.money.jars=[]; }
       if(d.theme && typeof d.theme==="object") state.theme=Object.assign(clone(DEFAULT_THEME), d.theme);
       if([1,3,6,12].includes(d.rangeMonths)) rangeMonths=d.rangeMonths;
-      if(["tracker","bita","notes","reading","reminders","progress","money","settings"].includes(d.view)) currentView=d.view;
+      if(["inicio","tracker","bita","notes","reading","reminders","progress","money","settings"].includes(d.view)) currentView=d.view;
       return true;
     }catch(e){ return false; }
   }
@@ -1365,7 +1403,7 @@
   }
 
   /* ============ views ============ */
-  const VIEWS = ["tracker","bita","notes","reading","reminders","progress","money","settings"];
+  const VIEWS = ["inicio","tracker","bita","notes","reading","reminders","progress","money","settings"];
   function renderView(){
     VIEWS.forEach(v=>{
       const view=document.getElementById("view-"+v), tab=document.getElementById("tab-"+v);
@@ -1373,7 +1411,7 @@
       if(tab) tab.classList.toggle("active", currentView===v);
     });
   }
-  function setView(v){ currentView=v; renderView(); save(); }
+  function setView(v){ currentView=v; if(v==="inicio") renderHome(); renderView(); save(); }
 
   /* ============ money (alcancías y metas para compras) ============ */
   const jarListEl = document.getElementById("jar-list");
@@ -1495,6 +1533,73 @@
     state.books.push({ id:uid("b"), title, author:(a.value||"").trim(), total:Math.max(0,parseInt(tot.value,10)||0), current:0, status:"reading", notes:"" });
     t.value=""; a.value=""; tot.value="";
     renderReading(); save(); t.focus();
+  }
+
+  /* ============ inicio / resumen (home dashboard) ============ */
+  function homeBar(ratio){ return '<div class="progress"><div class="progress-track"><div class="progress-fill" style="width:'+Math.round(Math.min(1,Math.max(0,ratio))*100)+'%"></div></div></div>'; }
+  function homeCard(goto, color, label, bodyHTML){
+    return '<button type="button" class="home-card" data-goto="'+goto+'"'+(color?(' style="--c:'+color+'"'):'')+'>'+
+      '<div class="hc-top"><span class="hc-label">'+label+'</span><span class="hc-go" aria-hidden="true">›</span></div>'+bodyHTML+'</button>';
+  }
+  function renderHome(){
+    const d=new Date(), hr=d.getHours();
+    const part = (hr<6||hr>=20)?"Buenas noches":hr<12?"Buenos días":hr<19?"Buenas tardes":"Buenas noches";
+    const greet=document.getElementById("home-greet");
+    if(greet) greet.innerHTML = part+" · <b>"+DOW_FULL[d.getDay()]+", "+d.getDate()+" de "+MON_FULL[d.getMonth()]+"</b>";
+    const cards=[];
+
+    // 1) Rutina de hoy
+    const sched=state.habits.filter(x=>scheduledDaily(x,TODAY_KEY));
+    const doneN=sched.filter(x=>isDone(x.id,TODAY_KEY)).length;
+    const periodicDue=state.habits.filter(x=>{const t=habitFreq(x).type; return (t==="weekly"||t==="monthly")&&dueOn(x,TODAY_KEY);}).length;
+    let rutina;
+    if(sched.length){
+      rutina='<div class="hc-big">'+doneN+'<small>/'+sched.length+'</small></div>'+homeBar(doneN/sched.length)+
+        '<div class="hc-sub">'+(doneN>=sched.length?'¡Rutina completa! ✓':'hábitos de hoy completados')+(periodicDue?(' · '+periodicDue+' meta'+(periodicDue>1?'s':'')+' de periodo'):'')+'</div>';
+    } else { rutina='<div class="hc-big">—</div><div class="hc-sub">No tienes hábitos para hoy</div>'; }
+    cards.push(homeCard("tracker", template.accent, "Rutina de hoy", rutina));
+
+    // 2) Ánimo y enfoque
+    const j=state.journal[TODAY_KEY]||{}, mood=j.mood?MOODS[j.mood-1]:null;
+    const top=(j.top3||[]).filter(t=>(t.text||"").trim());
+    let bita='<div class="hc-big"><span class="hc-face">'+(mood?mood[1]:"·")+'</span> <small>'+(mood?mood[2]:"sin ánimo")+'</small></div>';
+    bita += top.length ? ('<ul class="hc-list">'+top.slice(0,3).map(t=>'<li'+(t.done?' class="done"':'')+'>'+escapeHTML(t.text)+'</li>').join("")+'</ul>') : '<div class="hc-empty">Sin prioridades para hoy</div>';
+    cards.push(homeCard("bita", null, "Ánimo y enfoque", bita));
+
+    // 3) Pendientes
+    const pend=sortedReminders().filter(r=>!r.done), overdue=pend.filter(r=>rmRelative(r).overdue).length;
+    let rem;
+    if(pend.length){
+      rem='<div class="hc-big">'+pend.length+'<small> pendiente'+(pend.length>1?'s':'')+'</small></div>'+
+        '<ul class="hc-list">'+pend.slice(0,3).map(r=>{const rel=rmRelative(r); return '<li'+(rel.overdue?' class="over"':'')+'>'+escapeHTML(r.text)+' · '+rel.txt.replace(/<\/?b>/g,"")+'</li>';}).join("")+'</ul>'+
+        (overdue?('<div class="hc-sub">'+overdue+' vencido'+(overdue>1?'s':'')+'</div>'):'');
+    } else { rem='<div class="hc-big">0</div><div class="hc-sub">Nada pendiente ✓</div>'; }
+    cards.push(homeCard("reminders", null, "Pendientes", rem));
+
+    // 4) Leyendo
+    const reading=state.books.filter(b=>b.status!=="done");
+    let read;
+    if(reading.length){ const b=reading[0];
+      read='<div class="hc-big">'+escapeHTML(b.title)+'</div>'+homeBar(bookPct(b)/100)+
+        '<div class="hc-sub">'+(b.author?escapeHTML(b.author)+' · ':'')+bookPct(b)+'%'+(reading.length>1?(' · +'+(reading.length-1)+' más'):'')+'</div>';
+    } else { read='<div class="hc-big">—</div><div class="hc-sub">Sin lecturas activas</div>'; }
+    cards.push(homeCard("reading", null, "Leyendo", read));
+
+    // 5) Dinero
+    const jars=state.money.jars, totalSaved=jars.reduce((s,jr)=>s+(+jr.saved||0),0);
+    const nextGoal=jars.filter(jr=>hasTarget(jr)&&jr.saved<jr.target).sort((a,b)=>jarPct(b)-jarPct(a))[0];
+    let money='<div class="hc-big">'+fmtMoney(totalSaved)+'</div>';
+    money += nextGoal ? (homeBar(jarPct(nextGoal)/100)+'<div class="hc-sub">'+escapeHTML(nextGoal.name)+' · '+jarPct(nextGoal)+'%</div>')
+      : ('<div class="hc-sub">'+(jars.length?('ahorrado en '+jars.length+' alcancía'+(jars.length>1?'s':'')):'Sin alcancías todavía')+'</div>');
+    cards.push(homeCard("money", null, "Dinero", money));
+
+    // 6) Constancia
+    const gs=globalStreak(), ws=weekStats(THIS_WEEK_KEY);
+    cards.push(homeCard("progress", null, "Constancia",
+      '<div class="hc-big">'+gs+'<small> '+plural(gs,"día","días")+' 🔥</small></div>'+
+      '<div class="hc-sub">Racha actual · esta semana '+ws.comp+' completados, '+ws.active+' día'+(ws.active===1?'':'s')+' activo'+(ws.active===1?'':'s')+'</div>'));
+
+    document.getElementById("home-grid").innerHTML = cards.join("");
   }
 
   /* ============ notes (diario · ideas y planes) ============ */
@@ -1712,6 +1817,20 @@
     if(!secs.length) secs.push({ heading:"Lecturas", items:[], empty:"Sin libros." });
     return secs;
   }
+  function pngHome(){
+    const sched=state.habits.filter(x=>scheduledDaily(x,TODAY_KEY)), doneN=sched.filter(x=>isDone(x.id,TODAY_KEY)).length;
+    const j=state.journal[TODAY_KEY]||{}, gs=globalStreak();
+    const items=[ { text:"Rutina de hoy", meta:doneN+"/"+sched.length, bar: sched.length?doneN/sched.length:null },
+                  { text:"Racha actual", meta:gs+" "+plural(gs,"día","días") } ];
+    if(j.mood) items.push({ text:"Ánimo de hoy", meta:MOODS[j.mood-1][2] });
+    items.push({ text:"Pendientes", meta:String(state.reminders.filter(r=>!r.done).length) });
+    const reading=state.books.filter(b=>b.status!=="done"); if(reading.length) items.push({ text:"Leyendo: "+reading[0].title, meta:bookPct(reading[0])+"%", bar:bookPct(reading[0])/100 });
+    items.push({ text:"Ahorrado", meta:fmtMoney(state.money.jars.reduce((s,jr)=>s+(+jr.saved||0),0)) });
+    const secs=[{ heading:"Resumen de hoy", items }];
+    const top=(j.top3||[]).filter(t=>(t.text||"").trim());
+    if(top.length) secs.push({ heading:"Enfoque · top 3", items: top.map(t=>({ text:t.text, done:!!t.done })) });
+    return secs;
+  }
   function pngNotes(){ const list=state.notes.slice().sort((a,b)=>(b.date||"").localeCompare(a.date||"")); return list.length ? list.map(n=>({ heading:(n.title||"Nota"), note:n.date?prettyDate(n.date):"", items:[{ text:n.text||"—" }] })) : [{ heading:"Notas", items:[], empty:"Sin notas." }]; }
   function pngBita(){
     const j=state.journal[selectedKey]||{}, secs=[];
@@ -1727,7 +1846,7 @@
   function downloadCurrentPNG(){
     if(editing) return;
     if(currentView==="tracker"){ downloadPNG(); return; }
-    const M={ bita:["Bitácora", prettyDate(selectedKey), "bitacora", pngBita], notes:["Notas","Ideas y planes","notas",pngNotes], reading:["Lecturas","Libros en curso","lecturas",pngReading], reminders:["Recordatorios","Actividades programadas","recordatorios",pngReminders], progress:["Progreso","Metas, historial y rachas","progreso",pngProgress], money:["Dinero","Alcancías y metas","dinero",pngMoney] };
+    const M={ inicio:["Inicio","Resumen de hoy","inicio",pngHome], bita:["Bitácora", prettyDate(selectedKey), "bitacora", pngBita], notes:["Notas","Ideas y planes","notas",pngNotes], reading:["Lecturas","Libros en curso","lecturas",pngReading], reminders:["Recordatorios","Actividades programadas","recordatorios",pngReminders], progress:["Progreso","Metas, historial y rachas","progreso",pngProgress], money:["Dinero","Alcancías y metas","dinero",pngMoney] };
     const m=M[currentView]; if(!m) return;
     downloadCardPNG({ eyebrow:"BYMCYL · "+m[0], title:(template.title||"Mi diario personal").trim()||"Mi diario personal", subtitle:m[1], sections:m[3](), filename:"diario-"+m[2]+".png" });
   }
@@ -1736,7 +1855,7 @@
   function renderAll(){
     applyUI(); renderThemeControls(); applyTheme(state.theme); applyAccent(template.accent); syncHero();
     renderFrentesEditor(); rebuildAddFrente();
-    renderList(); renderBitacora(); renderNotes(); renderReading(); renderReminders(); renderMoney(); renderDateNav(); renderHistory(); renderView();
+    renderList(); renderBitacora(); renderNotes(); renderReading(); renderReminders(); renderMoney(); renderDateNav(); renderHistory(); renderHome(); renderView();
     updateUndoButtons();
   }
 
@@ -2062,7 +2181,9 @@
   });
 
   /* ============ events: tabs + undo/redo + edit ============ */
+  document.getElementById("tab-inicio").addEventListener("click", ()=>setView("inicio"));
   document.getElementById("tab-tracker").addEventListener("click", ()=>setView("tracker"));
+  document.getElementById("home-grid").addEventListener("click", e=>{ const c=e.target.closest("[data-goto]"); if(c) setView(c.getAttribute("data-goto")); });
   document.getElementById("tab-bita").addEventListener("click", ()=>setView("bita"));
   document.getElementById("tab-notes").addEventListener("click", ()=>setView("notes"));
   document.getElementById("tab-reading").addEventListener("click", ()=>setView("reading"));

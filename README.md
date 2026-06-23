@@ -32,10 +32,13 @@ navegador (`localStorage`).
   (p. ej. L–V, fin de semana o los días que elijas). El resumen del día solo cuenta los que
   tocan hoy. Además puedes **filtrar la lista por categoría (frente)** y **reordenar** los
   hábitos.
-- **Sistemas (acciones para cada hábito):** «no subes al nivel de tus metas, caes al nivel
-  de tus sistemas». En la pestaña **«Sistemas»**, para cada hábito diseñas la lista de
-  **acciones concretas** que vas a emplear para hacerlo (añade, edita y quita pasos). Se
-  guardan con cada hábito.
+- **Sistemas (acciones y procesos):** «no subes al nivel de tus metas, caes al nivel de tus
+  sistemas». La pestaña **«Sistemas»** tiene dos partes:
+  - **Sistemas por hábito:** para cada hábito diseñas la lista de **acciones concretas** que
+    vas a emplear para hacerlo (añade, edita y quita pasos). Se guardan con cada hábito.
+  - **Sistemas propios:** crea sistemas **independientes de los hábitos** —rutinas o procesos
+    con su propio nombre y sus propias acciones (p. ej. «Rutina de mañana» o «Cierre del
+    día»).
 - **Metas semanales y mensuales:** en **«Progreso»**, separadas de los hábitos. Define una
   meta «X veces por semana o por mes», pulsa **«+ Hecho»** cada vez que la cumplas y mira tu
   progreso del periodo y tu **racha** por periodos.

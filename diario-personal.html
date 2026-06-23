@@ -2625,16 +2625,16 @@
   });
 
   /* ============ events: tabs + undo/redo + edit ============ */
-  /* one delegated handler; in edit mode a tap edits the tab name instead of navigating */
+  /* one delegated handler; tabs always navigate. In edit mode the label also gets focus
+     (see the mousedown handler) so you can rename the tab in place after moving to it. */
   document.querySelector(".tabs").addEventListener("click", e=>{
-    if(editing) return;
     const tab=e.target.closest(".tab"); if(tab && tab.id) setView(tab.id.slice(4));
   });
   document.getElementById("home-grid").addEventListener("click", e=>{ const c=e.target.closest("[data-goto]"); if(c) setView(c.getAttribute("data-goto")); });
   document.querySelectorAll(".png-btn").forEach(b=>b.addEventListener("click", downloadCurrentPNG));
   document.getElementById("btn-undo").addEventListener("click", undo);
   document.getElementById("btn-redo").addEventListener("click", redo);
-  function toggleEdit(){ const on=!editing; setEditing(on); if(on){ if(currentView!=="tracker") setView("tracker"); } else { syncHero(); save(); } }
+  function toggleEdit(){ const on=!editing; setEditing(on); if(!on){ syncHero(); save(); } }
   document.getElementById("btn-edit").addEventListener("click", toggleEdit);
   document.getElementById("btn-edit-done").addEventListener("click", ()=>{ setEditing(false); syncHero(); save(); });
   document.getElementById("btn-reset-ui").addEventListener("click", ()=>{ if(!confirm("¿Restaurar todos los textos de la interfaz a los originales?")) return; pushUndo("uireset"); state.ui={}; applyUI(); save(); });

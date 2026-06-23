@@ -589,16 +589,16 @@
 
       <div class="topbar">
         <div class="tabs" role="tablist" aria-label="Vistas">
-          <button type="button" class="tab active" id="tab-inicio" role="tab">Inicio</button>
-          <button type="button" class="tab" id="tab-tracker" role="tab">Hábitos</button>
-          <button type="button" class="tab" id="tab-sistemas" role="tab">Sistemas</button>
-          <button type="button" class="tab" id="tab-bita" role="tab">Bitácora</button>
-          <button type="button" class="tab" id="tab-notes" role="tab">Notas</button>
-          <button type="button" class="tab" id="tab-reading" role="tab">Lecturas</button>
-          <button type="button" class="tab" id="tab-reminders" role="tab">Recordatorios<span class="tab-count" id="rem-count" hidden></span></button>
-          <button type="button" class="tab" id="tab-progress" role="tab">Progreso</button>
-          <button type="button" class="tab" id="tab-money" role="tab">Finanzas</button>
-          <button type="button" class="tab" id="tab-settings" role="tab">Personalizar</button>
+          <button type="button" class="tab active" id="tab-inicio" role="tab"><span class="tab-label" data-ui="tabInicio">Inicio</span></button>
+          <button type="button" class="tab" id="tab-tracker" role="tab"><span class="tab-label" data-ui="tabTracker">Hábitos</span></button>
+          <button type="button" class="tab" id="tab-sistemas" role="tab"><span class="tab-label" data-ui="tabSistemas">Sistemas</span></button>
+          <button type="button" class="tab" id="tab-bita" role="tab"><span class="tab-label" data-ui="tabBita">Bitácora</span></button>
+          <button type="button" class="tab" id="tab-notes" role="tab"><span class="tab-label" data-ui="tabNotes">Notas</span></button>
+          <button type="button" class="tab" id="tab-reading" role="tab"><span class="tab-label" data-ui="tabReading">Lecturas</span></button>
+          <button type="button" class="tab" id="tab-reminders" role="tab"><span class="tab-label" data-ui="tabReminders">Recordatorios</span><span class="tab-count" id="rem-count" hidden></span></button>
+          <button type="button" class="tab" id="tab-progress" role="tab"><span class="tab-label" data-ui="tabProgress">Progreso</span></button>
+          <button type="button" class="tab" id="tab-money" role="tab"><span class="tab-label" data-ui="tabMoney">Finanzas</span></button>
+          <button type="button" class="tab" id="tab-settings" role="tab"><span class="tab-label" data-ui="tabSettings">Personalizar</span></button>
         </div>
         <div class="undo-group">
           <button type="button" class="tool-btn" id="btn-undo" disabled title="Deshacer (Ctrl+Z)">↶ <span data-ui="btnUndo">Deshacer</span></button>
@@ -894,7 +894,7 @@
 
       <section class="panel" aria-label="Edición de la interfaz">
         <div class="panel-title" data-ui="lblEditSection">Edición de la interfaz</div>
-        <p class="hint" data-ui="editDesc">Activa el modo edición para cambiar cualquier texto de la pantalla: títulos, etiquetas, textos de botones, nombres de secciones y el pie de página.</p>
+        <p class="hint" data-ui="editDesc">Activa el modo edición para cambiar cualquier texto de la pantalla: títulos, los nombres de las pestañas, etiquetas, textos de botones, nombres de secciones y el pie de página.</p>
         <div class="actions" style="margin-top:14px">
           <button type="button" class="btn solid" id="btn-edit"><span id="edit-label">Editar interfaz</span></button>
         </div>
@@ -2606,17 +2606,12 @@
   });
 
   /* ============ events: tabs + undo/redo + edit ============ */
-  document.getElementById("tab-inicio").addEventListener("click", ()=>setView("inicio"));
-  document.getElementById("tab-tracker").addEventListener("click", ()=>setView("tracker"));
-  document.getElementById("tab-sistemas").addEventListener("click", ()=>setView("sistemas"));
+  /* one delegated handler; in edit mode a tap edits the tab name instead of navigating */
+  document.querySelector(".tabs").addEventListener("click", e=>{
+    if(editing) return;
+    const tab=e.target.closest(".tab"); if(tab && tab.id) setView(tab.id.slice(4));
+  });
   document.getElementById("home-grid").addEventListener("click", e=>{ const c=e.target.closest("[data-goto]"); if(c) setView(c.getAttribute("data-goto")); });
-  document.getElementById("tab-bita").addEventListener("click", ()=>setView("bita"));
-  document.getElementById("tab-notes").addEventListener("click", ()=>setView("notes"));
-  document.getElementById("tab-reading").addEventListener("click", ()=>setView("reading"));
-  document.getElementById("tab-reminders").addEventListener("click", ()=>setView("reminders"));
-  document.getElementById("tab-progress").addEventListener("click", ()=>setView("progress"));
-  document.getElementById("tab-money").addEventListener("click", ()=>setView("money"));
-  document.getElementById("tab-settings").addEventListener("click", ()=>setView("settings"));
   document.querySelectorAll(".png-btn").forEach(b=>b.addEventListener("click", downloadCurrentPNG));
   document.getElementById("btn-undo").addEventListener("click", undo);
   document.getElementById("btn-redo").addEventListener("click", redo);

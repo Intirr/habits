@@ -11,12 +11,12 @@ navegador (`localStorage`).
 
 ## Características
 
-- **Nueve vistas (pestañas):** **«Inicio»** (resumen del día), **«Hábitos»** (rutina del
-  día), **«Bitácora»** (ánimo, enfoque y diario), **«Notas»** (ideas y planes),
-  **«Lecturas»** (libros en curso), **«Recordatorios»** (actividades programadas, con
-  contador de pendientes), **«Progreso»** (reflexión semanal, historial y rachas),
-  **«Dinero»** (alcancías y metas) y **«Personalizar»** (contenido, colores y edición de la
-  interfaz).
+- **Diez vistas (pestañas):** **«Inicio»** (resumen del día), **«Hábitos»** (rutina del
+  día), **«Sistemas»** (las acciones para cada hábito), **«Bitácora»** (ánimo, enfoque y
+  diario), **«Notas»** (ideas y planes), **«Lecturas»** (libros en curso),
+  **«Recordatorios»** (actividades programadas, con contador de pendientes), **«Progreso»**
+  (metas semanales/mensuales, reflexión semanal, historial y rachas), **«Dinero»**
+  (alcancías y metas) y **«Personalizar»** (contenido, colores y edición de la interfaz).
 - **Inicio / Resumen del día:** un panel de inicio con un saludo y seis tarjetas que
   resumen tu día y enlazan a cada sección: progreso de hábitos de hoy, ánimo y top 3,
   recordatorios pendientes (y vencidos), lectura actual, ahorro y próxima meta, y tu racha
@@ -28,11 +28,17 @@ navegador (`localStorage`).
   - **Bitácora:** preguntas guiadas — cómo estuvo el día, una victoria, algo para mejorar
     o aprender, y gratitud.
   - En el calendario de Progreso, los días con entrada de bitácora llevan un puntito.
-- **Hábitos con frecuencia:** cada hábito puede ser **diario**, en **días concretos**
-  (p. ej. L–V o fin de semana) o **X veces por semana/mes**. Esto unifica los antiguos
-  objetivos semanales/mensuales dentro del propio hábito: verás su progreso del periodo y
-  su racha por periodos, y el resumen del día solo cuenta los que tocan hoy. Además puedes
-  **filtrar la lista por categoría (frente)** y **reordenar** los hábitos.
+- **Hábitos con frecuencia:** cada hábito puede ser **diario** o en **días concretos**
+  (p. ej. L–V, fin de semana o los días que elijas). El resumen del día solo cuenta los que
+  tocan hoy. Además puedes **filtrar la lista por categoría (frente)** y **reordenar** los
+  hábitos.
+- **Sistemas (acciones para cada hábito):** «no subes al nivel de tus metas, caes al nivel
+  de tus sistemas». En la pestaña **«Sistemas»**, para cada hábito diseñas la lista de
+  **acciones concretas** que vas a emplear para hacerlo (añade, edita y quita pasos). Se
+  guardan con cada hábito.
+- **Metas semanales y mensuales:** en **«Progreso»**, separadas de los hábitos. Define una
+  meta «X veces por semana o por mes», pulsa **«+ Hecho»** cada vez que la cumplas y mira tu
+  progreso del periodo y tu **racha** por periodos.
 - **Reflexión semanal:** dentro de **«Progreso»**, un repaso guiado de la semana (qué
   salió bien, qué mejorar, qué aprendiste y tu enfoque para la próxima), con navegación por
   semanas y un mini resumen (completados, días activos y ánimo medio).
@@ -54,9 +60,10 @@ navegador (`localStorage`).
   con su precio objetivo. Guarda o retira dinero en cada una y mira el progreso hacia la
   meta, con un resumen (ahorrado total, nº de alcancías, metas cumplidas y cuánto falta).
   El símbolo de moneda es configurable.
-- **Progreso (historial y rachas):** un calendario de actividad por meses (estilo
-  «contribuciones») con rango **Mes / 3 meses / 6 meses / Año** y estadísticas (racha
-  actual, mejor racha, días activos, completados y constancia).
+- **Progreso (metas, historial y rachas):** reúne las **metas semanales/mensuales**, la
+  **reflexión semanal** y un calendario de actividad por meses (estilo «contribuciones») con
+  rango **Mes / 3 meses / 6 meses / Año** y estadísticas (racha actual, mejor racha, días
+  activos, completados y constancia).
 - **Estados vacíos con ejemplos:** cuando una sección está vacía (hábitos o notas), te
   ofrece **empezar con ejemplos** de un toque.
 - **Tema de colores de la página:** cambia los colores de *toda* la página, no solo el
@@ -75,20 +82,24 @@ navegador (`localStorage`).
 - **Exportar / importar:**
   - **PNG** de cualquier pestaña (botón «📷 PNG»), más **texto** de la rutina de hábitos.
   - **Exportar datos** / **Importar datos** en `.json` para respaldar o mover tus datos
-    entre dispositivos (incluye bitácora, reflexiones y lecturas).
-- **Restaurar ejemplo** y **Vaciar** para empezar de cero.
+    entre dispositivos. El respaldo incluye **todo**: el título y la personalización de la
+    interfaz, las categorías y colores, los hábitos y sus sistemas, las metas, la bitácora,
+    las reflexiones, las lecturas, los recordatorios y el dinero.
+- **Restaurar ejemplo** y **Vaciar** para empezar de cero. **Vaciar** borra los hábitos,
+  metas, historial y recordatorios, y **restablece** el título, las categorías, los colores
+  y los textos de la interfaz a los originales.
 
 ## Uso
 
 1. Abre `diario-personal.html` en tu navegador (o `personal-diary.html` para la versión en
    inglés).
 2. **«Inicio»**: mira el resumen del día y salta a cualquier sección. **«Hábitos»**: marca
-   los que cumplas hoy (cada uno con su frecuencia). **«Bitácora»**: registra tu ánimo, tu
-   top 3 y tu diario del día. **«Notas»**: apunta ideas y planes (con buscador).
-   **«Lecturas»**: lleva tus libros en curso. **«Recordatorios»**: actividades programadas
-   con fecha y hora. **«Progreso»**: reflexión semanal más historial y rachas.
-   **«Dinero»**: alcancías y metas de compra. Todo se guarda solo (y puedes bajar un PNG de
-   cada vista).
+   los que cumplas hoy (cada uno con su frecuencia). **«Sistemas»**: diseña las acciones de
+   cada hábito. **«Bitácora»**: registra tu ánimo, tu top 3 y tu diario del día.
+   **«Notas»**: apunta ideas y planes (con buscador). **«Lecturas»**: lleva tus libros en
+   curso. **«Recordatorios»**: actividades programadas con fecha y hora. **«Progreso»**:
+   metas semanales/mensuales, reflexión semanal e historial y rachas. **«Dinero»**:
+   alcancías y metas de compra. Todo se guarda solo (y puedes bajar un PNG de cada vista).
 3. En la pestaña **«Personalizar»**: cambia título, categorías y colores (tema), y activa
    **«Editar interfaz»** para reescribir cualquier texto de la pantalla.
 4. ¿Te equivocaste? Usa **«↶ Deshacer»** (o `Ctrl/Cmd+Z`).

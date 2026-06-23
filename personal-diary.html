@@ -423,6 +423,20 @@
   .sys-add{margin-top:9px;font-family:var(--mono);font-size:.62rem;letter-spacing:.06em;text-transform:uppercase;color:var(--text-2);background:transparent;border:1px dashed var(--line);padding:8px 13px;border-radius:9px;cursor:pointer;transition:all .15s ease}
   .sys-add:hover{border-color:var(--accent-line);color:var(--accent)}
   .sys-empty-actions{color:var(--muted);font-size:.86rem;font-style:italic}
+  .sys-section{margin-top:8px}
+  .sys-section + .sys-section{margin-top:26px;padding-top:22px;border-top:1px solid var(--line)}
+  .sys-section-title{font-family:var(--mono);font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:8px}
+  .sys-section > .hint{margin-top:0;margin-bottom:4px}
+  .sys-add-bar{margin-top:12px}
+  .sys-custom-list{display:flex;flex-direction:column;gap:12px;margin-top:16px}
+  .sys-card-custom{border-left-color:var(--accent)}
+  .sys-card-head{display:flex;align-items:center;gap:9px;margin-bottom:10px}
+  .sys-name{flex:1 1 auto;min-width:0;font-family:var(--serif);font-weight:600;font-size:1.06rem;color:var(--head);background:transparent;border:1px solid transparent;border-radius:7px;padding:4px 8px}
+  .sys-name:hover{background:var(--ink-2)}
+  .sys-name:focus{outline:none;background:var(--ink);border-color:var(--accent-line)}
+  .sys-card-del{flex:0 0 auto;width:28px;height:28px;border-radius:7px;border:1px solid var(--line);background:transparent;color:var(--muted);font-size:1.2rem;line-height:1;cursor:pointer;transition:all .15s ease}
+  .sys-card-del:hover{border-color:var(--cuerpo);color:var(--cuerpo)}
+  .sys-custom-empty{color:var(--muted);font-size:.9rem;text-align:center;padding:18px;border:1px dashed var(--line);border-radius:10px;margin-top:14px}
 
   /* READING (books in progress) */
   .reading-add{margin-top:14px}
@@ -617,11 +631,25 @@
     <div id="view-sistemas" hidden>
       <section class="panel systems" aria-label="Systems">
         <div class="rem-head">
-          <div class="panel-title" data-ui="lblSystems">Systems · actions for your habits</div>
+          <div class="panel-title" data-ui="lblSystems">Systems · design your actions</div>
           <button type="button" class="tool-btn png-btn" title="Download PNG of this tab">📷 PNG</button>
         </div>
-        <p class="hint" data-ui="systemsHint">You don’t rise to the level of your goals, you fall to the level of your systems. For each habit, design the concrete actions you’ll use to do it.</p>
-        <div class="sys-list" id="sys-list"></div>
+        <p class="hint" data-ui="systemsHint">You don’t rise to the level of your goals, you fall to the level of your systems. Design the concrete actions for each habit and create your own independent systems.</p>
+
+        <div class="sys-section">
+          <div class="sys-section-title" data-ui="lblSysCustom">Your own systems</div>
+          <p class="hint" data-ui="sysCustomHint">Systems independent from habits: routines or processes with their own actions (e.g. «Morning routine» or «End of day»).</p>
+          <div class="addbar sys-add-bar">
+            <div class="field field-text"><label class="fl" for="sys-new-name" data-ui="lblSysNew">New system</label><input id="sys-new-name" class="inp" type="text" placeholder="E.g. Morning routine, End of day…" autocomplete="off"></div>
+            <button type="button" class="add-btn" id="sys-add-btn"><span data-ui="btnSysAdd">Create</span></button>
+          </div>
+          <div class="sys-custom-list" id="sys-custom-list"></div>
+        </div>
+
+        <div class="sys-section">
+          <div class="sys-section-title" data-ui="lblSysByHabit">Systems by habit</div>
+          <div class="sys-list" id="sys-list"></div>
+        </div>
       </section>
     </div>
 
@@ -889,7 +917,7 @@
   /* ============ state ============ */
   const DEFAULT_UI = {};   // captured from DOM
   const template = Object.assign({}, DEFAULT_TEMPLATE);
-  let state = { ui:{}, frentes: clone(DEFAULT_FRENTES), habits: [], log: {}, reminders: [], notes: [], goals: [], journal: {}, weekly: {}, books: [], theme: clone(DEFAULT_THEME), money: clone(DEFAULT_MONEY) };
+  let state = { ui:{}, frentes: clone(DEFAULT_FRENTES), habits: [], log: {}, reminders: [], notes: [], goals: [], journal: {}, weekly: {}, books: [], systems: [], theme: clone(DEFAULT_THEME), money: clone(DEFAULT_MONEY) };
   let editing = false;
   let rangeMonths = 3;          // history range (1, 3, 6 or 12 months) — view setting
   let currentView = "inicio";  // landing view (home dashboard)
@@ -922,7 +950,7 @@
   function startOfMonth(d){ return new Date(d.getFullYear(), d.getMonth(), 1); }
 
   /* ============ persistence ============ */
-  function dataPayload(){ return { ui:state.ui, template, frentes:state.frentes, habits:state.habits, log:state.log, reminders:state.reminders, notes:state.notes, goals:state.goals, journal:state.journal, weekly:state.weekly, books:state.books, theme:state.theme, money:state.money }; }
+  function dataPayload(){ return { ui:state.ui, template, frentes:state.frentes, habits:state.habits, log:state.log, reminders:state.reminders, notes:state.notes, goals:state.goals, journal:state.journal, weekly:state.weekly, books:state.books, systems:state.systems, theme:state.theme, money:state.money }; }
   function save(){
     try{ localStorage.setItem(STORE_KEY, JSON.stringify(Object.assign({ v:1 }, dataPayload(), { rangeMonths, view:currentView }))); }catch(e){}
   }
@@ -942,6 +970,7 @@
       if(d.journal && typeof d.journal==="object") state.journal=d.journal;
       if(d.weekly && typeof d.weekly==="object") state.weekly=d.weekly;
       if(Array.isArray(d.books)) state.books=d.books;
+      if(Array.isArray(d.systems)) state.systems=d.systems;
       if(Array.isArray(d.goals)) state.goals=d.goals;
       if(d.money && typeof d.money==="object"){ state.money=Object.assign(clone(DEFAULT_MONEY), d.money); if(!Array.isArray(state.money.jars)) state.money.jars=[]; }
       if(d.theme && typeof d.theme==="object") state.theme=Object.assign(clone(DEFAULT_THEME), d.theme);
@@ -991,6 +1020,13 @@
       { id:uid("b"), title:"Atomic Habits", author:"James Clear", total:320, current:120, status:"reading", notes:"" },
       { id:uid("b"), title:"The Power of Now", author:"Eckhart Tolle", total:240, current:240, status:"done", notes:"Reread the final chapters." }
     ];
+    state.systems = [
+      { id:uid("s"), name:"Morning routine", actions:[
+        { id:uid("a"), text:"Drink a glass of water right after waking" },
+        { id:uid("a"), text:"Make the bed" },
+        { id:uid("a"), text:"Write down the 3 priorities of the day" }
+      ] }
+    ];
   }
   /* migrate any unified weekly/monthly habits back into separate goals */
   function migrateHabitGoalsBack(){
@@ -1023,6 +1059,7 @@
     state.journal = (d.journal && typeof d.journal==="object") ? d.journal : {};
     state.weekly = (d.weekly && typeof d.weekly==="object") ? d.weekly : {};
     state.books = Array.isArray(d.books) ? d.books : [];
+    state.systems = Array.isArray(d.systems) ? d.systems : [];
     state.money = Object.assign(clone(DEFAULT_MONEY), (d.money && typeof d.money==="object") ? d.money : {}); if(!Array.isArray(state.money.jars)) state.money.jars=[];
     state.theme = Object.assign(clone(DEFAULT_THEME), d.theme || {});
   }
@@ -1754,6 +1791,44 @@
     const card=sysListEl.querySelector('.sys-card[data-hid="'+habitId+'"]');
     if(card){ const inps=card.querySelectorAll("[data-atext]"); const last=inps[inps.length-1]; if(last) last.focus(); }
   }
+  /* independent (custom) systems — not tied to any habit */
+  const customSysListEl = document.getElementById("sys-custom-list");
+  function sysById(id){ return state.systems.find(s=>s.id===id); }
+  function ensureSysActions(s){ if(!Array.isArray(s.actions)) s.actions=[]; return s.actions; }
+  function customSysCardHTML(s){
+    const acts=ensureSysActions(s);
+    const items = acts.length
+      ? acts.map((a,i)=>'<li class="sys-action" data-aid="'+a.id+'"><span class="sys-dot">'+(i+1)+'</span>'+
+          '<input type="text" data-satext="'+a.id+'" data-sysid="'+s.id+'" value="'+escapeHTML(a.text||"")+'" placeholder="Concrete action…" aria-label="Action">'+
+          '<button type="button" class="sys-del" data-sadel="'+a.id+'" data-sysid="'+s.id+'" aria-label="Remove action">×</button></li>').join("")
+      : '<li class="sys-empty-actions">No actions yet. Add the first one.</li>';
+    return '<div class="sys-card sys-card-custom" data-sid="'+s.id+'">'+
+      '<div class="sys-card-head">'+
+        '<input class="sys-name" type="text" data-sname="'+s.id+'" value="'+escapeHTML(s.name||"")+'" placeholder="System name" aria-label="System name">'+
+        '<button type="button" class="sys-card-del" data-sdel="'+s.id+'" aria-label="Delete system">×</button>'+
+      '</div>'+
+      '<ul class="sys-actions">'+items+'</ul>'+
+      '<button type="button" class="sys-add" data-saadd="'+s.id+'">+ Add action</button>'+
+    '</div>';
+  }
+  function renderCustomSystems(){
+    customSysListEl.innerHTML = state.systems.length
+      ? state.systems.map(customSysCardHTML).join("")
+      : '<div class="sys-custom-empty">You don’t have any systems of your own yet. Create one above (e.g. «Morning routine») and add actions to it.</div>';
+  }
+  function addCustomSystem(){
+    if(editing) return;
+    const inp=document.getElementById("sys-new-name"); const name=(inp.value||"").trim(); if(!name){ inp.focus(); return; }
+    pushUndo("sysadd"); state.systems.push({ id:uid("s"), name, actions:[] });
+    inp.value=""; renderCustomSystems(); save(); inp.focus();
+  }
+  function addCustomAction(sid){
+    if(editing) return; const s=sysById(sid); if(!s) return;
+    pushUndo("sysactionadd"); ensureSysActions(s).push({ id:uid("a"), text:"" });
+    renderCustomSystems(); save();
+    const card=customSysListEl.querySelector('.sys-card[data-sid="'+sid+'"]');
+    if(card){ const inps=card.querySelectorAll("[data-satext]"); const last=inps[inps.length-1]; if(last) last.focus(); }
+  }
 
   /* ============ notes (diary · ideas and plans) ============ */
   const notesListEl = document.getElementById("notes-list");
@@ -1986,9 +2061,11 @@
   }
   function pngNotes(){ const list=state.notes.slice().sort((a,b)=>(b.date||"").localeCompare(a.date||"")); return list.length ? list.map(n=>({ heading:(n.title||"Note"), note:n.date?prettyDate(n.date):"", items:[{ text:n.text||"—" }] })) : [{ heading:"Notes", items:[], empty:"No notes." }]; }
   function pngSystems(){
-    const withActs=state.habits.filter(h=>ensureActions(h).some(a=>(a.text||"").trim()));
-    if(!withActs.length) return [{ heading:"Systems", items:[], empty:"You haven’t designed any actions yet." }];
-    return withActs.map(h=>({ heading:h.text, items: ensureActions(h).filter(a=>(a.text||"").trim()).map(a=>({ text:a.text })) }));
+    const secs=[];
+    state.systems.forEach(s=>{ const acts=ensureSysActions(s).filter(a=>(a.text||"").trim()); if((s.name||"").trim() || acts.length) secs.push({ heading:(s.name||"System"), items: acts.map(a=>({ text:a.text })) }); });
+    state.habits.forEach(h=>{ const acts=ensureActions(h).filter(a=>(a.text||"").trim()); if(acts.length) secs.push({ heading:h.text, items: acts.map(a=>({ text:a.text })) }); });
+    if(!secs.length) secs.push({ heading:"Systems", items:[], empty:"You haven’t designed any actions yet." });
+    return secs;
   }
   function pngBita(){
     const j=state.journal[selectedKey]||{}, secs=[];
@@ -2013,7 +2090,7 @@
   function renderAll(){
     applyUI(); renderThemeControls(); applyTheme(state.theme); applyAccent(template.accent); syncHero();
     renderFrentesEditor(); rebuildAddFrente();
-    renderList(); renderSystems(); renderBitacora(); renderNotes(); renderReading(); renderReminders(); renderGoals(); renderMoney(); renderDateNav(); renderHistory(); renderHome(); renderView();
+    renderList(); renderSystems(); renderCustomSystems(); renderBitacora(); renderNotes(); renderReading(); renderReminders(); renderGoals(); renderMoney(); renderDateNav(); renderHistory(); renderHome(); renderView();
     updateUndoButtons();
   }
 
@@ -2080,6 +2157,7 @@
         state.journal = (d.journal && typeof d.journal==="object") ? d.journal : {};
         state.weekly = (d.weekly && typeof d.weekly==="object") ? d.weekly : {};
         state.books = Array.isArray(d.books) ? d.books : [];
+        state.systems = Array.isArray(d.systems) ? d.systems : [];
         state.goals = Array.isArray(d.goals) ? d.goals : [];
         state.money = (d.money && typeof d.money==="object") ? Object.assign(clone(DEFAULT_MONEY), d.money) : clone(DEFAULT_MONEY); if(!Array.isArray(state.money.jars)) state.money.jars=[];
         state.theme = d.theme && typeof d.theme==="object" ? Object.assign(clone(DEFAULT_THEME), d.theme) : clone(DEFAULT_THEME);
@@ -2302,6 +2380,18 @@
   sysListEl.addEventListener("input", e=>{
     const t=e.target; if(t.matches("[data-atext]")){ const h=habitById(t.getAttribute("data-hid")); if(h){ const a=ensureActions(h).find(x=>x.id===t.getAttribute("data-atext")); if(a){ pushUndo("actiontext:"+a.id); a.text=t.value; saveSoon(); } } }
   });
+  document.getElementById("sys-add-btn").addEventListener("click", addCustomSystem);
+  document.getElementById("sys-new-name").addEventListener("keydown", e=>{ if(e.key==="Enter"){ e.preventDefault(); addCustomSystem(); } });
+  customSysListEl.addEventListener("click", e=>{
+    const addb=e.target.closest("[data-saadd]"); if(addb){ addCustomAction(addb.getAttribute("data-saadd")); return; }
+    const adel=e.target.closest("[data-sadel]"); if(adel){ if(editing) return; const s=sysById(adel.getAttribute("data-sysid")); if(s){ pushUndo("sysactiondel"); s.actions=ensureSysActions(s).filter(a=>a.id!==adel.getAttribute("data-sadel")); renderCustomSystems(); save(); } return; }
+    const sdel=e.target.closest("[data-sdel]"); if(sdel){ if(editing) return; const id=sdel.getAttribute("data-sdel"), s=sysById(id); if(s && (s.name || (s.actions&&s.actions.length)) && !confirm("Delete the system «"+(s.name||"")+"»?")) return; pushUndo("sysdel"); state.systems=state.systems.filter(x=>x.id!==id); renderCustomSystems(); save(); }
+  });
+  customSysListEl.addEventListener("input", e=>{
+    const t=e.target;
+    if(t.matches("[data-sname]")){ const s=sysById(t.getAttribute("data-sname")); if(s){ pushUndo("sysname:"+s.id); s.name=t.value; saveSoon(); } }
+    else if(t.matches("[data-satext]")){ const s=sysById(t.getAttribute("data-sysid")); if(s){ const a=ensureSysActions(s).find(x=>x.id===t.getAttribute("data-satext")); if(a){ pushUndo("sysactiontext:"+a.id); a.text=t.value; saveSoon(); } } }
+  });
 
   /* ============ events: notes ============ */
   document.getElementById("note-add-btn").addEventListener("click", addNote);
@@ -2408,7 +2498,7 @@
   document.getElementById("btn-import").addEventListener("click", ()=>{ if(editing) return; document.getElementById("file-import").click(); });
   document.getElementById("file-import").addEventListener("change", e=>{ const f=e.target.files[0]; if(f) importData(f); e.target.value=""; });
   document.getElementById("btn-reset").addEventListener("click", ()=>{ if(editing) return; if(!confirm("Restore the example habits? This replaces your habits and clears the history.")) return; pushUndo("reset"); seedExample(); selectedKey=TODAY_KEY; renderAll(); save(); });
-  document.getElementById("btn-clear").addEventListener("click", ()=>{ if(editing) return; if(!confirm("Clear the diary? Habits, goals, history and reminders are removed, and the title, categories, colors and interface texts are reset to defaults.")) return; pushUndo("clear"); state.habits=[]; state.log={}; state.reminders=[]; state.goals=[]; state.ui={}; Object.assign(template, clone(DEFAULT_TEMPLATE)); state.theme=clone(DEFAULT_THEME); state.frentes=clone(DEFAULT_FRENTES); openGoals.clear(); selectedKey=TODAY_KEY; renderAll(); save(); });
+  document.getElementById("btn-clear").addEventListener("click", ()=>{ if(editing) return; if(!confirm("Clear the diary? Habits, goals, history and reminders are removed, and the title, categories, colors and interface texts are reset to defaults.")) return; pushUndo("clear"); state.habits=[]; state.log={}; state.reminders=[]; state.goals=[]; state.systems=[]; state.ui={}; Object.assign(template, clone(DEFAULT_TEMPLATE)); state.theme=clone(DEFAULT_THEME); state.frentes=clone(DEFAULT_FRENTES); openGoals.clear(); selectedKey=TODAY_KEY; renderAll(); save(); });
 
   /* ============ events: swatches ============ */
   document.getElementById("swatches").addEventListener("click", e=>{ if(editing) return; const s=e.target.closest("[data-accent]"); if(s){ pushUndo("accent"); applyAccent(s.getAttribute("data-accent")); save(); } });

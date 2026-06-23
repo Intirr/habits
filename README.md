@@ -93,15 +93,18 @@ navegador (`localStorage`).
   categorías (vienen Cuerpo, Mente, Alma y Valor profesional como ejemplo).
 - **Color de acento:** elige un preset o un color personalizado.
 - **Hábitos con horario:** opcionalmente añade hora de inicio y fin.
-- **Exportar / importar:**
-  - **PNG** de cualquier pestaña (botón «📷 PNG»), más **texto** de la rutina de hábitos.
-  - **Exportar datos** / **Importar datos** en `.json` para respaldar o mover tus datos
-    entre dispositivos. El respaldo incluye **todo**: el título y la personalización de la
-    interfaz, las categorías y colores, los hábitos y sus sistemas, las metas, la bitácora,
-    las reflexiones, las lecturas, los recordatorios y las finanzas.
-- **Restaurar ejemplo** y **Vaciar** para empezar de cero. **Vaciar** borra los hábitos,
-  metas, historial y recordatorios, y **restablece** el título, las categorías, los colores
-  y los textos de la interfaz a los originales.
+- **Menú «Datos» (en todas las pestañas):** en la barra superior, junto a Deshacer/Rehacer,
+  un menú **«⤓ Datos»** disponible desde cualquier pestaña con **Exportar datos**,
+  **Importar datos**, **Restaurar ejemplo** y **Vaciar**.
+  - **Exportar / Importar datos** en `.json` para respaldar o mover tus datos entre
+    dispositivos. El respaldo incluye **todo**: el título y la personalización de la interfaz,
+    las categorías y colores, los hábitos y sus sistemas, las metas, la bitácora, las
+    reflexiones, las lecturas, los recordatorios y las finanzas.
+  - **Restaurar ejemplo** y **Vaciar** para empezar de cero. **Vaciar** borra los hábitos,
+    metas, historial y recordatorios, y **restablece** el título, las categorías, los colores
+    y los textos de la interfaz a los originales.
+- **Descargar imagen/texto:** **PNG** de cualquier pestaña (botón «📷 PNG»), más **texto**
+  de la rutina de hábitos.
 
 ## Uso
 
@@ -118,7 +121,7 @@ navegador (`localStorage`).
 3. En la pestaña **«Personalizar»**: cambia título, categorías y colores (tema), y activa
    **«Editar interfaz»** para reescribir cualquier texto de la pantalla.
 4. ¿Te equivocaste? Usa **«↶ Deshacer»** (o `Ctrl/Cmd+Z`).
-5. Respalda con **«Exportar datos»** cuando quieras.
+5. Respalda con **«⤓ Datos» → «Exportar datos»** (desde cualquier pestaña) cuando quieras.
 
 > Los datos viven en el navegador (`localStorage`). Si borras los datos del sitio o
 > usas otro dispositivo, impórtalos desde tu respaldo `.json`.

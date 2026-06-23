@@ -320,7 +320,19 @@
   .tab{font-family:var(--mono);font-size:.64rem;letter-spacing:.08em;text-transform:uppercase;color:var(--text-2);background:transparent;border:0;border-radius:999px;padding:8px 16px;cursor:pointer;transition:all .15s ease;white-space:nowrap}
   .tab:hover{color:var(--text)}
   .tab.active{color:var(--on-accent);background:var(--accent);font-weight:700}
-  .undo-group{display:inline-flex;gap:8px;margin-left:auto}
+  .top-tools{display:inline-flex;align-items:center;gap:8px;margin-left:auto}
+  .undo-group{display:inline-flex;gap:8px}
+  /* global data menu (export / import / restore / clear) */
+  .data-menu{position:relative}
+  .data-menu>summary{display:inline-flex;align-items:center;gap:.4em;list-style:none;cursor:pointer}
+  .data-menu>summary::-webkit-details-marker{display:none}
+  .data-menu>summary::marker{content:""}
+  .data-menu[open]>summary{border-color:var(--accent-line);color:var(--text)}
+  .data-menu-pop{position:absolute;right:0;top:calc(100% + 6px);z-index:30;display:flex;flex-direction:column;gap:4px;min-width:194px;background:var(--ink-1);border:1px solid var(--line);border-radius:12px;padding:8px;box-shadow:0 14px 36px rgba(0,0,0,.5)}
+  .menu-item{font-family:var(--mono);font-size:.64rem;letter-spacing:.06em;text-transform:uppercase;color:var(--text-2);background:transparent;border:1px solid transparent;border-radius:8px;padding:10px 11px;cursor:pointer;text-align:left;transition:all .15s ease;display:flex;align-items:center;gap:.5em}
+  .menu-item:hover{background:var(--ink-2);color:var(--text)}
+  .menu-item.danger{color:var(--cuerpo)}
+  .menu-item.danger:hover{background:color-mix(in srgb, var(--cuerpo) 12%, transparent)}
   .tab-count{display:inline-flex;align-items:center;justify-content:center;min-width:16px;height:16px;padding:0 4px;margin-left:6px;border-radius:999px;background:var(--accent);color:var(--on-accent);font-size:.56rem;font-weight:700;vertical-align:middle}
   .tab.active .tab-count{background:var(--on-accent);color:var(--accent)}
   .tab-count[hidden]{display:none}
@@ -600,9 +612,21 @@
           <button type="button" class="tab" id="tab-money" role="tab"><span class="tab-label" data-ui="tabMoney">Finanzas</span></button>
           <button type="button" class="tab" id="tab-settings" role="tab"><span class="tab-label" data-ui="tabSettings">Personalizar</span></button>
         </div>
-        <div class="undo-group">
-          <button type="button" class="tool-btn" id="btn-undo" disabled title="Deshacer (Ctrl+Z)">↶ <span data-ui="btnUndo">Deshacer</span></button>
-          <button type="button" class="tool-btn" id="btn-redo" disabled title="Rehacer (Ctrl+Mayús+Z)">↷ <span data-ui="btnRedo">Rehacer</span></button>
+        <div class="top-tools">
+          <details class="data-menu" id="data-menu">
+            <summary class="tool-btn data-summary" title="Datos: exportar, importar, restaurar o vaciar">⤓ <span data-ui="btnData">Datos</span></summary>
+            <div class="data-menu-pop">
+              <button type="button" class="menu-item" id="btn-export"><span data-ui="btnExport">Exportar datos</span></button>
+              <button type="button" class="menu-item" id="btn-import"><span data-ui="btnImport">Importar datos</span></button>
+              <button type="button" class="menu-item" id="btn-reset"><span data-ui="btnReset">Restaurar ejemplo</span></button>
+              <button type="button" class="menu-item danger" id="btn-clear"><span data-ui="btnClear">Vaciar</span></button>
+              <input type="file" id="file-import" accept="application/json,.json" hidden>
+            </div>
+          </details>
+          <div class="undo-group">
+            <button type="button" class="tool-btn" id="btn-undo" disabled title="Deshacer (Ctrl+Z)">↶ <span data-ui="btnUndo">Deshacer</span></button>
+            <button type="button" class="tool-btn" id="btn-redo" disabled title="Rehacer (Ctrl+Mayús+Z)">↷ <span data-ui="btnRedo">Rehacer</span></button>
+          </div>
         </div>
       </div>
 
@@ -661,11 +685,6 @@
       <div class="actions">
         <button type="button" class="btn solid" id="btn-png"><span data-ui="btnPng">Descargar PNG</span></button>
         <button type="button" class="btn" id="btn-txt"><span data-ui="btnTxt">Descargar texto</span></button>
-        <button type="button" class="btn" id="btn-export"><span data-ui="btnExport">Exportar datos</span></button>
-        <button type="button" class="btn" id="btn-import"><span data-ui="btnImport">Importar datos</span></button>
-        <button type="button" class="btn" id="btn-reset"><span data-ui="btnReset">Restaurar ejemplo</span></button>
-        <button type="button" class="btn" id="btn-clear"><span data-ui="btnClear">Vaciar</span></button>
-        <input type="file" id="file-import" accept="application/json,.json" hidden>
       </div>
     </div>
 
@@ -2647,6 +2666,10 @@
   document.getElementById("file-import").addEventListener("change", e=>{ const f=e.target.files[0]; if(f) importData(f); e.target.value=""; });
   document.getElementById("btn-reset").addEventListener("click", ()=>{ if(editing) return; if(!confirm("¿Restaurar los hábitos de ejemplo? Esto reemplaza tus hábitos y borra el historial.")) return; pushUndo("reset"); seedExample(); selectedKey=TODAY_KEY; renderAll(); save(); });
   document.getElementById("btn-clear").addEventListener("click", ()=>{ if(editing) return; if(!confirm("¿Vaciar el diario? Se eliminan los hábitos, metas, historial y recordatorios, y se restablecen el título, las categorías, los colores y los textos de la interfaz.")) return; pushUndo("clear"); state.habits=[]; state.log={}; state.reminders=[]; state.goals=[]; state.systems=[]; state.ui={}; Object.assign(template, clone(DEFAULT_TEMPLATE)); state.theme=clone(DEFAULT_THEME); state.frentes=clone(DEFAULT_FRENTES); openGoals.clear(); selectedKey=TODAY_KEY; renderAll(); save(); });
+  /* data menu: close after running an action (unless editing the labels) or when clicking away */
+  const dataMenu=document.getElementById("data-menu");
+  dataMenu.addEventListener("click", e=>{ if(!editing && e.target.closest(".menu-item")) dataMenu.open=false; });
+  document.addEventListener("click", e=>{ if(dataMenu.open && !dataMenu.contains(e.target)) dataMenu.open=false; });
 
   /* ============ events: swatches ============ */
   document.getElementById("swatches").addEventListener("click", e=>{ if(editing) return; const s=e.target.closest("[data-accent]"); if(s){ pushUndo("accent"); applyAccent(s.getAttribute("data-accent")); save(); } });

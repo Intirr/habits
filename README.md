@@ -33,6 +33,13 @@ navegador (`localStorage`).
   (p. ej. L–V, fin de semana o los días que elijas). El resumen del día solo cuenta los que
   tocan hoy. Además puedes **filtrar la lista por categoría (frente)** y **reordenar** los
   hábitos.
+- **Indicador de hábitos sin hacer:** cada hábito muestra sus últimos 7 días con puntos —
+  **verde** (hecho), **rojo** (tocaba y no lo hiciste) o tenue (pendiente o no tocaba). Al
+  ver un día pasado, los hábitos que no cumpliste se marcan con un borde rojo y la etiqueta
+  **«✗ sin hacer»**. Un día solo cuenta como «sin hacer» a partir de la primera vez que
+  cumples ese hábito (los hábitos nuevos no se marcan).
+- **Pensado para el móvil:** las pestañas se deslizan en una sola fila, las secciones y
+  formularios se apilan, y los controles se adaptan a pantallas pequeñas.
 - **Sistemas (acciones y procesos):** «no subes al nivel de tus metas, caes al nivel de tus
   sistemas». La pestaña **«Sistemas»** tiene dos partes:
   - **Sistemas por hábito:** para cada hábito diseñas la lista de **acciones concretas** que

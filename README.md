@@ -1,7 +1,7 @@
 # Diario personal · BYMCYL
 
 Un **diario personal** todo en uno: resumen del día, hábitos, bitácora, notas,
-lecturas, recordatorios, progreso y dinero. Personalizable y con toda la interfaz
+lecturas, recordatorios, progreso y finanzas. Personalizable y con toda la interfaz
 editable. Es un único archivo HTML sin dependencias ni build: ábrelo en cualquier
 navegador (`diario-personal.html`) y listo. Tus datos se guardan automáticamente en el
 navegador (`localStorage`).
@@ -15,11 +15,12 @@ navegador (`localStorage`).
   día), **«Sistemas»** (las acciones para cada hábito), **«Bitácora»** (ánimo, enfoque y
   diario), **«Notas»** (ideas y planes), **«Lecturas»** (libros en curso),
   **«Recordatorios»** (actividades programadas, con contador de pendientes), **«Progreso»**
-  (metas semanales/mensuales, reflexión semanal, historial y rachas), **«Dinero»**
-  (alcancías y metas) y **«Personalizar»** (contenido, colores y edición de la interfaz).
+  (metas semanales/mensuales, reflexión semanal, historial y rachas), **«Finanzas»**
+  (ingresos, gastos, estado de la cuenta, alcancías y metas) y **«Personalizar»** (contenido,
+  colores y edición de la interfaz).
 - **Inicio / Resumen del día:** un panel de inicio con un saludo y seis tarjetas que
   resumen tu día y enlazan a cada sección: progreso de hábitos de hoy, ánimo y top 3,
-  recordatorios pendientes (y vencidos), lectura actual, ahorro y próxima meta, y tu racha
+  recordatorios pendientes (y vencidos), lectura actual, saldo de la cuenta y próxima meta, y tu racha
   con las estadísticas de la semana.
 - **Bitácora del día:** combina tres rutinas de reflexión en una pestaña por día:
   - **Ánimo del día:** registra cómo te sientes (1–5 con caritas) y mira una mini
@@ -52,17 +53,20 @@ navegador (`localStorage`).
   se guardan solas y puedes **buscarlas** con el buscador.
 - **Descargar PNG en cada pestaña** (excepto Personalizar): genera una imagen con el estilo
   del diario de lo que ves — tu resumen, rutina, bitácora, notas, lecturas, recordatorios,
-  progreso o dinero.
+  progreso o finanzas.
 - **Deshacer / Rehacer:** botones **«↶ Deshacer»** y **«↷ Rehacer»** (o `Ctrl/Cmd+Z` y
   `Ctrl/Cmd+Mayús+Z`) revierten cualquier cambio: marcar, editar, borrar, frecuencia,
-  bitácora, reflexión, notas, lecturas, categorías, colores, recordatorios, dinero, etc.
+  bitácora, reflexión, notas, lecturas, categorías, colores, recordatorios, finanzas, etc.
 - **Recordatorios:** apunta actividades programadas con **fecha y hora**. Se ordenan por
   fecha, lo vencido se resalta, y puedes marcarlas como hechas, editarlas o borrarlas.
   La pestaña muestra un contador de pendientes.
-- **Dinero (alcancías y metas):** crea **alcancías** para ahorrar y **metas de compra**
-  con su precio objetivo. Guarda o retira dinero en cada una y mira el progreso hacia la
-  meta, con un resumen (ahorrado total, nº de alcancías, metas cumplidas y cuánto falta).
-  El símbolo de moneda es configurable.
+- **Finanzas (cuenta + alcancías):** en la pestaña **«Finanzas»**, dos herramientas:
+  - **Estado de la cuenta:** registra **ingresos** y **gastos** (tipo, concepto, cantidad y
+    fecha) y mira tu **saldo**, total de ingresos y total de gastos. El saldo también aparece
+    en la tarjeta de Inicio.
+  - **Alcancías y metas:** crea **alcancías** para ahorrar y **metas de compra** con su precio
+    objetivo; guarda o retira dinero y mira el progreso hacia cada objetivo. El símbolo de
+    moneda es configurable.
 - **Progreso (metas, historial y rachas):** reúne las **metas semanales/mensuales**, la
   **reflexión semanal** y un calendario de actividad por meses (estilo «contribuciones») con
   rango **Mes / 3 meses / 6 meses / Año** y estadísticas (racha actual, mejor racha, días
@@ -87,7 +91,7 @@ navegador (`localStorage`).
   - **Exportar datos** / **Importar datos** en `.json` para respaldar o mover tus datos
     entre dispositivos. El respaldo incluye **todo**: el título y la personalización de la
     interfaz, las categorías y colores, los hábitos y sus sistemas, las metas, la bitácora,
-    las reflexiones, las lecturas, los recordatorios y el dinero.
+    las reflexiones, las lecturas, los recordatorios y las finanzas.
 - **Restaurar ejemplo** y **Vaciar** para empezar de cero. **Vaciar** borra los hábitos,
   metas, historial y recordatorios, y **restablece** el título, las categorías, los colores
   y los textos de la interfaz a los originales.
@@ -101,8 +105,9 @@ navegador (`localStorage`).
    cada hábito. **«Bitácora»**: registra tu ánimo, tu top 3 y tu diario del día.
    **«Notas»**: apunta ideas y planes (con buscador). **«Lecturas»**: lleva tus libros en
    curso. **«Recordatorios»**: actividades programadas con fecha y hora. **«Progreso»**:
-   metas semanales/mensuales, reflexión semanal e historial y rachas. **«Dinero»**:
-   alcancías y metas de compra. Todo se guarda solo (y puedes bajar un PNG de cada vista).
+   metas semanales/mensuales, reflexión semanal e historial y rachas. **«Finanzas»**:
+   ingresos, gastos, estado de la cuenta, alcancías y metas. Todo se guarda solo (y puedes
+   bajar un PNG de cada vista).
 3. En la pestaña **«Personalizar»**: cambia título, categorías y colores (tema), y activa
    **«Editar interfaz»** para reescribir cualquier texto de la pantalla.
 4. ¿Te equivocaste? Usa **«↶ Deshacer»** (o `Ctrl/Cmd+Z`).

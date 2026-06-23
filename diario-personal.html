@@ -384,6 +384,27 @@
   .jar-del:hover{border-color:var(--cuerpo);color:var(--cuerpo)}
   .jar-empty{grid-column:1/-1;color:var(--muted);font-size:.9rem;text-align:center;padding:24px;border:1px dashed var(--line);border-radius:12px}
 
+  /* FINANCES (ingresos / gastos · estado de la cuenta) */
+  .account-stats .stat .v.pos{color:var(--valor)}
+  .account-stats .stat .v.neg{color:var(--cuerpo)}
+  .tx-add{margin-top:14px}
+  .tx-list{display:flex;flex-direction:column;gap:8px;margin-top:16px}
+  .tx-item{display:flex;flex-wrap:wrap;align-items:center;gap:9px;background:var(--ink-1);border:1px solid var(--line);border-left:3px solid var(--c,var(--accent));border-radius:10px;padding:9px 12px}
+  .tx-item.in{--c:var(--valor)}
+  .tx-item.out{--c:var(--cuerpo)}
+  .tx-type-sel{font-family:var(--mono);font-size:.7rem;letter-spacing:.04em;text-transform:uppercase;font-weight:700;background:var(--ink);border:1px solid var(--line);border-radius:7px;padding:6px 7px;color-scheme:dark;cursor:pointer}
+  .tx-item.in .tx-type-sel{color:var(--valor)}
+  .tx-item.out .tx-type-sel{color:var(--cuerpo)}
+  .tx-desc{flex:1 1 160px;min-width:120px;font-family:var(--sans);font-size:.95rem;color:var(--text);background:transparent;border:1px solid transparent;border-radius:7px;padding:5px 8px}
+  .tx-desc:hover{background:var(--ink-2)}
+  .tx-desc:focus{outline:none;background:var(--ink);border-color:var(--accent-line)}
+  .tx-amt{font-family:var(--mono);font-size:.82rem;font-weight:700;color:var(--text);background:var(--ink);border:1px solid var(--line);border-radius:7px;padding:5px 7px;width:104px;color-scheme:dark;text-align:right}
+  .tx-amt:focus{outline:none;border-color:var(--accent-line)}
+  .tx-date-in{font-family:var(--mono);font-size:.74rem;color:var(--muted);background:var(--ink);border:1px solid var(--line);border-radius:7px;padding:5px 6px;color-scheme:dark}
+  .tx-del{flex:0 0 auto;width:28px;height:28px;border-radius:7px;border:1px solid var(--line);background:transparent;color:var(--muted);font-size:1.2rem;line-height:1;cursor:pointer;transition:all .15s ease}
+  .tx-del:hover{border-color:var(--cuerpo);color:var(--cuerpo)}
+  .tx-empty{color:var(--muted);font-size:.9rem;text-align:center;padding:20px;border:1px dashed var(--line);border-radius:10px;margin-top:14px}
+
   /* GOALS (metas semanales/mensuales · independientes de los hábitos) */
   .goals{margin-bottom:18px}
   .goal-add{margin-top:14px}
@@ -555,7 +576,7 @@
           <button type="button" class="tab" id="tab-reading" role="tab">Lecturas</button>
           <button type="button" class="tab" id="tab-reminders" role="tab">Recordatorios<span class="tab-count" id="rem-count" hidden></span></button>
           <button type="button" class="tab" id="tab-progress" role="tab">Progreso</button>
-          <button type="button" class="tab" id="tab-money" role="tab">Dinero</button>
+          <button type="button" class="tab" id="tab-money" role="tab">Finanzas</button>
           <button type="button" class="tab" id="tab-settings" role="tab">Personalizar</button>
         </div>
         <div class="undo-group">
@@ -800,21 +821,39 @@
 
     <!-- ===================== VISTA: DINERO ===================== -->
     <div id="view-money" hidden>
-      <section class="panel money" aria-label="Dinero">
+      <section class="panel money" aria-label="Finanzas">
         <div class="rem-head">
-          <div class="panel-title" data-ui="lblMoney">Dinero · alcancías y metas</div>
+          <div class="panel-title" data-ui="lblMoney">Finanzas</div>
           <button type="button" class="tool-btn png-btn" title="Descargar PNG de esta pestaña">📷 PNG</button>
           <label class="cur-field"><span class="fl" data-ui="lblCurrency">Moneda</span><input id="cur-input" class="inp" type="text" maxlength="3" aria-label="Símbolo de moneda"></label>
         </div>
-        <p class="hint" data-ui="moneyHint">Crea alcancías para ahorrar y metas para tus compras. Pon una meta (precio objetivo) y guarda o retira dinero; verás tu progreso hacia cada objetivo.</p>
-        <div class="stats" id="money-stats"></div>
-        <div class="addbar money-add">
-          <div class="field field-text"><label class="fl" for="jar-name" data-ui="lblJarName">Nueva alcancía / meta</label><input id="jar-name" class="inp" type="text" placeholder="Ej. Vacaciones, Teléfono nuevo…" autocomplete="off"></div>
-          <div class="field field-time"><label class="fl" for="jar-target" data-ui="lblJarTarget">Meta (opcional)</label><input id="jar-target" class="inp" type="number" min="0" step="any" placeholder="0"></div>
-          <div class="field field-frente"><label class="fl" for="jar-color" data-ui="lblJarColor">Color</label><input id="jar-color" class="inp jar-color-pick" type="color" value="#7FB39A"></div>
-          <button type="button" class="add-btn" id="jar-add-btn"><span data-ui="btnJarAdd">Crear</span></button>
+
+        <div class="sys-section">
+          <div class="sys-section-title" data-ui="lblAccount">Estado de la cuenta</div>
+          <p class="hint" data-ui="accountHint">Registra tus ingresos y gastos para ver el saldo de tu cuenta.</p>
+          <div class="stats" id="account-stats"></div>
+          <div class="addbar tx-add">
+            <div class="field field-time"><label class="fl" for="tx-type" data-ui="lblTxType">Tipo</label><select id="tx-type" class="sel"><option value="in">Ingreso</option><option value="out">Gasto</option></select></div>
+            <div class="field field-text"><label class="fl" for="tx-desc" data-ui="lblTxDesc">Concepto</label><input id="tx-desc" class="inp" type="text" placeholder="Ej. Sueldo, Mercado, Transporte…" autocomplete="off"></div>
+            <div class="field field-time"><label class="fl" for="tx-amount" data-ui="lblTxAmount">Cantidad</label><input id="tx-amount" class="inp" type="number" min="0" step="any" placeholder="0"></div>
+            <div class="field field-time"><label class="fl" for="tx-date" data-ui="lblTxDate">Fecha</label><input id="tx-date" class="inp" type="date"></div>
+            <button type="button" class="add-btn" id="tx-add-btn"><span data-ui="btnTxAdd">Agregar</span></button>
+          </div>
+          <div class="tx-list" id="tx-list"></div>
         </div>
-        <div class="jar-list" id="jar-list"></div>
+
+        <div class="sys-section">
+          <div class="sys-section-title" data-ui="lblJars">Alcancías y metas</div>
+          <p class="hint" data-ui="moneyHint">Crea alcancías para ahorrar y metas para tus compras. Pon una meta (precio objetivo) y guarda o retira dinero; verás tu progreso hacia cada objetivo.</p>
+          <div class="stats" id="money-stats"></div>
+          <div class="addbar money-add">
+            <div class="field field-text"><label class="fl" for="jar-name" data-ui="lblJarName">Nueva alcancía / meta</label><input id="jar-name" class="inp" type="text" placeholder="Ej. Vacaciones, Teléfono nuevo…" autocomplete="off"></div>
+            <div class="field field-time"><label class="fl" for="jar-target" data-ui="lblJarTarget">Meta (opcional)</label><input id="jar-target" class="inp" type="number" min="0" step="any" placeholder="0"></div>
+            <div class="field field-frente"><label class="fl" for="jar-color" data-ui="lblJarColor">Color</label><input id="jar-color" class="inp jar-color-pick" type="color" value="#7FB39A"></div>
+            <button type="button" class="add-btn" id="jar-add-btn"><span data-ui="btnJarAdd">Crear</span></button>
+          </div>
+          <div class="jar-list" id="jar-list"></div>
+        </div>
       </section>
     </div>
 
@@ -887,7 +926,7 @@
   ];
   const DEFAULT_THEME = THEMES[0];
   const GOAL_DEFAULTS = { weekly:3, monthly:12 };
-  const DEFAULT_MONEY = { currency:"$", jars:[] };
+  const DEFAULT_MONEY = { currency:"$", jars:[], tx:[] };
   const JAR_COLORS = ["#7FB39A","#E2785B","#69AED2","#AC92CE","#E0A458","#E08AA8","#5FC6C9","#86C28F"];
   const STARTER = [
     ["Beber un vaso de agua al despertar y completar 2 litros durante el día","cuerpo"],
@@ -972,7 +1011,7 @@
       if(Array.isArray(d.books)) state.books=d.books;
       if(Array.isArray(d.systems)) state.systems=d.systems;
       if(Array.isArray(d.goals)) state.goals=d.goals;
-      if(d.money && typeof d.money==="object"){ state.money=Object.assign(clone(DEFAULT_MONEY), d.money); if(!Array.isArray(state.money.jars)) state.money.jars=[]; }
+      if(d.money && typeof d.money==="object"){ state.money=Object.assign(clone(DEFAULT_MONEY), d.money); if(!Array.isArray(state.money.jars)) state.money.jars=[]; if(!Array.isArray(state.money.tx)) state.money.tx=[]; }
       if(d.theme && typeof d.theme==="object") state.theme=Object.assign(clone(DEFAULT_THEME), d.theme);
       if([1,3,6,12].includes(d.rangeMonths)) rangeMonths=d.rangeMonths;
       if(["inicio","tracker","sistemas","bita","notes","reading","reminders","progress","money","settings"].includes(d.view)) currentView=d.view;
@@ -995,9 +1034,14 @@
       { id:uid("r"), text:"Revisar mis objetivos de la semana", date:dateKey(new Date()), time:"20:00", done:false },
       { id:uid("r"), text:"Llamar para agendar una cita", date:tomorrow, time:"10:30", done:false }
     ];
+    const txToday=dateKey(new Date());
     state.money = { currency:"$", jars:[
       { id:uid("j"), name:"Fondo de emergencia", target:null, saved:0, color:JAR_COLORS[0] },
       { id:uid("j"), name:"Teléfono nuevo", target:1200000, saved:150000, color:JAR_COLORS[1] }
+    ], tx:[
+      { id:uid("t"), type:"in",  desc:"Sueldo del mes",        amount:2500000, date:dateKey(addDays(new Date(),-3)) },
+      { id:uid("t"), type:"out", desc:"Mercado de la semana",  amount:180000,  date:dateKey(addDays(new Date(),-1)) },
+      { id:uid("t"), type:"out", desc:"Transporte",            amount:25000,   date:txToday }
     ] };
     state.goals = [
       { id:uid("g"), text:"Sesión de fuerza en el gimnasio", period:"weekly", target:3, marks:[] },
@@ -1060,7 +1104,7 @@
     state.weekly = (d.weekly && typeof d.weekly==="object") ? d.weekly : {};
     state.books = Array.isArray(d.books) ? d.books : [];
     state.systems = Array.isArray(d.systems) ? d.systems : [];
-    state.money = Object.assign(clone(DEFAULT_MONEY), (d.money && typeof d.money==="object") ? d.money : {}); if(!Array.isArray(state.money.jars)) state.money.jars=[];
+    state.money = Object.assign(clone(DEFAULT_MONEY), (d.money && typeof d.money==="object") ? d.money : {}); if(!Array.isArray(state.money.jars)) state.money.jars=[]; if(!Array.isArray(state.money.tx)) state.money.tx=[];
     state.theme = Object.assign(clone(DEFAULT_THEME), d.theme || {});
   }
   /* call BEFORE mutating. tag coalesces rapid edits to the same field into one step. */
@@ -1612,7 +1656,7 @@
   }
   function renderMoney(){
     const ci=document.getElementById("cur-input"); if(ci && document.activeElement!==ci) ci.value=state.money.currency||"$";
-    renderMoneyStats();
+    renderAccountStats(); renderTx(); renderMoneyStats();
     jarListEl.innerHTML = state.money.jars.length ? state.money.jars.map(jarHTML).join("")
       : '<div class="jar-empty">Aún no tienes alcancías. Crea una arriba: ponle nombre y, si es una meta de compra, su precio objetivo.</div>';
   }
@@ -1634,6 +1678,49 @@
     pushUndo(sign>0?"jdep":"jwd");
     j.saved = Math.max(0, (+j.saved||0) + sign*amt);
     renderMoney(); save();
+  }
+
+  /* ---- income / expenses (movimientos · estado de la cuenta) ---- */
+  const txListEl = document.getElementById("tx-list");
+  function ensureTx(){ if(!Array.isArray(state.money.tx)) state.money.tx=[]; return state.money.tx; }
+  function txById(id){ return ensureTx().find(t=>t.id===id); }
+  function txTotal(type){ return ensureTx().reduce((s,t)=> t.type===type ? s+(+t.amount||0) : s, 0); }
+  function txBalance(){ return txTotal("in") - txTotal("out"); }
+  function txStamp(t){ return t.date ? parseKey(t.date).getTime() : 0; }
+  function sortedTx(){ return ensureTx().slice().sort((a,b)=> txStamp(b)-txStamp(a)); }
+  function renderAccountStats(){
+    const bal=txBalance();
+    const stats=[
+      {k:"Saldo de la cuenta", v:fmtMoney(bal), cls: bal<0?"neg":(bal>0?"pos":"")},
+      {k:"Ingresos", v:fmtMoney(txTotal("in")), cls:"pos"},
+      {k:"Gastos", v:fmtMoney(txTotal("out")), cls:"neg"}
+    ];
+    const el=document.getElementById("account-stats");
+    if(el) el.innerHTML = stats.map(t=>'<div class="stat"><span class="v'+(t.cls?" "+t.cls:"")+'">'+t.v+'</span><span class="k">'+t.k+'</span></div>').join("");
+  }
+  function txHTML(t){
+    const isIn=t.type==="in";
+    return '<div class="tx-item '+(isIn?"in":"out")+'" data-txid="'+t.id+'">'+
+      '<select class="tx-type-sel" data-txtype="'+t.id+'" aria-label="Tipo"><option value="in"'+(isIn?" selected":"")+'>Ingreso</option><option value="out"'+(!isIn?" selected":"")+'>Gasto</option></select>'+
+      '<input class="tx-desc" type="text" data-txdesc="'+t.id+'" value="'+escapeHTML(t.desc||"")+'" placeholder="Concepto" aria-label="Concepto">'+
+      '<input class="tx-amt" type="number" min="0" step="any" data-txamt="'+t.id+'" value="'+(t.amount!=null?t.amount:"")+'" placeholder="0" aria-label="Cantidad">'+
+      '<input class="tx-date-in" type="date" data-txdate="'+t.id+'" value="'+(t.date||"")+'" aria-label="Fecha">'+
+      '<button type="button" class="tx-del" data-txdel="'+t.id+'" aria-label="Eliminar movimiento">×</button>'+
+    '</div>';
+  }
+  function renderTx(){
+    const list=sortedTx();
+    txListEl.innerHTML = list.length ? list.map(txHTML).join("")
+      : '<div class="tx-empty">Aún no tienes movimientos. Registra un ingreso o un gasto arriba.</div>';
+  }
+  function addTx(){
+    if(editing) return;
+    const ty=document.getElementById("tx-type"), de=document.getElementById("tx-desc"), am=document.getElementById("tx-amount"), dt=document.getElementById("tx-date");
+    const amount=Math.abs(parseFloat(am.value)||0); if(!amount){ am.focus(); return; }
+    pushUndo("txadd");
+    ensureTx().push({ id:uid("t"), type: ty.value==="out"?"out":"in", desc:(de.value||"").trim(), amount, date: dt.value || TODAY_KEY });
+    de.value=""; am.value=""; dt.value="";
+    renderMoney(); save(); de.focus();
   }
 
   /* ============ reading (Lecturas · libros en curso) ============ */
@@ -1743,13 +1830,13 @@
     } else { read='<div class="hc-big">—</div><div class="hc-sub">Sin lecturas activas</div>'; }
     cards.push(homeCard("reading", null, "Leyendo", read));
 
-    // 5) Dinero
-    const jars=state.money.jars, totalSaved=jars.reduce((s,jr)=>s+(+jr.saved||0),0);
+    // 5) Finanzas
+    const jars=state.money.jars, totalSaved=jars.reduce((s,jr)=>s+(+jr.saved||0),0), bal=txBalance();
     const nextGoal=jars.filter(jr=>hasTarget(jr)&&jr.saved<jr.target).sort((a,b)=>jarPct(b)-jarPct(a))[0];
-    let money='<div class="hc-big">'+fmtMoney(totalSaved)+'</div>';
+    let money='<div class="hc-big">'+fmtMoney(bal)+'</div><div class="hc-sub">Saldo de la cuenta</div>';
     money += nextGoal ? (homeBar(jarPct(nextGoal)/100)+'<div class="hc-sub">'+escapeHTML(nextGoal.name)+' · '+jarPct(nextGoal)+'%</div>')
-      : ('<div class="hc-sub">'+(jars.length?('ahorrado en '+jars.length+' alcancía'+(jars.length>1?'s':'')):'Sin alcancías todavía')+'</div>');
-    cards.push(homeCard("money", null, "Dinero", money));
+      : ('<div class="hc-sub">'+(totalSaved>0?('ahorrado '+fmtMoney(totalSaved)):'Sin alcancías todavía')+'</div>');
+    cards.push(homeCard("money", null, "Finanzas", money));
 
     // 6) Constancia
     const gs=globalStreak(), ws=weekStats(THIS_WEEK_KEY);
@@ -2037,7 +2124,17 @@
     }
     return secs;
   }
-  function pngMoney(){ return [{ heading:"Alcancías y metas", items: state.money.jars.map(j=>({ text:j.name, meta: fmtMoney(j.saved)+(hasTarget(j)?(" / "+fmtMoney(j.target)):""), bar: hasTarget(j)? j.saved/j.target : null })), empty:"Sin alcancías." }]; }
+  function pngMoney(){
+    const secs=[{ heading:"Estado de la cuenta", items:[
+      { text:"Saldo de la cuenta", meta:fmtMoney(txBalance()) },
+      { text:"Ingresos", meta:fmtMoney(txTotal("in")) },
+      { text:"Gastos", meta:fmtMoney(txTotal("out")) }
+    ] }];
+    const movs=sortedTx().slice(0,10);
+    if(movs.length) secs.push({ heading:"Movimientos recientes", items: movs.map(t=>({ text:(t.type==="in"?"+ ":"– ")+(t.desc||(t.type==="in"?"Ingreso":"Gasto")), meta:fmtMoney(t.amount)+(t.date?("  ·  "+prettyDate(t.date)):"") })) });
+    secs.push({ heading:"Alcancías y metas", items: state.money.jars.map(j=>({ text:j.name, meta: fmtMoney(j.saved)+(hasTarget(j)?(" / "+fmtMoney(j.target)):""), bar: hasTarget(j)? j.saved/j.target : null })), empty:"Sin alcancías." });
+    return secs;
+  }
   function pngReading(){
     const reading=state.books.filter(b=>b.status!=="done"), done=state.books.filter(b=>b.status==="done"), secs=[];
     if(reading.length) secs.push({ heading:"Leyendo ahora", items: reading.map(b=>({ text:b.title+(b.author?" — "+b.author:""), meta: bookPct(b)+"%", bar: bookPct(b)/100 })) });
@@ -2081,7 +2178,7 @@
   function downloadCurrentPNG(){
     if(editing) return;
     if(currentView==="tracker"){ downloadPNG(); return; }
-    const M={ inicio:["Inicio","Resumen de hoy","inicio",pngHome], sistemas:["Sistemas","Acciones para tus hábitos","sistemas",pngSystems], bita:["Bitácora", prettyDate(selectedKey), "bitacora", pngBita], notes:["Notas","Ideas y planes","notas",pngNotes], reading:["Lecturas","Libros en curso","lecturas",pngReading], reminders:["Recordatorios","Actividades programadas","recordatorios",pngReminders], progress:["Progreso","Metas, historial y rachas","progreso",pngProgress], money:["Dinero","Alcancías y metas","dinero",pngMoney] };
+    const M={ inicio:["Inicio","Resumen de hoy","inicio",pngHome], sistemas:["Sistemas","Acciones para tus hábitos","sistemas",pngSystems], bita:["Bitácora", prettyDate(selectedKey), "bitacora", pngBita], notes:["Notas","Ideas y planes","notas",pngNotes], reading:["Lecturas","Libros en curso","lecturas",pngReading], reminders:["Recordatorios","Actividades programadas","recordatorios",pngReminders], progress:["Progreso","Metas, historial y rachas","progreso",pngProgress], money:["Finanzas","Cuenta, alcancías y metas","finanzas",pngMoney] };
     const m=M[currentView]; if(!m) return;
     downloadCardPNG({ eyebrow:"BYMCYL · "+m[0], title:(template.title||"Mi diario personal").trim()||"Mi diario personal", subtitle:m[1], sections:m[3](), filename:"diario-"+m[2]+".png" });
   }
@@ -2159,7 +2256,7 @@
         state.books = Array.isArray(d.books) ? d.books : [];
         state.systems = Array.isArray(d.systems) ? d.systems : [];
         state.goals = Array.isArray(d.goals) ? d.goals : [];
-        state.money = (d.money && typeof d.money==="object") ? Object.assign(clone(DEFAULT_MONEY), d.money) : clone(DEFAULT_MONEY); if(!Array.isArray(state.money.jars)) state.money.jars=[];
+        state.money = (d.money && typeof d.money==="object") ? Object.assign(clone(DEFAULT_MONEY), d.money) : clone(DEFAULT_MONEY); if(!Array.isArray(state.money.jars)) state.money.jars=[]; if(!Array.isArray(state.money.tx)) state.money.tx=[];
         state.theme = d.theme && typeof d.theme==="object" ? Object.assign(clone(DEFAULT_THEME), d.theme) : clone(DEFAULT_THEME);
         if([1,3,6,12].includes(d.rangeMonths)) rangeMonths=d.rangeMonths;
         migrateHabitGoalsBack(); openGoals.clear(); selectedKey=TODAY_KEY; renderAll(); save();
@@ -2306,6 +2403,23 @@
     const t=e.target; let j;
     if(t.matches("[data-jtarget]")){ j=jarById(t.getAttribute("data-jtarget")); if(j){ pushUndo("jtarget:"+j.id); const v=t.value!=="" ? Math.max(0, parseFloat(t.value)||0) : 0; j.target = v>0 ? v : null; renderMoney(); save(); } }
     else if(t.matches("[data-jcolor]")){ j=jarById(t.getAttribute("data-jcolor")); if(j){ pushUndo("jcolor:"+j.id); j.color=t.value; renderMoney(); save(); } }
+  });
+  // income / expenses
+  document.getElementById("tx-add-btn").addEventListener("click", addTx);
+  document.getElementById("tx-desc").addEventListener("keydown", e=>{ if(e.key==="Enter"){ e.preventDefault(); addTx(); } });
+  document.getElementById("tx-amount").addEventListener("keydown", e=>{ if(e.key==="Enter"){ e.preventDefault(); addTx(); } });
+  txListEl.addEventListener("click", e=>{
+    const del=e.target.closest("[data-txdel]"); if(del){ if(editing) return; const id=del.getAttribute("data-txdel"); const t=txById(id); if(t && (t.desc||t.amount) && !confirm("¿Eliminar este movimiento?")) return; pushUndo("txdel"); state.money.tx=ensureTx().filter(x=>x.id!==id); renderMoney(); save(); }
+  });
+  txListEl.addEventListener("input", e=>{
+    const el=e.target;
+    if(el.matches("[data-txdesc]")){ const t=txById(el.getAttribute("data-txdesc")); if(t){ pushUndo("txdesc:"+t.id); t.desc=el.value; saveSoon(); } }
+    else if(el.matches("[data-txamt]")){ const t=txById(el.getAttribute("data-txamt")); if(t){ pushUndo("txamt:"+t.id); t.amount=Math.abs(parseFloat(el.value)||0); renderAccountStats(); saveSoon(); } }
+  });
+  txListEl.addEventListener("change", e=>{
+    const el=e.target; let t;
+    if(el.matches("[data-txtype]")){ t=txById(el.getAttribute("data-txtype")); if(t){ pushUndo("txtype:"+t.id); t.type=el.value==="out"?"out":"in"; renderMoney(); save(); } }
+    else if(el.matches("[data-txdate]")){ t=txById(el.getAttribute("data-txdate")); if(t){ pushUndo("txdate:"+t.id); t.date=el.value; renderTx(); save(); } }
   });
 
   /* ============ events: lecturas (libros) ============ */

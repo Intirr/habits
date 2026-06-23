@@ -86,9 +86,9 @@ navegador (`localStorage`).
   textos y títulos.
 - **Interfaz 100% editable:** en la pestaña **«Personalizar»**, dentro de *Edición de la
   interfaz*, pulsa **«Editar interfaz»** y cambia *cualquier* texto: título, subtítulo,
-  frase, etiquetas, textos de botones, nombres de sección y el pie de página. Pulsa
-  **«Listo»** para volver al modo de uso. «Restaurar textos» revierte los textos a los
-  originales.
+  frase, **los nombres de las pestañas**, etiquetas, textos de botones, nombres de sección y
+  el pie de página. Pulsa **«Listo»** para volver al modo de uso. «Restaurar textos»
+  revierte los textos a los originales.
 - **Categorías (frentes) personalizables:** crea, renombra, recolorea y elimina las
   categorías (vienen Cuerpo, Mente, Alma y Valor profesional como ejemplo).
 - **Color de acento:** elige un preset o un color personalizado.

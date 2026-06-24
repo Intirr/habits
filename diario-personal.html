@@ -298,12 +298,13 @@
   .stat .v{font-family:var(--serif);font-weight:600;font-size:1.5rem;color:var(--head);line-height:1}
   .stat .v small{font-size:.9rem;color:var(--text-2)}
   .stat .k{font-family:var(--mono);font-size:.56rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
-  .cal-months{display:grid;grid-template-columns:repeat(auto-fill,minmax(232px,1fr));gap:18px}
-  .cal-month{display:flex;flex-direction:column;gap:7px}
+  /* fixed-size cells (GitHub-contributions style) so the map never resizes with the selected day or range */
+  .cal-months{--cal-cell:30px;display:flex;flex-wrap:wrap;align-items:flex-start;gap:18px 24px}
+  .cal-month{display:flex;flex-direction:column;gap:7px;flex:0 0 auto}
   .cal-mh{font-family:var(--mono);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-2)}
-  .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+  .cal-grid{display:grid;grid-template-columns:repeat(7,var(--cal-cell));gap:4px;justify-content:start}
   .cal-dow{font-family:var(--mono);font-size:.5rem;text-align:center;color:var(--muted);padding-bottom:1px}
-  .cal-cell{position:relative;aspect-ratio:1;border-radius:6px;border:1px solid var(--line);background:transparent;cursor:pointer;transition:transform .12s ease;display:flex;align-items:flex-start;justify-content:flex-end}
+  .cal-cell{position:relative;width:var(--cal-cell);height:var(--cal-cell);border-radius:6px;border:1px solid var(--line);background:transparent;cursor:pointer;transition:transform .12s ease;display:flex;align-items:flex-start;justify-content:flex-end}
   .cal-cell:hover{transform:scale(1.1)}
   .cal-cell.pad{border:0;background:transparent!important;cursor:default;pointer-events:none}
   .cal-cell.future{opacity:.3;cursor:default;pointer-events:none}
@@ -313,6 +314,14 @@
   .heat-foot{font-family:var(--mono);font-size:.58rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:8px;margin-top:20px;flex-wrap:wrap}
   .heat-foot .scale{display:inline-flex;gap:3px;align-items:center}
   .heat-foot .sc{width:13px;height:13px;border-radius:4px;border:1px solid var(--line)}
+
+  /* PROGRESS CHARTS */
+  .charts-panel{margin-top:16px}
+  .chart-area{margin-top:18px;width:100%}
+  .ch-svg{width:100%;height:auto;display:block}
+  .ch-base{stroke:var(--line);stroke-width:1}
+  .ch-x{fill:var(--muted);font-family:var(--mono);font-size:9px}
+  .chart-foot{font-family:var(--mono);font-size:.6rem;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);margin-top:12px;text-align:center}
 
   /* TABS + TOP BAR */
   .topbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:22px}
@@ -552,7 +561,7 @@
 
   @media (max-width:760px){
     .stats{grid-template-columns:repeat(3,1fr)}
-    .cal-months{grid-template-columns:1fr}
+    .cal-months{--cal-cell:28px;justify-content:center}
     /* tabs: one swipeable row instead of wrapping into several lines */
     .topbar{flex-direction:column;align-items:stretch;gap:9px}
     .tabs{flex-wrap:nowrap;overflow-x:auto;justify-content:flex-start;scrollbar-width:none;-webkit-overflow-scrolling:touch;scroll-snap-type:x proximity}
@@ -858,6 +867,14 @@
           <span class="scale"><span data-ui="heatLess">Menos</span><span class="sc" id="sc0"></span><span class="sc" id="sc1"></span><span class="sc" id="sc2"></span><span class="sc" id="sc3"></span><span data-ui="heatMore">Más</span></span>
         </div>
       </section>
+      <section class="panel charts-panel" aria-label="Gráficas de progreso">
+        <div class="hist-head">
+          <div class="panel-title" data-ui="lblCharts">Gráficas de progreso</div>
+          <div class="seg" id="chart-seg" role="group" aria-label="Métrica"></div>
+        </div>
+        <div class="chart-area" id="chart-area"></div>
+        <div class="chart-foot" id="chart-foot"></div>
+      </section>
     </div>
 
     <!-- ===================== VISTA: DINERO ===================== -->
@@ -1070,12 +1087,12 @@
     // a habit scheduled on specific weekdays (e.g. Sunday planning)
     state.habits.push({ id:uid("h"), text:"Planear la semana", domain:"valor", start:"", end:"", freq:{type:"days", days:[0]} });
     state.log = {};
-    // seed a little history so streaks and the "missed" indicator show out of the box
+    // seed ~5 weeks of history so streaks, the "missed" indicator and the charts show out of the box
     const _seedNow=new Date();
-    [[0,[1,2,3,5,6]],[1,[1,2,4,5,6]],[2,[2,3,4,6]],[3,[1,3,4,5]],[7,[1,2,3,4,5,6]]].forEach(function(pair){
-      const h=state.habits[pair[0]]; if(!h) return;
-      pair[1].forEach(function(d){ const k=dateKey(addDays(_seedNow,-d)); (state.log[k]||(state.log[k]={}))[h.id]=true; });
-    });
+    for(let d=1; d<=35; d++){ const k=dateKey(addDays(_seedNow,-d));
+      for(let hi=0; hi<13; hi++){ const h=state.habits[hi]; if(!h) continue;
+        if((d*7+hi*3)%5 !== 0) (state.log[k]||(state.log[k]={}))[h.id]=true; }   // ~80% done, with gaps
+    }
     const tomorrow = dateKey(addDays(new Date(), 1));
     state.reminders = [
       { id:uid("r"), text:"Revisar mis objetivos de la semana", date:dateKey(new Date()), time:"20:00", done:false },
@@ -1103,6 +1120,10 @@
       top3:[ { id:uid("p"), text:"Definir las prioridades de hoy", done:false } ],
       note:{ summary:"", win:"", improve:"", gratitude:"Empezar este diario." }
     };
+    // a couple of weeks of moods so the mood chart shows a trend
+    [3,4,4,2,3,5,4,4,3,4,5,3,4,5].forEach(function(mv,idx){ const k=dateKey(addDays(_seedNow,-(idx+1)));
+      if(!state.journal[k]) state.journal[k]={ mood:null, top3:[], note:{summary:"",win:"",improve:"",gratitude:""} };
+      state.journal[k].mood=mv; });
     state.weekly = {};
     state.weekly[dateKey(startOfWeek(new Date()))] = {
       went:"", improve:"", learned:"", next:"Definir un enfoque claro para la semana."
@@ -1614,7 +1635,54 @@
     document.getElementById("cal-months").innerHTML=html;
     paintHeatScale();
   }
-  function renderHistory(){ renderRangeSeg(); renderStats(); renderCalendar(); renderWeekly(); }
+  function renderHistory(){ renderRangeSeg(); renderStats(); renderCalendar(); renderWeekly(); renderCharts(); }
+
+  /* ============ progress charts (SVG) ============ */
+  const CHART_SEG = [["habits","Hábitos"],["mood","Ánimo"],["consistency","Constancia"]];
+  let chartMetric = "habits";
+  function weeklyCompletions(weeks){
+    const out=[], mon=startOfWeek(new Date());
+    for(let i=weeks-1;i>=0;i--){ const start=addDays(mon,-i*7); let sum=0;
+      for(let d=0;d<7;d++){ const k=dateKey(addDays(start,d)); if(k>TODAY_KEY) break; sum+=dayDoneCount(k); }
+      out.push({ label:start.getDate()+" "+MON[start.getMonth()], value:sum }); }
+    return out;
+  }
+  function dailyMetric(days, fn){
+    const out=[], today=new Date(); today.setHours(0,0,0,0);
+    for(let i=days-1;i>=0;i--){ const k=dateKey(addDays(today,-i)); out.push({ label:prettyDate(k), value:fn(k) }); }
+    return out;
+  }
+  function barChartSVG(data, color){
+    const W=620,H=170,pL=6,pR=6,pT=12,pB=24,iw=W-pL-pR,ih=H-pT-pB;
+    const n=data.length, bw=iw/n, max=Math.max(1,...data.map(d=>d.value));
+    let s='<line x1="'+pL+'" y1="'+(pT+ih)+'" x2="'+(W-pR)+'" y2="'+(pT+ih)+'" class="ch-base"/>';
+    data.forEach((d,i)=>{ const bh=ih*(d.value/max), x=pL+i*bw+bw*0.16, y=pT+ih-bh, w=bw*0.68, last=i===n-1;
+      s+='<rect x="'+x.toFixed(1)+'" y="'+y.toFixed(1)+'" width="'+w.toFixed(1)+'" height="'+Math.max(0,bh).toFixed(1)+'" rx="2.5" fill="'+color+'"'+(last?'':' opacity="0.72"')+'><title>'+escapeHTML(d.label)+': '+d.value+'</title></rect>';
+      if(n<=14 || i%2===1) s+='<text x="'+(pL+i*bw+bw/2).toFixed(1)+'" y="'+(H-7)+'" text-anchor="middle" class="ch-x">'+escapeHTML(d.label)+'</text>'; });
+    return '<svg viewBox="0 0 '+W+' '+H+'" class="ch-svg" preserveAspectRatio="xMidYMid meet" role="img">'+s+'</svg>';
+  }
+  function lineChartSVG(data, opts){
+    const W=620,H=170,pL=8,pR=8,pT=12,pB=24,iw=W-pL-pR,ih=H-pT-pB;
+    const n=data.length, min=opts.min, max=opts.max, range=(max-min)||1;
+    const X=i=>pL+(n<=1?iw/2:iw*i/(n-1)), Y=v=>pT+ih-ih*((v-min)/range);
+    const pts=data.map((d,i)=>({ x:X(i), y:d.value==null?null:Y(d.value), v:d.value, label:d.label }));
+    const valid=pts.filter(p=>p.y!=null);
+    let s='<line x1="'+pL+'" y1="'+(pT+ih)+'" x2="'+(W-pR)+'" y2="'+(pT+ih)+'" class="ch-base"/>';
+    if(opts.area && valid.length){ s+='<path d="M'+valid[0].x.toFixed(1)+' '+(pT+ih).toFixed(1)+' '+valid.map(p=>'L'+p.x.toFixed(1)+' '+p.y.toFixed(1)).join(' ')+' L'+valid[valid.length-1].x.toFixed(1)+' '+(pT+ih).toFixed(1)+' Z" fill="'+opts.color+'" opacity="0.13"/>'; }
+    if(valid.length){ s+='<path d="'+valid.map((p,i)=>(i?'L':'M')+p.x.toFixed(1)+' '+p.y.toFixed(1)).join(' ')+'" fill="none" stroke="'+opts.color+'" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>'; }
+    valid.forEach(p=>s+='<circle cx="'+p.x.toFixed(1)+'" cy="'+p.y.toFixed(1)+'" r="2.6" fill="'+opts.color+'"><title>'+escapeHTML(p.label)+': '+p.v+(opts.unit||'')+'</title></circle>');
+    const step=Math.max(1,Math.ceil(n/6));
+    data.forEach((d,i)=>{ if(i%step===0) s+='<text x="'+X(i).toFixed(1)+'" y="'+(H-7)+'" text-anchor="middle" class="ch-x">'+escapeHTML(d.label.replace(/^[a-záéíóú]+\s/i,""))+'</text>'; });
+    return '<svg viewBox="0 0 '+W+' '+H+'" class="ch-svg" preserveAspectRatio="xMidYMid meet" role="img">'+s+'</svg>';
+  }
+  function renderCharts(){
+    const seg=document.getElementById("chart-seg"); if(!seg) return;
+    seg.innerHTML = CHART_SEG.map(m=>'<button type="button" data-chart="'+m[0]+'"'+(chartMetric===m[0]?' class="active"':'')+'>'+m[1]+'</button>').join("");
+    const area=document.getElementById("chart-area"), foot=document.getElementById("chart-foot"), a=template.accent;
+    if(chartMetric==="mood"){ area.innerHTML=lineChartSVG(dailyMetric(30,k=>{const j=state.journal[k];return (j&&j.mood)?j.mood:null;}),{min:1,max:5,unit:"",color:a,area:true}); foot.textContent="Ánimo del día (1–5) · últimos 30 días"; }
+    else if(chartMetric==="consistency"){ area.innerHTML=lineChartSVG(dailyMetric(30,k=>Math.round(dayRatio(k)*100)),{min:0,max:100,unit:"%",color:a,area:true}); foot.textContent="Constancia diaria (% de hábitos del día) · últimos 30 días"; }
+    else { area.innerHTML=barChartSVG(weeklyCompletions(12), a); foot.textContent="Hábitos completados por semana · últimas 12 semanas"; }
+  }
 
   /* ============ reminders (actividades programadas) ============ */
   const remListEl = document.getElementById("rem-list");
@@ -2675,6 +2743,7 @@
   /* ============ events: history calendar + range ============ */
   document.getElementById("cal-months").addEventListener("click", e=>{ const c=e.target.closest("[data-jump]"); if(c) selectDate(c.getAttribute("data-jump")); });
   document.getElementById("range-seg").addEventListener("click", e=>{ const b=e.target.closest("[data-range]"); if(b){ rangeMonths=+b.getAttribute("data-range"); renderHistory(); save(); } });
+  document.getElementById("chart-seg").addEventListener("click", e=>{ const b=e.target.closest("[data-chart]"); if(b){ chartMetric=b.getAttribute("data-chart"); renderCharts(); } });
 
   /* ============ events: theme (page colors) ============ */
   document.getElementById("theme-presets").addEventListener("click", e=>{ const c=e.target.closest("[data-theme]"); if(c){ pushUndo("themepreset"); applyTheme(clone(THEMES[+c.getAttribute("data-theme")])); save(); } });

@@ -74,10 +74,11 @@ navegador (`localStorage`).
   - **Alcancías y metas:** crea **alcancías** para ahorrar y **metas de compra** con su precio
     objetivo; guarda o retira dinero y mira el progreso hacia cada objetivo. El símbolo de
     moneda es configurable.
-- **Progreso (metas, historial y rachas):** reúne las **metas semanales/mensuales**, la
-  **reflexión semanal** y un calendario de actividad por meses (estilo «contribuciones») con
-  rango **Mes / 3 meses / 6 meses / Año** y estadísticas (racha actual, mejor racha, días
-  activos, completados y constancia).
+- **Progreso (metas, historial, rachas y gráficas):** reúne las **metas semanales/mensuales**,
+  la **reflexión semanal**, un calendario de actividad por meses (estilo «contribuciones», de
+  tamaño fijo) con rango **Mes / 3 meses / 6 meses / Año** y estadísticas (racha actual, mejor
+  racha, días activos, completados y constancia), y **gráficas de progreso** con un selector
+  de métrica: hábitos completados por semana, ánimo del día y constancia diaria.
 - **Estados vacíos con ejemplos:** cuando una sección está vacía (hábitos o notas), te
   ofrece **empezar con ejemplos** de un toque.
 - **Tema de colores de la página:** cambia los colores de *toda* la página, no solo el

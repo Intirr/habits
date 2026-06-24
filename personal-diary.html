@@ -456,6 +456,7 @@
   .sys-action input:focus{outline:none;border-color:var(--accent-line)}
   .sys-action .sys-del{flex:0 0 auto;width:26px;height:26px;border-radius:7px;border:1px solid var(--line);background:transparent;color:var(--muted);font-size:1.1rem;line-height:1;cursor:pointer;transition:all .15s ease}
   .sys-action .sys-del:hover{border-color:var(--cuerpo);color:var(--cuerpo)}
+  .sys-order{margin-left:0;flex:0 0 auto}
   .sys-add{margin-top:9px;font-family:var(--mono);font-size:.62rem;letter-spacing:.06em;text-transform:uppercase;color:var(--text-2);background:transparent;border:1px dashed var(--line);padding:8px 13px;border-radius:9px;cursor:pointer;transition:all .15s ease}
   .sys-add:hover{border-color:var(--accent-line);color:var(--accent)}
   .sys-empty-actions{color:var(--muted);font-size:.86rem;font-style:italic}
@@ -1908,11 +1909,20 @@
   /* ============ systems (actions for each habit) ============ */
   const sysListEl = document.getElementById("sys-list");
   function ensureActions(h){ if(!Array.isArray(h.actions)) h.actions=[]; return h.actions; }
+  function moveInArray(arr, idx, dir){ const j=idx+dir; if(idx<0||j<0||j>=arr.length) return false; const t=arr[idx]; arr[idx]=arr[j]; arr[j]=t; return true; }
+  function reorderHTML(upAttr, downAttr, id, ownerAttr, ownerId, i, len){
+    const oa = ownerAttr ? (' '+ownerAttr+'="'+ownerId+'"') : '';
+    return '<span class="item-order sys-order">'+
+      '<button type="button" '+upAttr+'="'+id+'"'+oa+(i===0?' disabled':'')+' aria-label="Move up" title="Move up">▲</button>'+
+      '<button type="button" '+downAttr+'="'+id+'"'+oa+(i===len-1?' disabled':'')+' aria-label="Move down" title="Move down">▼</button>'+
+    '</span>';
+  }
   function sysCardHTML(h){
     const acts=ensureActions(h);
     const items = acts.length
       ? acts.map((a,i)=>'<li class="sys-action" data-aid="'+a.id+'"><span class="sys-dot">'+(i+1)+'</span>'+
           '<input type="text" data-atext="'+a.id+'" data-hid="'+h.id+'" value="'+escapeHTML(a.text||"")+'" placeholder="Concrete action…" aria-label="Action">'+
+          reorderHTML("data-amoveup","data-amovedown",a.id,"data-hid",h.id,i,acts.length)+
           '<button type="button" class="sys-del" data-adel="'+a.id+'" data-hid="'+h.id+'" aria-label="Remove action">×</button></li>').join("")
       : '<li class="sys-empty-actions">No actions yet. Add the first one.</li>';
     return '<div class="sys-card" style="--c:'+frenteColor(h.domain)+'" data-hid="'+h.id+'">'+
@@ -1940,16 +1950,18 @@
   const customSysListEl = document.getElementById("sys-custom-list");
   function sysById(id){ return state.systems.find(s=>s.id===id); }
   function ensureSysActions(s){ if(!Array.isArray(s.actions)) s.actions=[]; return s.actions; }
-  function customSysCardHTML(s){
+  function customSysCardHTML(s, idx, total){
     const acts=ensureSysActions(s);
     const items = acts.length
       ? acts.map((a,i)=>'<li class="sys-action" data-aid="'+a.id+'"><span class="sys-dot">'+(i+1)+'</span>'+
           '<input type="text" data-satext="'+a.id+'" data-sysid="'+s.id+'" value="'+escapeHTML(a.text||"")+'" placeholder="Concrete action…" aria-label="Action">'+
+          reorderHTML("data-samoveup","data-samovedown",a.id,"data-sysid",s.id,i,acts.length)+
           '<button type="button" class="sys-del" data-sadel="'+a.id+'" data-sysid="'+s.id+'" aria-label="Remove action">×</button></li>').join("")
       : '<li class="sys-empty-actions">No actions yet. Add the first one.</li>';
     return '<div class="sys-card sys-card-custom" data-sid="'+s.id+'">'+
       '<div class="sys-card-head">'+
         '<input class="sys-name" type="text" data-sname="'+s.id+'" value="'+escapeHTML(s.name||"")+'" placeholder="System name" aria-label="System name">'+
+        reorderHTML("data-smoveup","data-smovedown",s.id,"",null,idx,total)+
         '<button type="button" class="sys-card-del" data-sdel="'+s.id+'" aria-label="Delete system">×</button>'+
       '</div>'+
       '<ul class="sys-actions">'+items+'</ul>'+
@@ -1958,7 +1970,7 @@
   }
   function renderCustomSystems(){
     customSysListEl.innerHTML = state.systems.length
-      ? state.systems.map(customSysCardHTML).join("")
+      ? state.systems.map((s,idx)=>customSysCardHTML(s, idx, state.systems.length)).join("")
       : '<div class="sys-custom-empty">You don’t have any systems of your own yet. Create one above (e.g. «Morning routine») and add actions to it.</div>';
   }
   function addCustomSystem(){
@@ -1974,6 +1986,10 @@
     const card=customSysListEl.querySelector('.sys-card[data-sid="'+sid+'"]');
     if(card){ const inps=card.querySelectorAll("[data-satext]"); const last=inps[inps.length-1]; if(last) last.focus(); }
   }
+  /* reorder: actions inside a habit's system, actions inside a custom system, and the custom systems themselves */
+  function moveHabitAction(hid, aid, dir){ if(editing) return; const h=habitById(hid); if(!h) return; const acts=ensureActions(h), idx=acts.findIndex(a=>a.id===aid), j=idx+dir; if(idx<0||j<0||j>=acts.length) return; pushUndo("actionmove"); moveInArray(acts, idx, dir); renderSystems(); save(); }
+  function moveCustomAction(sid, aid, dir){ if(editing) return; const s=sysById(sid); if(!s) return; const acts=ensureSysActions(s), idx=acts.findIndex(a=>a.id===aid), j=idx+dir; if(idx<0||j<0||j>=acts.length) return; pushUndo("sysactionmove"); moveInArray(acts, idx, dir); renderCustomSystems(); save(); }
+  function moveCustomSystem(sid, dir){ if(editing) return; const idx=state.systems.findIndex(s=>s.id===sid), j=idx+dir; if(idx<0||j<0||j>=state.systems.length) return; pushUndo("sysmove"); moveInArray(state.systems, idx, dir); renderCustomSystems(); save(); }
 
   /* ============ notes (diary · ideas and plans) ============ */
   const notesListEl = document.getElementById("notes-list");
@@ -2546,6 +2562,8 @@
   /* ============ events: systems (actions) ============ */
   sysListEl.addEventListener("click", e=>{
     const addb=e.target.closest("[data-aadd]"); if(addb){ addAction(addb.getAttribute("data-aadd")); return; }
+    const mu=e.target.closest("[data-amoveup]"); if(mu){ moveHabitAction(mu.getAttribute("data-hid"), mu.getAttribute("data-amoveup"), -1); return; }
+    const md=e.target.closest("[data-amovedown]"); if(md){ moveHabitAction(md.getAttribute("data-hid"), md.getAttribute("data-amovedown"), 1); return; }
     const del=e.target.closest("[data-adel]"); if(del){ if(editing) return; const aid=del.getAttribute("data-adel"), h=habitById(del.getAttribute("data-hid")); if(h){ pushUndo("actiondel"); h.actions=ensureActions(h).filter(a=>a.id!==aid); renderSystems(); save(); } }
     const seed=e.target.closest("[data-seed]"); if(seed){ if(seed.getAttribute("data-seed")==="habits") loadStarterHabits(); }
   });
@@ -2556,6 +2574,10 @@
   document.getElementById("sys-new-name").addEventListener("keydown", e=>{ if(e.key==="Enter"){ e.preventDefault(); addCustomSystem(); } });
   customSysListEl.addEventListener("click", e=>{
     const addb=e.target.closest("[data-saadd]"); if(addb){ addCustomAction(addb.getAttribute("data-saadd")); return; }
+    const amu=e.target.closest("[data-samoveup]"); if(amu){ moveCustomAction(amu.getAttribute("data-sysid"), amu.getAttribute("data-samoveup"), -1); return; }
+    const amd=e.target.closest("[data-samovedown]"); if(amd){ moveCustomAction(amd.getAttribute("data-sysid"), amd.getAttribute("data-samovedown"), 1); return; }
+    const smu=e.target.closest("[data-smoveup]"); if(smu){ moveCustomSystem(smu.getAttribute("data-smoveup"), -1); return; }
+    const smd=e.target.closest("[data-smovedown]"); if(smd){ moveCustomSystem(smd.getAttribute("data-smovedown"), 1); return; }
     const adel=e.target.closest("[data-sadel]"); if(adel){ if(editing) return; const s=sysById(adel.getAttribute("data-sysid")); if(s){ pushUndo("sysactiondel"); s.actions=ensureSysActions(s).filter(a=>a.id!==adel.getAttribute("data-sadel")); renderCustomSystems(); save(); } return; }
     const sdel=e.target.closest("[data-sdel]"); if(sdel){ if(editing) return; const id=sdel.getAttribute("data-sdel"), s=sysById(id); if(s && (s.name || (s.actions&&s.actions.length)) && !confirm("Delete the system «"+(s.name||"")+"»?")) return; pushUndo("sysdel"); state.systems=state.systems.filter(x=>x.id!==id); renderCustomSystems(); save(); }
   });

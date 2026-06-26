@@ -1,0 +1,1228 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tu Reloj Circadiano · BYMCYL</title>
+<meta name="description" content="Descubre tu cronotipo con precisión, entiende el porqué de cada hora de tu día y diseña un plan a medida según tu horario real.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0E1116;
+    --ink-2:#14181E;
+    --ink-3:#1B2027;
+    --line:rgba(255,255,255,.08);
+    --line-2:rgba(255,255,255,.14);
+    --text:#ECEAE3;
+    --muted:#9AA0A6;
+    --gold:#E8C66A;
+    --violet:#9B8CFF;
+    --rose:#D89BB0;
+    --mint:#5FD0A8;
+    --amber:#F0A55E;
+    --sky:#79AEE6;
+    --indigo:#313A57;
+    --serif:'Fraunces',Georgia,serif;
+    --sans:'Inter',system-ui,sans-serif;
+    --mono:'Space Mono',ui-monospace,monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    font-family:var(--sans);
+    background:var(--ink);
+    color:var(--text);
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+    background-image:radial-gradient(900px 500px at 80% -8%, rgba(155,140,255,.10), transparent 60%),radial-gradient(700px 480px at -5% 12%, rgba(232,198,106,.07), transparent 55%);
+    background-attachment:fixed;
+  }
+  .wrap{max-width:660px;margin:0 auto;padding:clamp(18px,5vw,34px) clamp(16px,5vw,28px) 80px}
+  .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--muted)}
+  .gold{color:var(--gold)}
+  .violet{color:var(--violet)}
+  a{color:var(--gold)}
+
+  /* ---------- top nav ---------- */
+  .topnav{position:sticky;top:0;z-index:40;display:none;align-items:center;gap:6px;
+    margin:0 -4px 26px;padding:10px 4px;backdrop-filter:blur(10px);
+    background:linear-gradient(var(--ink),rgba(14,17,22,.86));border-bottom:1px solid var(--line);
+    overflow-x:auto;scrollbar-width:none}
+  .topnav::-webkit-scrollbar{display:none}
+  .topnav.show{display:flex}
+  .navbrand{display:flex;align-items:center;gap:8px;flex:0 0 auto;margin-right:6px;cursor:pointer}
+  .navbrand .brand-dot{width:8px;height:8px}
+  .navbrand span{font-family:var(--mono);font-size:11px;letter-spacing:.16em;color:var(--muted);text-transform:uppercase}
+  .navbtn{-webkit-appearance:none;appearance:none;cursor:pointer;white-space:nowrap;
+    font-family:var(--sans);font-size:13px;font-weight:500;color:var(--muted);
+    background:transparent;border:1px solid transparent;border-radius:100px;padding:7px 13px;transition:all .15s ease}
+  .navbtn:hover{color:var(--text);background:var(--ink-2)}
+  .navbtn.active{color:var(--text);background:var(--ink-3);border-color:var(--line-2)}
+
+  /* ---------- screens ---------- */
+  .screen{display:none;animation:rise .5s cubic-bezier(.2,.7,.2,1) both}
+  .screen.active{display:block}
+  @keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+
+  /* ---------- intro ---------- */
+  .brand{display:flex;align-items:center;gap:10px;margin-bottom:clamp(34px,10vh,80px)}
+  .brand-dot{width:9px;height:9px;border-radius:50%;background:var(--gold);box-shadow:0 0 14px rgba(232,198,106,.7)}
+  h1{font-family:var(--serif);font-weight:500;font-size:clamp(38px,11vw,60px);line-height:1.02;letter-spacing:-.02em;margin:18px 0 0}
+  h1 em{font-style:italic;color:var(--gold)}
+  .lede{color:var(--muted);font-size:clamp(15px,4vw,17px);margin-top:20px;max-width:46ch}
+  .meta-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:26px}
+  .pill{font-family:var(--mono);font-size:11px;letter-spacing:.04em;color:var(--muted);border:1px solid var(--line);border-radius:100px;padding:6px 12px}
+  .cta{
+    -webkit-appearance:none;appearance:none;cursor:pointer;
+    font-family:var(--sans);font-weight:600;font-size:16px;
+    background:var(--gold);color:#1a1407;border:none;border-radius:14px;
+    padding:16px 26px;margin-top:30px;width:100%;
+    transition:transform .15s ease, box-shadow .25s ease;
+    box-shadow:0 10px 30px -12px rgba(232,198,106,.6);
+  }
+  .cta:hover{transform:translateY(-2px);box-shadow:0 16px 40px -14px rgba(232,198,106,.7)}
+  .cta:active{transform:translateY(0)}
+  .cta.ghost{background:transparent;color:var(--text);border:1px solid var(--line-2);box-shadow:none;font-weight:500}
+  .cta.ghost:hover{border-color:var(--text);transform:translateY(-2px)}
+  .cta.small{width:auto;padding:12px 20px;font-size:14px;margin-top:0}
+  .intro-links{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+  .dials{display:flex;justify-content:center;gap:18px;margin:34px 0 6px;opacity:.9}
+  .mini-dial{width:54px;height:54px;border-radius:50%;border:1.5px solid var(--line-2);position:relative;animation:spin 14s linear infinite}
+  .mini-dial::after{content:"";position:absolute;top:4px;left:50%;width:2px;height:13px;background:var(--gold);transform:translateX(-50%);border-radius:2px}
+  .mini-dial:nth-child(2){animation-duration:9s}.mini-dial:nth-child(2)::after{background:var(--violet)}
+  .mini-dial:nth-child(3){animation-duration:20s}.mini-dial:nth-child(3)::after{background:var(--rose)}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .feat{display:grid;gap:12px;margin-top:34px}
+  .feat-item{display:flex;gap:14px;align-items:flex-start;background:var(--ink-2);border:1px solid var(--line);border-radius:16px;padding:16px 18px}
+  .feat-item .ic{font-size:22px;line-height:1;flex:0 0 auto;margin-top:1px}
+  .feat-item b{font-weight:600;font-size:15px;display:block}
+  .feat-item span{font-size:13.5px;color:var(--muted);line-height:1.4}
+
+  /* ---------- quiz ---------- */
+  .progress{height:3px;background:var(--line);border-radius:3px;overflow:hidden;margin-bottom:24px}
+  .progress > i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--gold),var(--violet));border-radius:3px;transition:width .45s cubic-bezier(.2,.7,.2,1)}
+  .qcount{font-family:var(--mono);font-size:12px;letter-spacing:.1em;color:var(--muted)}
+  .qtext{font-family:var(--serif);font-weight:400;font-size:clamp(22px,5.8vw,29px);line-height:1.22;letter-spacing:-.01em;margin:12px 0 24px}
+  .opts{display:flex;flex-direction:column;gap:11px}
+  .opt{
+    -webkit-appearance:none;appearance:none;cursor:pointer;text-align:left;
+    font-family:var(--sans);font-size:15.5px;color:var(--text);line-height:1.4;
+    background:var(--ink-2);border:1px solid var(--line);border-radius:14px;
+    padding:16px 18px;display:flex;align-items:center;gap:14px;
+    transition:border-color .18s ease, background .18s ease, transform .12s ease;
+  }
+  .opt:hover{border-color:var(--line-2);background:var(--ink-3);transform:translateX(3px)}
+  .opt:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+  .opt .tick{flex:0 0 18px;width:18px;height:18px;border-radius:50%;border:1.5px solid var(--line-2);transition:all .18s ease}
+  .opt.sel{border-color:var(--gold);background:rgba(232,198,106,.07)}
+  .opt.sel .tick{border-color:var(--gold);background:var(--gold);box-shadow:inset 0 0 0 3px var(--ink-2)}
+  .nav{display:flex;justify-content:space-between;align-items:center;margin-top:24px;gap:12px}
+  .back{background:none;border:none;color:var(--muted);font-family:var(--sans);font-size:14px;cursor:pointer;padding:8px 4px}
+  .back:hover{color:var(--text)}
+  .back[disabled]{opacity:.3;cursor:default}
+
+  /* ---------- headings ---------- */
+  .reveal-tag{font-family:var(--mono);font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--muted)}
+  .sec-title{font-family:var(--serif);font-weight:500;font-size:clamp(28px,8vw,40px);line-height:1.05;letter-spacing:-.02em;margin:10px 0 6px}
+  .sec-lede{color:var(--muted);font-size:15.5px;max-width:54ch}
+  .type-head{display:flex;align-items:center;gap:16px;margin:12px 0 4px}
+  .type-emoji{font-size:clamp(48px,13vw,68px);line-height:1}
+  .type-name{font-family:var(--serif);font-weight:500;font-size:clamp(36px,10vw,54px);line-height:1;letter-spacing:-.02em}
+  .type-pct{font-family:var(--mono);font-size:12px;color:var(--muted);margin-top:6px}
+  .tagline{font-size:clamp(16px,4.4vw,19px);color:var(--gold);font-weight:500;margin-top:16px;font-family:var(--serif);font-style:italic}
+  .desc{color:var(--muted);margin-top:14px;font-size:15.5px}
+
+  .card{background:var(--ink-2);border:1px solid var(--line);border-radius:20px;padding:clamp(18px,5vw,26px);margin-top:22px}
+  .card-label{font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+  .card h3{font-family:var(--serif);font-weight:500;font-size:21px;letter-spacing:-.01em;margin-bottom:4px}
+  .card p{font-size:14.5px;color:var(--muted)}
+
+  /* match breakdown */
+  .mrow{display:flex;align-items:center;gap:12px;margin-top:12px}
+  .mrow .mname{flex:0 0 96px;font-size:14px;font-weight:500;display:flex;align-items:center;gap:7px}
+  .mrow .mtrack{flex:1;height:9px;background:rgba(255,255,255,.06);border-radius:6px;overflow:hidden}
+  .mrow .mfill{height:100%;border-radius:6px;width:0;transition:width .7s cubic-bezier(.2,.7,.2,1)}
+  .mrow .mpct{flex:0 0 42px;text-align:right;font-family:var(--mono);font-size:12px;color:var(--muted)}
+  .confidence{font-size:13.5px;color:var(--muted);margin-top:14px}
+  .confidence b{color:var(--text)}
+
+  /* clock */
+  .clock-card{text-align:center}
+  .clock-wrap{position:relative;width:100%;max-width:360px;margin:6px auto 0}
+  svg.clock{width:100%;height:auto;display:block;overflow:visible}
+  .seg{transition:opacity .2s ease;transform-origin:center;opacity:0}
+  .seg.in{opacity:1}
+  .center-lbl{text-align:center}
+  .center-emoji{font-size:30px;line-height:1}
+  .center-name{font-family:var(--serif);font-size:18px;font-weight:500;margin-top:2px}
+  .center-sub{font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-top:3px}
+  .tick-lbl{font-family:var(--mono);font-size:11px;fill:var(--muted)}
+
+  /* legend */
+  .legend{display:grid;grid-template-columns:1fr 1fr;gap:10px 14px;margin-top:22px;text-align:left}
+  @media(max-width:430px){.legend{grid-template-columns:1fr}}
+  .leg{display:flex;align-items:flex-start;gap:10px}
+  .leg .sw{flex:0 0 12px;width:12px;height:12px;border-radius:4px;margin-top:4px}
+  .leg b{font-weight:600;font-size:13.5px;display:block}
+  .leg span{font-size:12px;color:var(--muted);line-height:1.35}
+
+  /* schedule list (with why) */
+  .sched{list-style:none;margin-top:8px}
+  .sched li{display:flex;align-items:flex-start;gap:14px;padding:13px 0;border-bottom:1px solid var(--line)}
+  .sched li:last-child{border-bottom:none}
+  .sched .time{font-family:var(--mono);font-size:12.5px;color:var(--text);flex:0 0 102px;letter-spacing:.02em;padding-top:1px}
+  .sched .bar{flex:0 0 8px;width:8px;align-self:stretch;min-height:24px;border-radius:4px;margin-top:2px}
+  .sched .body{flex:1}
+  .sched .act{font-size:14.5px;font-weight:600;display:block}
+  .sched .why{font-size:13px;color:var(--muted);line-height:1.42;margin-top:3px}
+  .sched .why.warn{color:var(--amber)}
+
+  /* chips */
+  .chips{display:flex;flex-wrap:wrap;gap:9px;margin-top:8px}
+  .chip{font-size:13px;color:var(--text);background:rgba(155,140,255,.10);border:1px solid rgba(155,140,255,.28);border-radius:100px;padding:7px 14px}
+  .chip.warn{background:rgba(240,165,94,.10);border-color:rgba(240,165,94,.30)}
+
+  /* tips */
+  .tips{list-style:none;margin-top:6px}
+  .tips li{position:relative;padding:12px 0 12px 30px;border-bottom:1px solid var(--line);font-size:15px;line-height:1.5}
+  .tips li:last-child{border-bottom:none}
+  .tips li::before{content:"";position:absolute;left:2px;top:18px;width:7px;height:7px;border-radius:50%;background:var(--gold)}
+  .tips li b{font-weight:600}
+
+  /* insight callouts */
+  .insight{display:flex;gap:13px;align-items:flex-start;background:rgba(121,174,230,.08);border:1px solid rgba(121,174,230,.26);border-radius:14px;padding:14px 16px;margin-top:12px}
+  .insight.warn{background:rgba(240,165,94,.08);border-color:rgba(240,165,94,.28)}
+  .insight.good{background:rgba(95,208,168,.08);border-color:rgba(95,208,168,.26)}
+  .insight .ic{font-size:20px;line-height:1;flex:0 0 auto;margin-top:1px}
+  .insight b{font-weight:600;font-size:14.5px;display:block;margin-bottom:2px}
+  .insight span{font-size:13.5px;color:var(--muted);line-height:1.45}
+
+  /* designer form */
+  .field{margin-top:16px}
+  .field > label{display:block;font-size:13px;font-weight:600;margin-bottom:7px}
+  .field .hint{font-weight:400;color:var(--muted);font-size:12px}
+  select,input[type="time"]{
+    -webkit-appearance:none;appearance:none;width:100%;
+    font-family:var(--sans);font-size:15px;color:var(--text);
+    background:var(--ink-3);border:1px solid var(--line-2);border-radius:12px;padding:13px 14px;
+  }
+  select{background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path d='M1 1l5 5 5-5' stroke='%239AA0A6' stroke-width='1.6' fill='none' stroke-linecap='round'/></svg>");background-repeat:no-repeat;background-position:right 14px center;padding-right:38px}
+  input[type="time"]{color-scheme:dark}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media(max-width:430px){.grid2{grid-template-columns:1fr}}
+  .checkrow{display:flex;align-items:center;gap:10px;margin-top:18px;cursor:pointer;font-size:14.5px}
+  .checkrow input{width:18px;height:18px;accent-color:var(--gold)}
+
+  /* encyclopedia */
+  .enc{margin-top:22px}
+  .enc-card{background:var(--ink-2);border:1px solid var(--line);border-radius:20px;padding:clamp(18px,5vw,26px);margin-top:18px}
+  .enc-top{display:flex;align-items:center;gap:14px}
+  .enc-top .em{font-size:46px;line-height:1}
+  .enc-top .nm{font-family:var(--serif);font-size:28px;font-weight:500;line-height:1}
+  .enc-top .pc{font-family:var(--mono);font-size:11px;color:var(--muted);margin-top:4px}
+  .enc-tag{font-family:var(--serif);font-style:italic;color:var(--gold);font-size:16px;margin-top:14px}
+  .enc-block{margin-top:16px}
+  .enc-block .h{font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+  .enc-block p{font-size:14.5px;color:var(--text);line-height:1.5}
+  .enc-block ul{list-style:none;margin-top:2px}
+  .enc-block li{position:relative;padding:5px 0 5px 18px;font-size:14px;color:var(--text)}
+  .enc-block li::before{content:"";position:absolute;left:0;top:13px;width:6px;height:6px;border-radius:50%;background:currentColor;opacity:.5}
+  .enc-block.bad li::before{background:var(--amber)}
+  .twocol{display:grid;grid-template-columns:1fr 1fr;gap:6px 22px}
+  @media(max-width:480px){.twocol{grid-template-columns:1fr}}
+
+  /* spectrum */
+  .spectrum{margin-top:14px}
+  .spec-bar{height:14px;border-radius:8px;background:linear-gradient(90deg,#E8C66A,#F0A55E 30%,#5FD0A8 50%,#79AEE6 72%,#9B8CFF);margin:18px 0 8px}
+  .spec-marks{display:flex;justify-content:space-between;font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.06em}
+  .meq-list{list-style:none;margin-top:14px}
+  .meq-list li{display:flex;gap:12px;align-items:baseline;padding:9px 0;border-bottom:1px solid var(--line);font-size:14px}
+  .meq-list li:last-child{border-bottom:none}
+  .meq-list .r{font-family:var(--mono);font-size:11.5px;color:var(--muted);flex:0 0 64px}
+  .meq-list b{font-weight:600}
+
+  /* glossary */
+  .gloss{margin-top:6px}
+  .gloss .term{font-weight:600;font-size:15px;margin-top:16px}
+  .gloss .term:first-child{margin-top:4px}
+  .gloss .def{font-size:14px;color:var(--muted);line-height:1.5;margin-top:3px}
+
+  .src{font-size:12.5px;color:var(--muted);line-height:1.5;margin-top:16px}
+
+  .actions{display:flex;flex-direction:column;gap:11px;margin-top:28px}
+  .toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(20px);background:var(--ink-3);border:1px solid var(--line-2);color:var(--text);font-size:14px;padding:12px 20px;border-radius:100px;opacity:0;pointer-events:none;transition:all .3s ease;z-index:60}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+  .foot{text-align:center;margin-top:42px;color:var(--muted);font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase}
+  .empty{text-align:center;padding:40px 0;color:var(--muted)}
+  .empty p{margin-bottom:18px;font-size:15.5px}
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation:none!important;transition:none!important}
+    .seg{opacity:1}
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <!-- ============ TOP NAV ============ -->
+  <nav class="topnav" id="topnav">
+    <div class="navbrand" data-go="intro"><span class="brand-dot"></span><span>BYMCYL</span></div>
+    <button class="navbtn" data-go="quiz">Test</button>
+    <button class="navbtn" data-go="result">Mi resultado</button>
+    <button class="navbtn" data-go="designer">Diseñador de plan</button>
+    <button class="navbtn" data-go="encyclopedia">Los cronotipos</button>
+    <button class="navbtn" data-go="science">La ciencia</button>
+  </nav>
+
+  <!-- ============ INTRO ============ -->
+  <section class="screen active" id="intro">
+    <div class="brand"><span class="brand-dot"></span><span class="eyebrow">BYMCYL · Cronobiología</span></div>
+    <div class="dials"><span class="mini-dial"></span><span class="mini-dial"></span><span class="mini-dial"></span></div>
+    <h1>Tu <em>reloj</em><br>circadiano</h1>
+    <p class="lede">Tu cuerpo tiene un reloj interno que decide cuándo rindes, creas y descansas mejor. Pelearte con él te agota. Seguirlo lo cambia todo.</p>
+    <p class="lede" style="margin-top:12px">Responde el test y descubre tu cronotipo con precisión —con el <span class="gold">porqué</span> de cada hora de tu día y un <span class="violet">diseñador de planes</span> a la medida de tu horario real.</p>
+    <div class="meta-row">
+      <span class="pill">4 cronotipos</span>
+      <span class="pill">13 preguntas</span>
+      <span class="pill">test ponderado</span>
+      <span class="pill">≈ 3 minutos</span>
+    </div>
+    <button class="cta" id="start">Descubrir mi cronotipo</button>
+    <div class="intro-links">
+      <button class="cta ghost small" data-go="encyclopedia">Ver los cronotipos</button>
+      <button class="cta ghost small" data-go="designer">Diseñador de plan</button>
+    </div>
+
+    <div class="feat">
+      <div class="feat-item"><span class="ic">🎯</span><div><b>Test más preciso</b><span>Puntuación ponderada en dos ejes (mañana–noche y calidad de sueño), no un simple conteo. Te da tu % de afinidad con cada tipo.</span></div></div>
+      <div class="feat-item"><span class="ic">🔬</span><div><b>El porqué de cada respuesta</b><span>Cada bloque del día explica su razón fisiológica: cortisol, melatonina, temperatura corporal, presión de sueño…</span></div></div>
+      <div class="feat-item"><span class="ic">🗓️</span><div><b>Diseñador de planes</b><span>Genera tu horario a medida según tu tipo de jornada —oficina, turnos, estudiante o flexible— adaptado a tu reloj.</span></div></div>
+      <div class="feat-item"><span class="ic">📚</span><div><b>Enciclopedia de cronotipos</b><span>Todos los cronotipos con sus características, el espectro científico mañana–noche y un glosario de la ciencia detrás.</span></div></div>
+    </div>
+    <div class="foot">Break Your Mind · Change Your Life</div>
+  </section>
+
+  <!-- ============ QUIZ ============ -->
+  <section class="screen" id="quiz">
+    <div class="progress"><i id="bar"></i></div>
+    <div class="qcount" id="qcount">01 / 13</div>
+    <h2 class="qtext" id="qtext"></h2>
+    <div class="opts" id="opts"></div>
+    <div class="nav">
+      <button class="back" id="back" disabled>← Atrás</button>
+      <span class="eyebrow" id="hint">Elige la opción más parecida a ti</span>
+    </div>
+  </section>
+
+  <!-- ============ RESULT ============ -->
+  <section class="screen" id="result">
+    <div id="resultBody"></div>
+  </section>
+
+  <!-- ============ DESIGNER ============ -->
+  <section class="screen" id="designer">
+    <div class="reveal-tag">Diseñador de plan</div>
+    <h2 class="sec-title">Tu día, hecho a medida</h2>
+    <p class="sec-lede">Dime tu cronotipo y cómo es tu jornada real. Construyo un horario detallado que coloca cada actividad donde tu biología rinde mejor —y te explico el porqué y los conflictos a vigilar.</p>
+
+    <div class="card">
+      <div class="field">
+        <label>Tu cronotipo</label>
+        <select id="dChrono"></select>
+      </div>
+      <div class="field">
+        <label>Tipo de horario <span class="hint">— define tus obligaciones fijas</span></label>
+        <select id="dSchedule">
+          <option value="oficina">Oficina estándar (≈ 9–17)</option>
+          <option value="manana">Turno de mañana (6–14)</option>
+          <option value="tarde">Turno de tarde (14–22)</option>
+          <option value="noche">Turno de noche (22–6)</option>
+          <option value="estudiante">Estudiante (clases + estudio)</option>
+          <option value="flexible">Remoto / flexible (sin horario fijo)</option>
+          <option value="personalizado">Personalizado</option>
+        </select>
+      </div>
+      <div class="grid2">
+        <div class="field"><label>Me despierto</label><input type="time" id="dWake" value="07:00"></div>
+        <div class="field"><label>Me acuesto</label><input type="time" id="dSleep" value="23:00"></div>
+      </div>
+      <div class="grid2" id="dWorkRow">
+        <div class="field"><label>Entro a trabajar/estudiar</label><input type="time" id="dWorkStart" value="09:00"></div>
+        <div class="field"><label>Salgo</label><input type="time" id="dWorkEnd" value="17:00"></div>
+      </div>
+      <div class="field">
+        <label>Ejercicio</label>
+        <select id="dEx">
+          <option value="auto">Automático (donde más te conviene)</option>
+          <option value="manana">Por la mañana</option>
+          <option value="tarde">Por la tarde</option>
+          <option value="none">Sin bloque de ejercicio</option>
+        </select>
+      </div>
+      <label class="checkrow"><input type="checkbox" id="dBreak" checked> Desayuno al levantarme</label>
+      <button class="cta" id="genPlan" style="margin-top:22px">Generar mi plan</button>
+    </div>
+
+    <div id="planOut"></div>
+  </section>
+
+  <!-- ============ ENCYCLOPEDIA ============ -->
+  <section class="screen" id="encyclopedia">
+    <div class="reveal-tag">Enciclopedia</div>
+    <h2 class="sec-title">Todos los cronotipos</h2>
+    <p class="sec-lede">El cronotipo es tu tendencia natural —genética en gran parte— a estar activo y alerta en ciertas horas. Estos son los cuatro perfiles del modelo del Dr. Michael Breus, con sus rasgos, fortalezas, retos y salud.</p>
+    <div class="enc" id="encList"></div>
+
+    <div class="card" style="margin-top:30px">
+      <div class="card-label">El espectro científico</div>
+      <h3>De la alondra al búho</h3>
+      <p style="margin-top:8px">Antes de los animales, la ciencia medía el cronotipo en un continuo de <b>matutinidad–vespertinidad</b> con el cuestionario MEQ (Horne &amp; Östberg, 1976). No hay solo cuatro cajas: hay un degradado.</p>
+      <div class="spectrum">
+        <div class="spec-bar"></div>
+        <div class="spec-marks"><span>+ Matutino</span><span>Intermedio</span><span>+ Vespertino</span></div>
+        <ul class="meq-list" id="meqList"></ul>
+      </div>
+      <p style="margin-top:14px;font-size:13.5px;color:var(--muted)">El <b>MCTQ</b> (Cuestionario de Múnich, Roenneberg) lo mide de otra forma: por el <b>punto medio del sueño</b> en días libres. De ahí sale el concepto de <b>jet lag social</b>: la diferencia entre cuándo duermes entre semana y cuándo lo harías libre. Cuanto mayor es esa brecha, peor para tu salud y tu ánimo.</p>
+    </div>
+  </section>
+
+  <!-- ============ SCIENCE ============ -->
+  <section class="screen" id="science">
+    <div class="reveal-tag">La ciencia detrás</div>
+    <h2 class="sec-title">Cómo funciona tu reloj</h2>
+    <p class="sec-lede">Tu día no lo gobierna la fuerza de voluntad, sino un puñado de señales biológicas que suben y bajan a horas previsibles. Entenderlas es entender el porqué de cada recomendación.</p>
+
+    <div class="card">
+      <div class="card-label">El motor</div>
+      <h3>Dos procesos, un ritmo</h3>
+      <p style="margin-top:8px">El sueño y la alerta nacen de dos fuerzas (modelo de Borbély): el <b>Proceso C</b> (tu reloj circadiano de ~24 h, en el núcleo supraquiasmático del cerebro) y el <b>Proceso S</b> (la presión de sueño que se acumula con cada hora despierto). Cuando ambas se alinean, duermes profundo; cuando chocan —como en el jet lag o los turnos— todo se desajusta.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-label">Glosario</div>
+      <div class="gloss" id="glossList"></div>
+    </div>
+
+    <div class="card">
+      <div class="card-label">Aviso</div>
+      <p style="font-size:14px;color:var(--muted)">Esta herramienta es educativa y se basa en patrones poblacionales de cronobiología. No sustituye consejo médico. Si tienes insomnio persistente, somnolencia diurna marcada o trabajas a turnos con problemas de salud, consulta a un profesional del sueño.</p>
+    </div>
+    <div class="foot">Break Your Mind · Change Your Life</div>
+  </section>
+
+</div>
+
+<div class="toast" id="toast">Resumen copiado ✓</div>
+
+<script>
+/* ============================================================
+   DATA · actividades y colores
+============================================================ */
+const ACT = {
+  sueno:      {label:'Sueño',             color:'#313A57', note:'Descanso sagrado'},
+  despertar:  {label:'Despertar + luz',   color:'#F4D06F', note:'Luz intensa, agua y movimiento'},
+  profundo:   {label:'Trabajo profundo',  color:'#E8A33D', note:'Lo más difícil y valioso'},
+  comidas:    {label:'Comidas',           color:'#F0843E', note:'Comer con calma y a horas regulares'},
+  ejercicio:  {label:'Ejercicio',         color:'#5FD0A8', note:'Mover el cuerpo'},
+  creatividad:{label:'Creatividad',       color:'#9B8CFF', note:'Ideas, escritura, exploración'},
+  admin:      {label:'Gestión y conexión',color:'#79AEE6', note:'Reuniones, correos, recados'},
+  recarga:    {label:'Recarga',           color:'#D89BB0', note:'Pausa, naturaleza, siesta corta'},
+  cierre:     {label:'Cierre del día',    color:'#6C5B9E', note:'Luz tenue, sin pantallas, relajar'}
+};
+
+/* perfil de alerta por hora (0–100), índice = hora 0..23 */
+const ALERT = {
+  leon:   [10,8,7,7,10,30,60,85,95,98,95,90,78,58,55,62,66,60,50,42,35,28,20,14],
+  oso:    [12,9,8,8,9,15,35,55,72,85,92,95,90,62,55,68,74,72,60,50,42,35,28,18],
+  lobo:   [55,45,30,18,12,10,12,20,32,42,52,60,66,70,74,80,86,92,95,93,86,78,70,62],
+  delfin: [50,40,25,18,16,30,45,55,62,75,85,82,60,50,55,62,66,62,56,52,60,66,62,56]
+};
+
+/* ============================================================
+   DATA · cronotipos (resultado + enciclopedia + horario ideal con porqué)
+============================================================ */
+const TYPES = {
+  leon:{
+    nombre:'León', emoji:'🦁', color:'#E8C66A', pct:'≈ 15% de las personas',
+    pico:'la mañana temprano (≈ 8 a. m. – 12 p. m.)',
+    tag:'Madrugador nato. Tu mente despega con el sol.',
+    desc:'Despiertas temprano sin esfuerzo y tu lucidez llega al máximo en las primeras horas. Eres disciplinado y productivo de mañana, pero tu energía baja pronto: para el atardecer ya estás en reserva.',
+    base:'Es la versión moderna de la clásica «alondra» o tipo matutino. Su reloj corre ligeramente adelantado respecto al sol, con secreción temprana de cortisol y de melatonina.',
+    ritmo:'Despierta ~5:30–6:30 sin alarma · se acuesta ~22:00 · cuota de sueño cubierta pronto.',
+    fortalezas:['Arranques de mañana imbatibles','Disciplina y constancia natural','Mejores decisiones temprano','Optimista, orientado a metas'],
+    retos:['Se apaga al caer la tarde','Le cuesta la vida social nocturna','Puede ser rígido con los horarios','Rinde poco si trabaja de noche'],
+    salud:['Buen sueño y bajo riesgo de jet lag social','Vigilar el «despertar precoz» (insomnio de final de la noche)','Tiende a saltarse cenas/eventos tardíos'],
+    ideal:'Profesiones que premian la mañana: dirección, deporte, oficios que empiezan al alba, trabajo creativo madrugador.',
+    lema:'«El que madruga, rinde» —pero de verdad.',
+    schedule:[
+      [0,6,'sueno','Tu sueño profundo se concentra en la primera mitad de la noche; a las 6 ya casi has cubierto tu cuota.'],
+      [6,6.75,'despertar','Despiertas con el cortisol ya alto. Luz intensa y un vaso de agua afianzan tu reloj madrugador. El café, mejor 60–90 min después.'],
+      [6.75,7.25,'ejercicio','Mover el cuerpo temprano te encaja: tu energía matutina sostiene el esfuerzo y refuerza tu fase adelantada.'],
+      [7.25,7.75,'comidas','Desayuno completo: tu sensibilidad a la insulina es alta por la mañana y tienes horas para gastar la energía.'],
+      [7.75,12,'profundo','Tu ventana de oro. La alerta del León estalla por la mañana: aquí va lo más difícil y valioso, sin correos ni reuniones.'],
+      [12,13,'comidas','Comida principal en tu pico tardío de mañana, justo antes del bajón.'],
+      [13,15,'admin','Llega tu valle postcomida. Tareas mecánicas: correos, gestiones, llamadas.'],
+      [15,17,'creatividad','Segundo aire suave: bueno para idear y planificar sin la presión del pico.'],
+      [17,18,'recarga','Tu energía cae pronto. Pausa, naturaleza, gente: no fuerces trabajo serio.'],
+      [18,18.75,'comidas','Cena temprano y ligera: tu cuerpo empieza a frenar y agradece no digerir tarde.'],
+      [18.75,21,'recarga','Vida tranquila. Tu melatonina sube antes que la del resto.'],
+      [21,22,'cierre','Luz tenue y sin pantallas: preparas un sueño temprano y profundo.'],
+      [22,24,'sueno','Te apagas pronto. Respetarlo es tu superpoder; pelearlo, tu ruina.']
+    ]
+  },
+  oso:{
+    nombre:'Oso', emoji:'🐻', color:'#F0A55E', pct:'≈ 50% de las personas',
+    pico:'la media mañana (≈ 10 a. m. – 2 p. m.)',
+    tag:'Sigues al sol. El ritmo más común y equilibrado.',
+    desc:'Tu reloj se alinea con la luz del día. Rindes muy bien de media mañana a primera hora de la tarde, con el clásico bajón tras el almuerzo. Con una rutina estable, eres una máquina sostenible.',
+    base:'Es el ritmo «solar» intermedio, el más frecuente en la población. Su reloj se ajusta casi exactamente al ciclo día–noche, por eso encaja con los horarios sociales estándar.',
+    ritmo:'Despierta ~7:00 · se acuesta ~23:00 · duerme de un tirón 7–8 h.',
+    fortalezas:['Ritmo equilibrado y sostenible','Encaja con los horarios estándar','Buen sueño con rutina','Sociable y cooperador'],
+    retos:['Bajón postcomida muy marcado','Tiende a dormir poco por presión social','Energía media, sin picos extremos','Si rompe la rutina, se desajusta'],
+    salud:['Bajo riesgo si mantiene horarios regulares','El finde puede colar jet lag social','Cuidar la luz nocturna y la cena tardía'],
+    ideal:'Casi cualquier trabajo de horario diurno: equipos, gestión, oficios de 9 a 5, roles que requieren energía sostenida.',
+    lema:'Constancia sobre intensidad.',
+    schedule:[
+      [0,7,'sueno','Duermes alineado con la noche; 7–8 h es tu punto dulce.'],
+      [7,7.75,'despertar','Necesitas unos minutos para arrancar. Luz natural al despertar ancla tu reloj al ciclo del sol.'],
+      [7.75,8.25,'ejercicio','Movimiento suave para espabilar; tu sesión fuerte también funciona muy bien por la tarde.'],
+      [8.25,8.75,'comidas','Desayuno tras espabilar: rompes el ayuno con la sensibilidad a la insulina alta de la mañana.'],
+      [8.75,10,'admin','Calentamiento: organiza el día y despacha correos rápidos antes de entrar en faena.'],
+      [10,14,'profundo','Tu pico real, de media mañana a primera tarde. Aquí concentras lo importante.'],
+      [14,15,'comidas','Comida del mediodía justo cuando empieza el bajón.'],
+      [15,16,'recarga','El bajón postcomida es fisiológico. Camina o pausa; no lo combatas con cafeína tardía.'],
+      [16,18,'creatividad','Segundo aire de la tarde: ideal para crear, reuniones con chispa o ejercicio fuerte.'],
+      [18,19,'admin','Cierra pendientes ligeros antes de soltar el trabajo.'],
+      [19,20,'comidas','Cena sin prisa, idealmente ≥ 3 h antes de dormir.'],
+      [20,22,'recarga','Tiempo social y de ocio: tu mejor momento para conectar.'],
+      [22,23,'cierre','Baja luces y pantallas la última hora para dormir bien.'],
+      [23,24,'sueno','A dormir. Una hora estable de acostarte es tu mejor inversión.']
+    ]
+  },
+  lobo:{
+    nombre:'Lobo', emoji:'🐺', color:'#9B8CFF', pct:'≈ 15–20% de las personas',
+    pico:'la tarde-noche (después de las 6 p. m.)',
+    tag:'Ave nocturna. Tu mente brilla cuando otros se apagan.',
+    desc:'Te cuesta arrancar de mañana, pero tu lucidez crece a lo largo del día y explota al caer la tarde. Forzarte a madrugar te deja en deuda de sueño; cuando respetas tu ventana nocturna, vuelas.',
+    base:'Es el tipo «búho» o vespertino. Su reloj corre atrasado respecto al sol: la melatonina sube tarde y el despertar natural llega más allá de las 8. El mundo de 9 a 5 está hecho en su contra.',
+    ritmo:'Despierta ~7:30–9:00 con esfuerzo · se acuesta ~00:00–1:00 · gran deuda de sueño si madruga forzado.',
+    fortalezas:['Creatividad nocturna potente','Resistencia mental al final del día','Pensamiento original y arriesgado','Concentración profunda en silencio'],
+    retos:['Sufre la mañana e inercia del sueño','Acumula jet lag social entre semana','Tiende a cenar y dormir tarde','Mayor riesgo de hábitos poco sanos por la noche'],
+    salud:['Más expuesto al jet lag social y a la deuda de sueño','Conviene luz brillante al despertar y oscuridad de noche','Vigilar cafeína y pantallas tardías que lo retrasan aún más'],
+    ideal:'Trabajos creativos, tecnología, hostelería, urgencias, roles con horario flexible o de tarde-noche.',
+    lema:'El silencio de la noche es tu oficina.',
+    schedule:[
+      [0,1,'creatividad','Tu mente aún vuela. Si llega una idea, anótala; esta es tu hora fértil.'],
+      [1,8.5,'sueno','Te dormiste tarde; tu cuerpo necesita estirar la mañana para cubrir su cuota.'],
+      [8.5,9.5,'despertar','Despiertas aturdido (inercia del sueño). Luz muy intensa y agua fría ayudan a arrancar. Evita decisiones importantes ahora.'],
+      [9.5,10,'comidas','Desayuno ligero; tu apetito matutino es bajo, no te fuerces.'],
+      [10,12,'admin','Aún calientas motores. Tareas livianas y mecánicas, nada de decisiones grandes.'],
+      [12,13,'comidas','Primera comida sólida del día, cuando ya estás presente.'],
+      [13,14,'ejercicio','Ejercicio a mediodía: te activa para la segunda mitad del día, que es tu mejor mitad.'],
+      [14,17,'profundo','Empiezas a subir: bloque de foco analítico antes del gran pico.'],
+      [17,18.5,'recarga','Respiro antes del estallido nocturno.'],
+      [18.5,19.5,'comidas','Cena, pero no demasiado tarde para no empujar más tu reloj.'],
+      [19.5,22.5,'profundo','Tu pico absoluto. Aquí brilla el Lobo: lo más difícil y valioso, blindado de interrupciones.'],
+      [22.5,23.5,'creatividad','Pico creativo nocturno: escribir, idear, explorar mientras el mundo calla.'],
+      [23.5,24,'cierre','Empieza a bajar revoluciones; cuida la luz para no retrasarte aún más.']
+    ]
+  },
+  delfin:{
+    nombre:'Delfín', emoji:'🐬', color:'#79AEE6', pct:'≈ 10% de las personas',
+    pico:'la media mañana (≈ 10 a. m. – 12 p. m.)',
+    tag:'Sueño ligero, mente inquieta. Precisión sobre intensidad.',
+    desc:'Duermes ligero y te despiertas con facilidad; tu mente tiende a acelerarse, sobre todo de noche. Tienes una ventana dorada de enfoque a media mañana. Tu superpoder llega con estructura y una higiene de sueño impecable.',
+    base:'Toma el nombre del delfín, que duerme con medio cerebro despierto. Suele tener rasgos de insomnio y alerta nocturna: un reloj que «no apaga» del todo. Inteligente, ansioso y perfeccionista.',
+    ritmo:'Sueño ligero y fragmentado · se despierta fácil aunque cansado · alerta que repunta de noche y dificulta dormir.',
+    fortalezas:['Atención al detalle','Mente analítica y despierta','Gran enfoque en su ventana óptima','Inteligencia para lo complejo'],
+    retos:['Sueño ligero y poco reparador','Tendencia a la ansiedad y al rumiar nocturno','Energía irregular durante el día','Difícil que tome siestas'],
+    salud:['Mayor tendencia al insomnio: la higiene del sueño es clave','El ejercicio y la luz matutina calman la activación','Reducir cafeína; descargar pensamientos por escrito de noche'],
+    ideal:'Trabajos de precisión y análisis: investigación, finanzas, ingeniería, control de calidad, oficios de detalle.',
+    lema:'Estructura impecable, mente en calma.',
+    schedule:[
+      [0,6.5,'sueno','Sueño ligero y fragmentado: cada detalle de higiene del sueño cuenta para ti.'],
+      [6.5,7,'despertar','Te despiertas fácil aunque cansado. Luz intensa al instante corta la inercia y ancla tu reloj sensible.'],
+      [7,7.5,'ejercicio','Ejercicio matutino: baja la activación (cortisol/adrenalina) y calma tu mente inquieta el resto del día.'],
+      [7.5,8,'comidas','Desayuno ligero y a la misma hora: la regularidad estabiliza tu reloj sensible.'],
+      [8,10,'admin','Aún subiendo: tareas estructuradas y mecánicas para entrar en calor sin frustrarte.'],
+      [10,12,'profundo','Tu ventana dorada. Estrecha pero potente: aquí va lo más difícil, sin excepción.'],
+      [12,13,'comidas','Comida tranquila a media jornada.'],
+      [13,15,'admin','Energía irregular: gestiones y trabajo de mantenimiento, con expectativas realistas.'],
+      [15,16,'recarga','Pausa activa: caminar al aire libre regula tu sistema nervioso.'],
+      [16,18,'creatividad','Segunda ventana útil para crear o resolver con calma.'],
+      [18,19,'comidas','Cena ligera y temprana: la comida pesada de noche te despierta más.'],
+      [19,21.5,'recarga','Tarde-noche de baja estimulación: nada de trabajo intenso ni discusiones.'],
+      [21.5,23,'cierre','Rutina de cierre estricta: escribe tus pensamientos para frenar el rumiar, luz cálida tenue, cuarto fresco.'],
+      [23,24,'sueno','A la cama a la misma hora siempre. Tu descanso depende de la rutina más que el de nadie.']
+    ]
+  }
+};
+
+const TYPE_ORDER = ['leon','oso','lobo','delfin'];
+
+/* MEQ · espectro matutinidad–vespertinidad */
+const MEQ = [
+  {r:'70–86', n:'Definitivamente matutino', a:'León puro', t:'leon'},
+  {r:'59–69', n:'Moderadamente matutino', a:'León / Oso', t:'leon'},
+  {r:'42–58', n:'Intermedio (ni uno ni otro)', a:'Oso', t:'oso'},
+  {r:'31–41', n:'Moderadamente vespertino', a:'Oso / Lobo', t:'lobo'},
+  {r:'16–30', n:'Definitivamente vespertino', a:'Lobo puro', t:'lobo'}
+];
+
+/* Glosario de cronobiología */
+const GLOSSARY = [
+  {term:'Ritmo circadiano', def:'Ciclo biológico de ~24 h que regula sueño, alerta, temperatura y hormonas. Lo dirige el núcleo supraquiasmático del cerebro y se ajusta con la luz.'},
+  {term:'Cortisol (CAR)', def:'La «respuesta de cortisol al despertar»: un pico de cortisol 30–45 min tras abrir los ojos que te activa de verdad. Por eso el café temprano rinde menos que esperar 60–90 min.'},
+  {term:'Melatonina', def:'La hormona de la noche. Empieza a subir 2–3 h antes de dormir (DLMO) y le dice al cuerpo que es de noche. La luz —sobre todo azul— la frena, retrasando el sueño.'},
+  {term:'Temperatura central', def:'Sube y baja a lo largo del día. Llega a su mínimo ~2 h antes de despertar y a su máximo a media tarde-noche: por eso la fuerza y el rendimiento físico pican alto al final de la tarde.'},
+  {term:'Adenosina / Proceso S', def:'Molécula que se acumula con cada hora despierto y crea la «presión de sueño». La cafeína la bloquea temporalmente; dormir la limpia.'},
+  {term:'Modelo de dos procesos', def:'Teoría de Borbély: el sueño resulta de combinar el reloj circadiano (Proceso C) y la presión de sueño acumulada (Proceso S).'},
+  {term:'Bajón postcomida', def:'Caída de alerta a primera tarde (~13–15 h), en parte circadiana y en parte por la digestión. Ideal para una pausa o siesta corta, no para forzar foco.'},
+  {term:'Zona de mantenimiento de la vigilia', def:'Ventana de alerta alta en las 2–3 h previas a tu hora natural de dormir. Por eso a veces «se te va el sueño» justo antes de acostarte.'},
+  {term:'Inercia del sueño', def:'Ese aturdimiento de los primeros minutos tras despertar. Es más intenso en Lobos y si te despiertan en sueño profundo.'},
+  {term:'Jet lag social', def:'Desfase entre tu reloj biológico y tu horario social. Se mide como la diferencia del punto medio del sueño entre días laborales y libres. Más brecha = más fatiga y riesgo metabólico.'},
+  {term:'Zeitgeber', def:'«Dador de tiempo»: cualquier señal que sincroniza tu reloj. La luz es la más potente; también ayudan comidas, ejercicio y horarios regulares.'},
+  {term:'Cronotipo', def:'Tu preferencia natural por estar activo antes o después en el día. Es en parte genética, cambia con la edad (los adolescentes tienden a Lobo) y se desplaza, pero no se reinventa.'}
+];
+
+/* ============================================================
+   PREGUNTAS · cada opción aporta un vector de puntos
+============================================================ */
+const QUESTIONS = [
+  {q:'Sin despertador ni obligaciones, ¿a qué hora despertarías de forma natural?',
+   a:[['Antes de las 6:30',{leon:3}],['Entre 6:30 y 7:45',{oso:3,leon:1}],['Después de las 8:30',{lobo:3}],['A horas distintas, o me despierto de madrugada',{delfin:3}]]},
+  {q:'¿En qué momento del día sientes tu mente más clara y enfocada?',
+   a:[['Temprano en la mañana',{leon:3}],['A media mañana',{oso:2,leon:1}],['En la tarde o la noche',{lobo:3}],['Una ventana corta a media mañana; el resto es irregular',{delfin:3}]]},
+  {q:'¿Cómo describirías tu sueño?',
+   a:[['Profundo y reparador, pero me despierto temprano',{leon:3}],['Sólido, duermo de un tirón',{oso:3}],['Me cuesta dormirme, pero luego duermo bien',{lobo:3}],['Ligero, me despierto con cualquier ruido',{delfin:3}]]},
+  {q:'Si tuvieras que dar lo mejor de ti en una tarea mental exigente, ¿cuándo la harías?',
+   a:[['Entre 7 y 9 de la mañana',{leon:3}],['Entre 10 y 1 del mediodía',{oso:2,leon:1}],['Después de las 6 de la tarde',{lobo:3}],['De 10 a 12, y ni un minuto más',{delfin:3}]]},
+  {q:'¿Cómo es tu energía a lo largo del día?',
+   a:[['Empiezo a tope y caigo por la tarde',{leon:3}],['Estable, con un bajón a media tarde',{oso:3}],['Lento al inicio, subo al caer el día',{lobo:3}],['Sube y baja sin un patrón claro',{delfin:3}]]},
+  {q:'En las primeras horas tras despertar, te sientes…',
+   a:[['Despierto y listo de inmediato',{leon:3}],['Necesito unos minutos y un café',{oso:2}],['Aturdido, me toma un buen rato arrancar',{lobo:3}],['Cansado aunque haya dormido',{delfin:3}]]},
+  {q:'¿A qué hora te da hambre para la cena?',
+   a:[['Temprano, entre 6 y 7',{leon:3}],['Sobre las 8',{oso:3}],['Tarde, a las 9 o después',{lobo:3}],['Irregular; a veces se me olvida comer',{delfin:3}]]},
+  {q:'¿Qué tan fácil te resulta relajarte para dormir?',
+   a:[['Muy fácil, caigo rendido temprano',{leon:3}],['Fácil, si mantengo una rutina',{oso:3}],['Difícil, mi mente se activa de noche',{lobo:3}],['Muy difícil, doy vueltas con pensamientos',{delfin:3}]]},
+  {q:'¿Cuál es tu relación con la cafeína?',
+   a:[['Apenas la necesito',{leon:2,oso:1}],['Un café por la mañana y listo',{oso:2}],['Sin café no arranco; la tomo hasta tarde',{lobo:3}],['La evito o me altera demasiado',{delfin:3}]]},
+  {q:'El fin de semana, comparado con entre semana, sueles…',
+   a:[['Despertarme igual de temprano',{leon:3}],['Dormir una hora más, nada drástico',{oso:2}],['Dormir mucho más tarde y recuperar sueño',{lobo:3}],['Dormir igual de mal, duerma cuando duerma',{delfin:3}]]},
+  {q:'¿Con qué temperamento te identificas más?',
+   a:[['Disciplinado y optimista; madrugo con metas',{leon:3}],['Sociable, cooperador y equilibrado',{oso:3}],['Creativo, intenso e impulsivo, sobre todo de noche',{lobo:3}],['Cauteloso, perfeccionista, con la mente que no para',{delfin:3}]]},
+  {q:'¿Qué tal te llevas con las siestas?',
+   a:[['No las necesito',{leon:2,oso:1}],['Una siesta corta me sienta de maravilla',{oso:2}],['Solo si trasnoché; si no, no',{lobo:2,leon:1}],['No consigo dormir de día aunque quiera',{delfin:3}]]},
+  {q:'Cuando suena el despertador por la mañana, tu primer pensamiento es…',
+   a:[['Ya estaba despierto; es mi mejor momento',{leon:3}],['Está bien, en cuanto arranque voy',{oso:2}],['Lo detesto, soy persona de noche',{lobo:3}],['Llevo rato despierto dando vueltas',{delfin:3}]]}
+];
+
+/* ============================================================
+   SCORING  (puro y testable)
+============================================================ */
+function scoreType(answers){
+  const t = {leon:0, oso:0, lobo:0, delfin:0};
+  answers.forEach(w => { if(!w) return; for(const k in w){ if(k in t) t[k] += w[k]; } });
+  return t;
+}
+function winningType(answers){
+  const t = scoreType(answers);
+  let best = TYPE_ORDER[0];
+  TYPE_ORDER.forEach(k => { if(t[k] > t[best]) best = k; });
+  return best;
+}
+function percentages(answers){
+  const t = scoreType(answers);
+  const total = TYPE_ORDER.reduce((s,k)=>s+t[k],0) || 1;
+  const out = {};
+  TYPE_ORDER.forEach(k => out[k] = Math.round(t[k]/total*100));
+  return out;
+}
+function rankTypes(answers){
+  const t = scoreType(answers);
+  return TYPE_ORDER.slice().sort((a,b)=> t[b]-t[a] || TYPE_ORDER.indexOf(a)-TYPE_ORDER.indexOf(b));
+}
+if (typeof module !== 'undefined' && module.exports){
+  module.exports = {scoreType, winningType, percentages, rankTypes, TYPES, QUESTIONS, ACT, ALERT};
+}
+
+/* ============================================================
+   APP
+============================================================ */
+if (typeof document !== 'undefined') {
+(function(){
+  const STORE = 'bymcyl_chrono_v2';
+  const screens = ['intro','quiz','result','designer','encyclopedia','science']
+    .reduce((o,id)=>{o[id]=byId(id);return o;},{});
+  let idx = 0;
+  let answers = new Array(QUESTIONS.length).fill(null);
+  let saved = loadSaved();
+
+  /* nav */
+  byId('start').addEventListener('click', startQuiz);
+  byId('back').addEventListener('click', prev);
+  byId('genPlan').addEventListener('click', generatePlan);
+  byId('dSchedule').addEventListener('change', applyScheduleDefaults);
+  byId('dChrono').addEventListener('change', applyChronoDefaults);
+  document.querySelectorAll('[data-go]').forEach(el=>{
+    el.addEventListener('click',()=>goTo(el.getAttribute('data-go')));
+  });
+
+  function startQuiz(){ answers = new Array(QUESTIONS.length).fill(null); idx=0; goTo('quiz'); renderQ(); }
+
+  function goTo(name){
+    if(name==='result' && !saved && answers.every(a=>a===null)){
+      renderEmptyResult();
+    }
+    Object.values(screens).forEach(s=>s.classList.remove('active'));
+    screens[name].classList.add('active');
+    const nav = byId('topnav');
+    if(name==='intro'){ nav.classList.remove('show'); }
+    else { nav.classList.add('show'); }
+    document.querySelectorAll('.navbtn').forEach(b=>{
+      b.classList.toggle('active', b.getAttribute('data-go')===name);
+    });
+    window.scrollTo({top:0,behavior:'auto'});
+  }
+
+  /* ---------- quiz ---------- */
+  function renderQ(){
+    const item = QUESTIONS[idx];
+    byId('qcount').textContent = pad(idx+1)+' / '+pad(QUESTIONS.length);
+    byId('bar').style.width = (idx/QUESTIONS.length*100)+'%';
+    byId('qtext').textContent = item.q;
+    byId('back').disabled = idx===0;
+    const wrap = byId('opts'); wrap.innerHTML='';
+    item.a.forEach(([label,weight])=>{
+      const b=document.createElement('button');
+      const isSel = answers[idx] && sameWeight(answers[idx],weight);
+      b.className='opt'+(isSel?' sel':'');
+      b.innerHTML='<span class="tick"></span><span>'+label+'</span>';
+      b.addEventListener('click',()=>choose(weight,b));
+      wrap.appendChild(b);
+    });
+  }
+  function choose(weight,btn){
+    answers[idx]=weight;
+    byId('bar').style.width = ((idx+1)/QUESTIONS.length*100)+'%';
+    [...byId('opts').children].forEach(c=>c.classList.remove('sel'));
+    btn.classList.add('sel');
+    setTimeout(()=>{ idx<QUESTIONS.length-1 ? (idx++, renderQ()) : finish(); }, 220);
+  }
+  function prev(){ if(idx>0){ idx--; renderQ(); } }
+
+  function finish(){
+    const type = winningType(answers);
+    const pct = percentages(answers);
+    const ranking = rankTypes(answers);
+    saved = {type, pct, ranking};
+    save(saved);
+    renderResult(type, pct, ranking);
+    buildChronoSelect();
+    goTo('result');
+  }
+
+  /* ---------- render result ---------- */
+  function renderEmptyResult(){
+    byId('resultBody').innerHTML =
+      '<div class="empty"><p>Aún no tienes un resultado.<br>Haz el test para descubrir tu cronotipo.</p>'
+      +'<button class="cta small" id="emptyStart">Hacer el test</button></div>';
+    const b=byId('emptyStart'); if(b) b.addEventListener('click',startQuiz);
+  }
+
+  function renderResult(key, pct, ranking){
+    const t = TYPES[key];
+    const second = ranking ? ranking[1] : null;
+    const margin = pct ? (pct[ranking[0]] - pct[ranking[1]]) : 0;
+    const conf = margin>=22 ? 'alta' : margin>=10 ? 'media' : 'mixta';
+    const secLine = conf==='mixta' && second
+      ? 'Tu perfil es <b>mixto</b>: principalmente '+TYPES[key].nombre+' con rasgos marcados de '+TYPES[second].nombre+'. Mira tus dos tipos en la enciclopedia.'
+      : (second && pct[second]>=20
+          ? 'Eres sobre todo <b>'+TYPES[key].nombre+'</b>, con un matiz de '+TYPES[second].nombre+'.'
+          : 'Tu perfil es claramente <b>'+TYPES[key].nombre+'</b>.');
+
+    const html =
+      '<div class="reveal-tag">Tu cronotipo es</div>'
+      + '<div class="type-head"><span class="type-emoji">'+t.emoji+'</span>'
+        + '<div><div class="type-name">'+t.nombre+'</div><div class="type-pct">'+t.pct+'</div></div></div>'
+      + '<p class="tagline">'+t.tag+'</p>'
+      + '<p class="desc">'+t.desc+'</p>'
+
+      + '<div class="card"><div class="card-label">Tu afinidad con cada tipo</div>'
+        + (pct ? TYPE_ORDER.slice().sort((a,b)=>pct[b]-pct[a]).map(k=>matchRow(k,pct[k])).join('') : '')
+        + '<div class="confidence">Confianza del resultado: <b>'+conf+'</b>. '+secLine+'</div></div>'
+
+      + '<div class="card clock-card"><div class="card-label">Tu día ideal · 24 h</div>'
+        + '<div class="clock-wrap"><svg class="clock" id="clockR" viewBox="0 0 340 340" role="img" aria-label="Reloj de 24 horas con tu horario ideal"></svg>'
+        + '<div class="center-lbl" style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none">'
+        + '<span class="center-emoji">'+t.emoji+'</span><span class="center-name">'+t.nombre+'</span><span class="center-sub">tu ritmo</span></div></div>'
+        + '<div class="legend" id="legendR"></div></div>'
+
+      + '<div class="card"><div class="card-label">Hora por hora · y el porqué de cada bloque</div>'
+        + '<ul class="sched" id="schedR"></ul></div>'
+
+      + '<div class="card"><div class="card-label">Tus fortalezas naturales</div>'
+        + '<div class="chips">'+t.fortalezas.map(f=>'<span class="chip">'+f+'</span>').join('')+'</div></div>'
+
+      + '<div class="card"><div class="card-label">Tus retos a vigilar</div>'
+        + '<div class="chips">'+t.retos.map(f=>'<span class="chip warn">'+f+'</span>').join('')+'</div></div>'
+
+      + '<div class="card"><div class="card-label">Tu plan para sincronizarte</div>'
+        + '<ul class="tips">'+typeTips(key).map(x=>'<li>'+x+'</li>').join('')+'</ul></div>'
+
+      + '<div class="actions">'
+        + '<button class="cta" id="toDesigner">Diseñar mi plan a medida →</button>'
+        + '<button class="cta ghost" id="copyR">Copiar mi resumen</button>'
+        + '<button class="cta ghost" id="restart">Repetir el test</button></div>'
+      + '<div class="foot">Break Your Mind · Change Your Life</div>';
+
+    byId('resultBody').innerHTML = html;
+    drawClock(byId('clockR'), t.schedule);
+    drawLegend(byId('legendR'), t.schedule);
+    drawSched(byId('schedR'), t.schedule);
+    byId('toDesigner').addEventListener('click',()=>goTo('designer'));
+    byId('restart').addEventListener('click',startQuiz);
+    byId('copyR').addEventListener('click',()=>copyText(buildSummary(t, pct)));
+  }
+
+  function matchRow(k,p){
+    const t=TYPES[k];
+    return '<div class="mrow"><span class="mname">'+t.emoji+' '+t.nombre+'</span>'
+      +'<span class="mtrack"><span class="mfill" style="background:'+t.color+'"></span></span>'
+      +'<span class="mpct">'+p+'%</span></div>';
+  }
+
+  function typeTips(key){
+    return {
+      leon:['Reserva tu trabajo más exigente para <b>antes del mediodía</b>: ahí está tu oro.','No quemes la mañana en correos. Protégela para crear y pensar.','Agenda reuniones y vida social en la <b>tarde</b>, cuando bajas de marcha.','Respeta el sueño temprano: tu cuerpo pide apagarse antes que el resto.','Si te despiertas de madrugada, no enciendas pantallas: mantén el cuarto oscuro.'],
+      oso:['Tu pico va de <b>media mañana a las 2 p. m.</b>: pon ahí lo más importante.','El bajón de media tarde es real. Úsalo para pausar o caminar, no para forzar.','Busca <b>luz natural al despertar</b> para anclar tu reloj cada día.','Cena ligero y baja pantallas la última hora para dormir mejor.','El finde, no duermas más de 1 h extra: evitas el jet lag social.'],
+      lobo:['No pelees con la mañana: úsala para tareas livianas y calentar motores.','Tu verdadero pico es la <b>tarde-noche</b>. Blíndalo para lo que de verdad importa.','Evita decisiones grandes al despertar; tu cerebro aún está en modo avión.','Dale a tus ojos <b>luz brillante</b> al levantarte y <b>oscuriza</b> la noche para no retrasarte más.','Si puedes, negocia empezar tu jornada más tarde: dormir poco te penaliza más que a nadie.'],
+      delfin:['Tu ventana de oro es de <b>10 a 12</b>. Blinda ese bloque para lo más difícil.','Higiene de sueño estricta: misma hora, sin pantallas, cuarto fresco y oscuro.','Mueve el cuerpo <b>temprano</b>: el ejercicio matutino calma la mente inquieta.','Antes de dormir, <b>descarga tus pensamientos por escrito</b> para frenar el rumiar.','Si no duermes, no luches en la cama: levántate, luz tenue, y vuelve cuando llegue el sueño.']
+    }[key];
+  }
+
+  /* ---------- radial 24h clock ---------- */
+  const CX=170, CY=170, R_OUT=148, R_IN=92;
+  function polar(r,hour){
+    const a=(hour/24)*2*Math.PI;
+    return {x:CX+r*Math.sin(a), y:CY-r*Math.cos(a)};
+  }
+  function arc(rIn,rOut,h0,h1){
+    const o0=polar(rOut,h0), o1=polar(rOut,h1), i1=polar(rIn,h1), i0=polar(rIn,h0);
+    const large=(h1-h0)>12?1:0;
+    return ['M',o0.x,o0.y,'A',rOut,rOut,0,large,1,o1.x,o1.y,'L',i1.x,i1.y,'A',rIn,rIn,0,large,0,i0.x,i0.y,'Z'].join(' ');
+  }
+  function drawClock(svg, schedule){
+    svg.innerHTML='';
+    const NS='http://www.w3.org/2000/svg';
+    const track=document.createElementNS(NS,'circle');
+    track.setAttribute('cx',CX);track.setAttribute('cy',CY);track.setAttribute('r',(R_OUT+R_IN)/2);
+    track.setAttribute('fill','none');track.setAttribute('stroke','rgba(255,255,255,.04)');track.setAttribute('stroke-width',R_OUT-R_IN);
+    svg.appendChild(track);
+    schedule.forEach((row,n)=>{
+      const s=row[0],e=row[1],k=row[2];
+      if(e<=s) return;
+      const p=document.createElementNS(NS,'path');
+      p.setAttribute('d',arc(R_IN,R_OUT,s,e));
+      p.setAttribute('fill',ACT[k].color);
+      p.setAttribute('stroke','var(--ink-2)');p.setAttribute('stroke-width','1.5');
+      p.setAttribute('class','seg');
+      p.style.transitionDelay=(n*40)+'ms';
+      svg.appendChild(p);
+      requestAnimationFrame(()=>requestAnimationFrame(()=>p.classList.add('in')));
+    });
+    for(let h=0;h<24;h++){
+      const inner=polar(R_OUT+3,h), outer=polar(R_OUT+(h%6===0?12:7),h);
+      const tk=document.createElementNS(NS,'line');
+      tk.setAttribute('x1',inner.x);tk.setAttribute('y1',inner.y);tk.setAttribute('x2',outer.x);tk.setAttribute('y2',outer.y);
+      tk.setAttribute('stroke','rgba(255,255,255,'+(h%6===0?'.35':'.14')+')');tk.setAttribute('stroke-width',h%6===0?'2':'1');
+      svg.appendChild(tk);
+    }
+    [[0,'00'],[6,'06'],[12,'12'],[18,'18']].forEach(([h,lbl])=>{
+      const p=polar(R_OUT+26,h);
+      const tx=document.createElementNS(NS,'text');
+      tx.setAttribute('x',p.x);tx.setAttribute('y',p.y);
+      tx.setAttribute('text-anchor','middle');tx.setAttribute('dominant-baseline','middle');
+      tx.setAttribute('class','tick-lbl');tx.textContent=lbl;
+      svg.appendChild(tx);
+    });
+  }
+
+  function drawLegend(el, schedule){
+    const used=[...new Set(schedule.map(s=>s[2]))];
+    const ord=['despertar','profundo','creatividad','admin','ejercicio','comidas','recarga','cierre','sueno'];
+    used.sort((a,b)=>ord.indexOf(a)-ord.indexOf(b));
+    el.innerHTML=used.map(k=>{
+      const a=ACT[k];
+      return '<div class="leg"><span class="sw" style="background:'+a.color+'"></span><div><b>'+a.label+'</b><span>'+a.note+'</span></div></div>';
+    }).join('');
+  }
+
+  function drawSched(el, schedule){
+    el.innerHTML=schedule.map(row=>{
+      const s=row[0],e=row[1],k=row[2],why=row[3]||'';
+      const a=ACT[k];
+      const warn = row[4] ? ' warn' : '';
+      return '<li><span class="time">'+fmt(s)+' – '+fmt(e)+'</span>'
+        +'<span class="bar" style="background:'+a.color+'"></span>'
+        +'<div class="body"><span class="act">'+a.label+'</span>'
+        +(why?'<span class="why'+warn+'">'+why+'</span>':'')+'</div></li>';
+    }).join('');
+  }
+
+  /* ---------- summary / copy ---------- */
+  function buildSummary(t, pct){
+    let line = 'Mi cronotipo es '+t.emoji+' '+t.nombre+' — '+t.tag+'\n\n';
+    line += 'Mi pico de enfoque está en '+t.pico+'.\n';
+    line += 'Mis fortalezas: '+t.fortalezas.slice(0,3).join(', ')+'.\n';
+    if(pct){
+      const key = Object.keys(TYPES).find(k=>TYPES[k].nombre===t.nombre);
+      line += 'Afinidad: '+TYPE_ORDER.slice().sort((a,b)=>pct[b]-pct[a]).map(k=>TYPES[k].nombre+' '+pct[k]+'%').join(' · ')+'.\n';
+    }
+    line += '\nDescubre el tuyo 👉 BYMCYL · Tu Reloj Circadiano';
+    return line;
+  }
+  function copyText(txt){
+    if(navigator.clipboard){ navigator.clipboard.writeText(txt).then(showToast).catch(()=>fallbackCopy(txt)); }
+    else fallbackCopy(txt);
+  }
+  function fallbackCopy(txt){
+    const ta=document.createElement('textarea');ta.value=txt;document.body.appendChild(ta);ta.select();
+    try{document.execCommand('copy');showToast();}catch(e){}
+    document.body.removeChild(ta);
+  }
+  function showToast(msg){
+    const el=byId('toast'); if(msg) el.textContent=msg;
+    el.classList.add('show');
+    setTimeout(()=>el.classList.remove('show'),2000);
+  }
+
+  /* ============================================================
+     DESIGNER · genera un plan adaptado al horario real
+  ============================================================ */
+  function buildChronoSelect(){
+    const sel=byId('dChrono');
+    const cur = sel.value || (saved && saved.type) || 'oso';
+    sel.innerHTML = TYPE_ORDER.map(k=>'<option value="'+k+'">'+TYPES[k].emoji+' '+TYPES[k].nombre+'</option>').join('');
+    sel.value = (saved && saved.type) || cur;
+  }
+
+  const SCHED_DEFAULTS = {
+    oficina:    {wake:null, sleep:null, ws:'09:00', we:'17:00', work:true,  desc:'Tu reloj manda fuera del horario; dentro, coloco el foco donde más rindes.'},
+    manana:     {wake:'05:00', sleep:'21:00', ws:'06:00', we:'14:00', work:true, desc:'Madrugón obligado: priorizo luz fuerte al despertar y sueño temprano.'},
+    tarde:      {wake:'09:00', sleep:'01:00', ws:'14:00', we:'22:00', work:true, desc:'Tu mañana es libre; la tarde-noche es trabajo.'},
+    noche:      {wake:'15:00', sleep:'08:00', ws:'22:00', we:'06:00', work:true, desc:'Trabajas contra tu biología; el plan minimiza el daño con luz y oscuridad estratégicas.'},
+    estudiante: {wake:null, sleep:null, ws:'08:00', we:'15:00', work:true, desc:'Clases por la mañana; los bloques de estudio van a tu mejor hora libre.'},
+    flexible:   {wake:null, sleep:null, ws:null, we:null, work:false, desc:'Sin horario fijo: tu cronotipo dicta el día entero.'},
+    personalizado:{wake:null, sleep:null, ws:'09:00', we:'17:00', work:true, desc:'Ajusta todo a tu medida.'}
+  };
+
+  function applyScheduleDefaults(){
+    const st=byId('dSchedule').value;
+    const d=SCHED_DEFAULTS[st];
+    const chrono=byId('dChrono').value || 'oso';
+    const nat=naturalTimes(chrono);
+    byId('dWake').value  = d.wake  || nat.wake;
+    byId('dSleep').value = d.sleep || nat.sleep;
+    byId('dWorkRow').style.display = d.work ? '' : 'none';
+    if(d.work){ byId('dWorkStart').value=d.ws; byId('dWorkEnd').value=d.we; }
+  }
+  function applyChronoDefaults(){
+    // al cambiar cronotipo, re-aplica defaults respetando el tipo de horario
+    applyScheduleDefaults();
+  }
+  function naturalTimes(chrono){
+    return {
+      leon:  {wake:'06:00', sleep:'22:00'},
+      oso:   {wake:'07:00', sleep:'23:00'},
+      lobo:  {wake:'08:00', sleep:'01:00'},
+      delfin:{wake:'06:30', sleep:'23:00'}
+    }[chrono];
+  }
+
+  function generatePlan(){
+    const chrono=byId('dChrono').value;
+    const st=byId('dSchedule').value;
+    const d=SCHED_DEFAULTS[st];
+    const wake=round05(parseTime(byId('dWake').value));
+    const sleep=round05(parseTime(byId('dSleep').value));
+    const exPref=byId('dEx').value;
+    const eatsBreak=byId('dBreak').checked;
+    let ws=null, we=null;
+    if(d.work && byId('dWorkRow').style.display!=='none'){
+      ws=round05(parseTime(byId('dWorkStart').value));
+      we=round05(parseTime(byId('dWorkEnd').value));
+    }
+    const plan = buildPlan({chrono, wake, sleep, ws, we, exPref, eatsBreak, scheduleType:st});
+    renderPlan(plan, chrono, st);
+  }
+
+  /* core planner: devuelve {blocks:[[s,e,k,why,warn]], insights:[]} */
+  function buildPlan(o){
+    const N=48;                          // 48 slots de 30 min
+    const labels=new Array(N).fill(null);
+    const awake=new Array(N).fill(false);
+    const sl=s=>((s%N)+N)%N;
+    const slot=h=>sl(Math.round(h*2));
+    const inWake=(a,b,x)=>{ a=slot(a);b=slot(b);x=sl(x); return a<=b ? (x>=a&&x<b) : (x>=a||x<b); };
+
+    // 1) vigilia / sueño
+    for(let i=0;i<N;i++){ awake[i]=inWake(o.wake,o.sleep,i); if(!awake[i]) labels[i]='sueno'; }
+
+    const place=(startH,lenH,label)=>{           // coloca sólo en slots libres y despiertos
+      const st=slot(startH), n=Math.round(lenH*2);
+      for(let j=0;j<n;j++){ const i=sl(st+j); if(awake[i] && labels[i]===null) labels[i]=label; }
+    };
+    const placeFlex=(targetH,lenH,label)=>{       // busca el hueco más cercano que quepa entero
+      const offs=[0,.5,-.5,1,-1,1.5,-1.5,2,-2];
+      const n=Math.round(lenH*2);
+      for(const off of offs){
+        const st=slot(targetH+off); let ok=true;
+        for(let j=0;j<n;j++){ const i=sl(st+j); if(!awake[i]||labels[i]!==null){ok=false;break;} }
+        if(ok){ for(let j=0;j<n;j++) labels[sl(st+j)]=label; return targetH+off; }
+      }
+      return null;
+    };
+
+    // 2) anclas fijas
+    place(o.wake, 1, 'despertar');                       // despertar + luz (1 h)
+    place(o.sleep-1, 1, 'cierre');                        // cierre (1 h antes de dormir)
+    if(o.eatsBreak) place(o.wake+1, 0.5, 'comidas');      // desayuno
+    placeFlex(o.wake+6, 1, 'comidas');                    // comida principal (~6 h tras despertar)
+    placeFlex(o.sleep-3, 1, 'comidas');                   // cena (~3 h antes de dormir)
+
+    // 3) ejercicio
+    if(o.exPref!=='none'){
+      let exTarget;
+      if(o.exPref==='manana') exTarget=o.wake+1.5;
+      else if(o.exPref==='tarde') exTarget=o.ws!=null ? Math.min(o.we, o.sleep-4.5) : o.sleep-5;
+      else { // auto: matutino para León/Delfín, vespertino para Oso/Lobo
+        exTarget = (o.chrono==='leon'||o.chrono==='delfin') ? o.wake+1.5
+                 : (o.ws!=null ? o.we : o.sleep-5);
+      }
+      placeFlex(exTarget, 1, 'ejercicio');
+    }
+
+    // 4) elegibilidad para trabajo
+    const eligDeep=new Array(N).fill(false);
+    for(let i=0;i<N;i++){
+      if(!awake[i]||labels[i]!==null) continue;
+      eligDeep[i] = (o.ws!=null) ? inWake(o.ws,o.we,i) : true;
+    }
+    const score=i=>alertAt(o.chrono, i/2);
+
+    // 5) trabajo profundo: mejor ventana contigua disponible
+    const deep = bestRun(eligDeep, [6,4,2], score);
+    let deepAlert=null;
+    if(deep){ deep.forEach(i=>labels[i]='profundo'); deepAlert = avg(deep.map(score)); }
+
+    // 6) creatividad: segunda mejor ventana (incluida fuera del horario laboral)
+    const eligCre=new Array(N).fill(false);
+    for(let i=0;i<N;i++) eligCre[i] = awake[i] && labels[i]===null;
+    const cre = bestRun(eligCre, [3,2], score);
+    if(cre) cre.forEach(i=>labels[i]='creatividad');
+
+    // 7) resto: admin en horario laboral, recarga fuera
+    for(let i=0;i<N;i++){
+      if(awake[i] && labels[i]===null){
+        labels[i] = (o.ws!=null && inWake(o.ws,o.we,i)) ? 'admin' : 'recarga';
+      }
+    }
+
+    // 8) fundir en bloques (sin cruzar el límite 0/24)
+    const blocks=[];
+    let i=0;
+    while(i<N){
+      const k=labels[i]; let j=i+1;
+      while(j<N && labels[j]===k) j++;
+      const s=i/2, e=j/2;
+      blocks.push([s,e,k, reasonFor(o, k, s, deepAlert), false]);
+      i=j;
+    }
+    // marcar advertencia en trabajo profundo desalineado
+    blocks.forEach(b=>{
+      if(b[2]==='profundo' && deepAlert!=null && deepAlert<58){ b[4]=true; }
+    });
+
+    // 9) ordenar la lista empezando por el despertar
+    const startIdx = blocks.findIndex(b=> b[0] <= o.wake%24 && o.wake%24 < b[1] && b[2]==='despertar');
+    let ordered = blocks;
+    if(startIdx>0) ordered = blocks.slice(startIdx).concat(blocks.slice(0,startIdx));
+
+    const insights = buildInsights(o, deepAlert);
+    return {blocks, ordered, insights, deepAlert};
+  }
+
+  function bestRun(elig, lens, score){
+    for(const len of lens){
+      let best=null, bestScore=-1;
+      for(let start=0; start<48; start++){
+        let ok=true, sum=0;
+        for(let j=0;j<len;j++){ const s=(start+j)%48; if(!elig[s]){ok=false;break;} sum+=score(s); }
+        if(ok && sum/len>bestScore){ bestScore=sum/len; best=start; }
+      }
+      if(best!==null){ const out=[]; for(let j=0;j<len;j++) out.push((best+j)%48); return out; }
+    }
+    return null;
+  }
+
+  function alertAt(chrono, h){
+    const arr=ALERT[chrono]; h=((h%24)+24)%24;
+    const lo=Math.floor(h)%24, hi=(lo+1)%24, f=h-Math.floor(h);
+    return arr[lo]*(1-f)+arr[hi]*f;
+  }
+  function avg(a){ return a.reduce((s,x)=>s+x,0)/a.length; }
+
+  function reasonFor(o, label, startH, deepAlert){
+    const night = o.scheduleType==='noche';
+    const base = {
+      despertar:'Luz intensa + hidratación en los primeros minutos. La luz frena la melatonina y dispara el cortisol (CAR), que te despierta de verdad y ancla tu reloj. Café 60–90 min después, no antes.',
+      comidas:'Come con calma y a horas regulares. Comer pronto refuerza la señal de «es de día»; la cena, ligera y ≥ 3 h antes de dormir.',
+      ejercicio:'Tu fuerza y temperatura corporal pican alto a media tarde: más rendimiento. Por la mañana, en cambio, el ejercicio adelanta el reloj y espabila.',
+      profundo:'Trabajo profundo en tu mejor alerta: aquí tu atención sostenida y memoria de trabajo rinden al máximo. Protégelo de notificaciones e interrupciones.',
+      creatividad:'Ideas y exploración un punto por debajo del pico: el pensamiento divergente suele fluir mejor fuera de la máxima alerta.',
+      admin:'Correos, reuniones y recados en tu alerta media: tareas mecánicas que no merecen tu mejor energía.',
+      recarga:'Pausa real en tu valle: caminar, naturaleza o siesta corta (10–20 min). Forzar trabajo aquí cuesta el doble.',
+      cierre:'Rutina de cierre: luz tenue, sin pantallas y cuarto fresco. Le abres la puerta a la melatonina para que suba.',
+      sueno:'Sueño en tu ventana. Mantener la misma hora —también el finde— afina tu reloj y tu calidad de descanso.'
+    }[label];
+    let extra='';
+    if(label==='profundo' && deepAlert!=null && deepAlert<58){
+      extra = night
+        ? ' ⚠ Tu turno te pide rendir cuando tu cuerpo va a la baja: usa luz muy brillante en el puesto y cafeína al inicio del turno para sostener la alerta.'
+        : ' ⚠ Tu horario coloca este bloque fuera de tu pico natural. Compénsalo con luz brillante, una pausa previa y cero distracciones.';
+    }
+    if(label==='despertar' && night){
+      extra = ' Al terminar el turno, ponte gafas de sol de camino a casa y duerme a oscuras total: engañas al reloj para descansar de día.';
+    }
+    return base+extra;
+  }
+
+  function buildInsights(o, deepAlert){
+    const out=[];
+    const ch=TYPES[o.chrono].nombre;
+    // alineación del trabajo con el pico
+    if(o.ws!=null){
+      const workHours=[]; for(let h=0;h<24;h+=0.5){ if(((slotIn(o.ws,o.we,h)))) workHours.push(alertAt(o.chrono,h)); }
+      const wAvg = workHours.length? avg(workHours):0;
+      if(wAvg>=70) out.push(['good','✅','Tu horario te favorece','Tu jornada cae casi sobre tu pico natural. Aprovecha: mete lo más difícil al principio, antes de gastarte.']);
+      else if(wAvg<52) out.push(['warn','⚠️','Trabajas contra tu pico','Tu mejor energía cae fuera de tu horario. No es culpa tuya: es desajuste circadiano. Protege un bloque de foco en tu mejor hora disponible y delega lo mecánico al resto.']);
+    }
+    // turno de noche
+    if(o.scheduleType==='noche'){
+      out.push(['warn','🌙','Turno de noche','Tu reloj sigue queriendo dormir de madrugada. Reduce el daño: luz muy brillante durante el turno, comida ligera a mitad, gafas de sol al volver y dormitorio en oscuridad total para dormir de día.']);
+    }
+    // cronotipo madrugando
+    if((o.chrono==='lobo') && o.ws!=null && o.ws<=8){
+      out.push(['warn','🐺','Lobo madrugando','Empezar temprano te deja en deuda de sueño crónica. Si puedes, negocia un inicio más tarde o teletrabajo. Si no: luz intensa nada más despertar y nada de cafeína después de media tarde.']);
+    }
+    if((o.chrono==='leon') && o.scheduleType==='tarde'){
+      out.push(['warn','🦁','León en turno de tarde','Tu energía se apaga justo cuando tu turno aprieta. Adelanta tus tareas clave al inicio del turno y usa una siesta corta antes de entrar.']);
+    }
+    // jet lag / duración del sueño
+    const sleepLen=((o.sleep-o.wake)%24+24)%24;
+    if(sleepLen<7) out.push(['warn','😴','Poco margen de sueño','Tu ventana de sueño es de '+sleepLen.toFixed(1)+' h. Por debajo de 7 h se acumula deuda. Adelanta el cierre del día para ganar descanso.']);
+    else out.push(['good','🛏️','Sueño suficiente','Tu ventana de sueño es de '+sleepLen.toFixed(1)+' h: buen margen. Mantén la hora estable para consolidarlo.']);
+    return out;
+  }
+  function slotIn(a,b,x){ a=((a%24)+24)%24;b=((b%24)+24)%24;x=((x%24)+24)%24; return a<=b ? (x>=a&&x<b) : (x>=a||x<b); }
+
+  function renderPlan(plan, chrono, st){
+    const t=TYPES[chrono];
+    const out=byId('planOut');
+    const html =
+      '<div class="card clock-card" style="margin-top:24px"><div class="card-label">Tu plan · 24 h</div>'
+      + '<div class="clock-wrap"><svg class="clock" id="clockP" viewBox="0 0 340 340" role="img" aria-label="Reloj de 24 horas con tu plan"></svg>'
+      + '<div class="center-lbl" style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none">'
+      + '<span class="center-emoji">'+t.emoji+'</span><span class="center-name">'+t.nombre+'</span><span class="center-sub">tu plan</span></div></div>'
+      + '<div class="legend" id="legendP"></div></div>'
+      + (plan.insights.length ? '<div class="card"><div class="card-label">Lo que debes saber</div>'
+          + plan.insights.map(([cls,ic,b,s])=>'<div class="insight '+cls+'"><span class="ic">'+ic+'</span><div><b>'+b+'</b><span>'+s+'</span></div></div>').join('')
+          + '</div>' : '')
+      + '<div class="card"><div class="card-label">Tu plan, hora por hora · con el porqué</div><ul class="sched" id="schedP"></ul></div>'
+      + '<div class="actions"><button class="cta ghost" id="copyP">Copiar mi plan</button></div>';
+    out.innerHTML=html;
+    drawClock(byId('clockP'), plan.blocks);
+    drawLegend(byId('legendP'), plan.blocks);
+    drawSched(byId('schedP'), plan.ordered);
+    byId('copyP').addEventListener('click',()=>copyText(buildPlanSummary(plan, t, st)));
+    out.scrollIntoView({behavior:'smooth', block:'start'});
+  }
+
+  function buildPlanSummary(plan, t, st){
+    const stName={oficina:'Oficina',manana:'Turno de mañana',tarde:'Turno de tarde',noche:'Turno de noche',estudiante:'Estudiante',flexible:'Flexible',personalizado:'Personalizado'}[st];
+    let s='Mi plan circadiano · '+t.emoji+' '+t.nombre+' · '+stName+'\n\n';
+    plan.ordered.forEach(b=>{ s+= fmt(b[0])+'–'+fmt(b[1])+'  '+ACT[b[2]].label+'\n'; });
+    s+='\nBYMCYL · Tu Reloj Circadiano';
+    return s;
+  }
+
+  /* ============================================================
+     ENCYCLOPEDIA + SCIENCE
+  ============================================================ */
+  function renderEncyclopedia(){
+    byId('encList').innerHTML = TYPE_ORDER.map(k=>{
+      const t=TYPES[k];
+      return '<div class="enc-card">'
+        + '<div class="enc-top"><span class="em">'+t.emoji+'</span><div><div class="nm">'+t.nombre+'</div><div class="pc">'+t.pct+'</div></div></div>'
+        + '<div class="enc-tag">'+t.tag+'</div>'
+        + '<div class="enc-block"><div class="h">Qué es</div><p>'+t.base+'</p></div>'
+        + '<div class="enc-block"><div class="h">Ritmo natural</div><p>'+t.ritmo+'</p></div>'
+        + '<div class="enc-block"><div class="h">Pico de rendimiento</div><p>'+cap(t.pico)+'</p></div>'
+        + '<div class="twocol">'
+          + '<div class="enc-block"><div class="h">Fortalezas</div><ul>'+t.fortalezas.map(x=>'<li>'+x+'</li>').join('')+'</ul></div>'
+          + '<div class="enc-block bad"><div class="h">Retos</div><ul>'+t.retos.map(x=>'<li>'+x+'</li>').join('')+'</ul></div>'
+        + '</div>'
+        + '<div class="enc-block bad"><div class="h">Salud y sueño</div><ul>'+t.salud.map(x=>'<li>'+x+'</li>').join('')+'</ul></div>'
+        + '<div class="enc-block"><div class="h">Ideal para</div><p>'+t.ideal+'</p></div>'
+        + '<div class="enc-tag" style="font-size:14px">'+t.lema+'</div>'
+        + '</div>';
+    }).join('');
+  }
+  function renderMeq(){
+    byId('meqList').innerHTML = MEQ.map(m=>
+      '<li><span class="r">'+m.r+'</span><div><b>'+m.n+'</b> · <span style="color:var(--muted)">'+TYPES[m.t].emoji+' '+m.a+'</span></div></li>'
+    ).join('');
+  }
+  function renderGlossary(){
+    byId('glossList').innerHTML = GLOSSARY.map(g=>
+      '<div><div class="term">'+g.term+'</div><div class="def">'+g.def+'</div></div>'
+    ).join('');
+  }
+
+  /* ---------- persistence ---------- */
+  function save(o){ try{ localStorage.setItem(STORE, JSON.stringify(o)); }catch(e){} }
+  function loadSaved(){ try{ const r=localStorage.getItem(STORE); return r?JSON.parse(r):null; }catch(e){ return null; } }
+
+  /* ---------- helpers ---------- */
+  function byId(id){ return document.getElementById(id); }
+  function pad(n){ return String(n).padStart(2,'0'); }
+  function cap(s){ return s.charAt(0).toUpperCase()+s.slice(1); }
+  function sameWeight(a,b){ const ka=Object.keys(a),kb=Object.keys(b); if(ka.length!==kb.length) return false; return ka.every(k=>a[k]===b[k]); }
+  function parseTime(s){ const [h,m]=(s||'0:0').split(':').map(Number); return (h||0)+((m||0)/60); }
+  function round05(h){ return Math.round(h*2)/2; }
+  function fmt(h){
+    h=((h%24)+24)%24;
+    let hh=Math.floor(h), mm=Math.round((h-hh)*60);
+    if(mm===60){hh++;mm=0;}
+    if(hh===24)hh=0;
+    return pad(hh)+':'+pad(mm);
+  }
+
+  /* ---------- init (al final: todas las const ya están inicializadas) ---------- */
+  buildChronoSelect();
+  renderEncyclopedia();
+  renderMeq();
+  renderGlossary();
+  if(saved){ renderResult(saved.type, saved.pct, saved.ranking); }
+  applyScheduleDefaults();
+})();
+}
+</script>
+</body>
+</html>

@@ -129,4 +129,54 @@ navegador (`localStorage`).
 
 ---
 
+# Tu Reloj Circadiano · BYMCYL
+
+Una app aparte (`reloj-circadiano.html`) para descubrir tu **cronotipo** con precisión,
+entender el **porqué fisiológico** de cada hora de tu día y **diseñar un plan a medida**
+según tu horario real. Como el diario, es un único archivo HTML sin dependencias ni build:
+ábrelo en cualquier navegador y listo. Tu resultado se guarda en `localStorage`.
+
+## Características
+
+- **Test más preciso (13 preguntas):** en vez de un simple conteo, cada respuesta aporta un
+  **vector de puntos ponderado** a los cuatro cronotipos. El resultado te da tu **% de
+  afinidad** con cada tipo, un **nivel de confianza** (alta / media / mixta) y tu **tipo
+  secundario** cuando el perfil es mixto.
+- **Cuatro cronotipos (modelo del Dr. Michael Breus):** 🦁 **León** (matutino), 🐻 **Oso**
+  (solar, el más común), 🐺 **Lobo** (vespertino) y 🐬 **Delfín** (sueño ligero, mente
+  inquieta).
+- **El porqué de cada bloque:** el «día ideal» de 24 h se muestra en un **reloj radial** y
+  **hora por hora**, y cada bloque explica su **razón biológica** (cortisol al despertar,
+  melatonina, temperatura central, presión de sueño, bajón postcomida…).
+- **Diseñador de planes según tu horario:** elige tu cronotipo y tu **tipo de jornada**
+  —oficina, turno de mañana/tarde/noche, estudiante, remoto/flexible o personalizado—,
+  pon tus horas reales de despertar/dormir y trabajo, y genera un **horario detallado** que
+  coloca el trabajo profundo en tu pico, la gestión en tu alerta media y la recarga en tu
+  valle. Incluye **avisos** cuando tu horario va contra tu reloj (p. ej. turno de noche o un
+  Lobo madrugando) y cómo mitigarlo.
+- **Enciclopedia de cronotipos:** todos los tipos con su base científica, ritmo natural,
+  pico de rendimiento, fortalezas, retos, salud y para qué trabajos encaja cada uno.
+- **El espectro científico:** el continuo **matutinidad–vespertinidad** del cuestionario
+  **MEQ** (Horne & Östberg) y una nota sobre el **MCTQ** y el **jet lag social**.
+- **La ciencia detrás:** el **modelo de dos procesos** (Borbély) y un **glosario** de
+  cronobiología (ritmo circadiano, CAR, melatonina/DLMO, adenosina, zeitgeber, inercia del
+  sueño, zona de mantenimiento de la vigilia…).
+- **Copiar resumen / plan** en texto para guardarlo o compartirlo.
+
+## Uso
+
+1. Abre `reloj-circadiano.html` en tu navegador.
+2. Pulsa **«Descubrir mi cronotipo»** y responde las 13 preguntas.
+3. Lee tu resultado: afinidad, reloj de 24 h, hora por hora con el porqué, fortalezas, retos
+   y plan para sincronizarte.
+4. Ve a **«Diseñador de plan»**, elige tu **tipo de horario** y tus horas reales, y pulsa
+   **«Generar mi plan»**.
+5. Consulta **«Los cronotipos»** y **«La ciencia»** para el detalle de cada perfil y los
+   conceptos de fondo.
+
+> Es una herramienta educativa basada en patrones poblacionales de cronobiología; no
+> sustituye consejo médico.
+
+---
+
 *break your mind, change your life*

@@ -236,8 +236,15 @@
 
   /* spectrum */
   .spectrum{margin-top:14px}
-  .spec-bar{height:14px;border-radius:8px;background:linear-gradient(90deg,#E8C66A,#F0A55E 30%,#5FD0A8 50%,#79AEE6 72%,#9B8CFF);margin:18px 0 8px}
+  .spec-bar{height:14px;border-radius:8px;background:linear-gradient(90deg,#E8C66A,#F0A55E 50%,#9B8CFF);margin:18px 0 8px}
   .spec-marks{display:flex;justify-content:space-between;font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.06em}
+  .spec-marks span:nth-child(2){text-align:center}
+  .spec-marks span:last-child{text-align:right}
+  .dolphin-note{display:flex;gap:13px;align-items:flex-start;background:rgba(121,174,230,.08);border:1px solid rgba(121,174,230,.26);border-radius:14px;padding:14px 16px;margin-top:16px}
+  .dolphin-note .dn-em{font-size:30px;line-height:1;flex:0 0 auto}
+  .dolphin-note b{font-weight:600;font-size:14.5px;display:block;margin-bottom:3px}
+  .dolphin-note span{font-size:13.5px;color:var(--muted);line-height:1.5}
+  .dolphin-note em{font-style:italic;color:var(--text)}
   .meq-list{list-style:none;margin-top:14px}
   .meq-list li{display:flex;gap:12px;align-items:baseline;padding:9px 0;border-bottom:1px solid var(--line);font-size:14px}
   .meq-list li:last-child{border-bottom:none}
@@ -384,8 +391,12 @@
       <p style="margin-top:8px">Antes de los animales, la ciencia medía el cronotipo en un continuo de <b>matutinidad–vespertinidad</b> con el cuestionario MEQ (Horne &amp; Östberg, 1976). No hay solo cuatro cajas: hay un degradado.</p>
       <div class="spectrum">
         <div class="spec-bar"></div>
-        <div class="spec-marks"><span>+ Matutino</span><span>Intermedio</span><span>+ Vespertino</span></div>
+        <div class="spec-marks"><span>🦁 + Matutino</span><span>🐻 Intermedio</span><span>🐺 + Vespertino</span></div>
         <ul class="meq-list" id="meqList"></ul>
+        <div class="dolphin-note">
+          <div class="dn-em">🐬</div>
+          <div><b>¿Y el Delfín?</b><span>El Delfín no se sitúa en este eje, porque lo que lo define no es <em>a qué hora</em> rinde, sino <em>cómo</em> duerme: ligero, fragmentado y con la mente alerta de noche. En el MEQ suele caer en la zona <b>intermedia–vespertina</b>, pero con un patrón de sueño inestable y rasgos de insomnio que lo separan de los otros tres. Por eso el modelo de Breus lo trata como un cuarto cronotipo aparte.</span></div>
+        </div>
       </div>
       <p style="margin-top:14px;font-size:13.5px;color:var(--muted)">El <b>MCTQ</b> (Cuestionario de Múnich, Roenneberg) lo mide de otra forma: por el <b>punto medio del sueño</b> en días libres. De ahí sale el concepto de <b>jet lag social</b>: la diferencia entre cuándo duermes entre semana y cuándo lo harías libre. Cuanto mayor es esa brecha, peor para tu salud y tu ánimo.</p>
     </div>
@@ -1124,8 +1135,9 @@ if (typeof document !== 'undefined') {
     if((o.chrono==='leon') && o.scheduleType==='tarde'){
       out.push(['warn','🦁','León en turno de tarde','Tu energía se apaga justo cuando tu turno aprieta. Adelanta tus tareas clave al inicio del turno y usa una siesta corta antes de entrar.']);
     }
-    // jet lag / duración del sueño
-    const sleepLen=((o.sleep-o.wake)%24+24)%24;
+    // jet lag / duración del sueño (sleep = 24h − tiempo despierto)
+    const awakeLen=((o.sleep-o.wake)%24+24)%24;
+    const sleepLen=24-awakeLen;
     if(sleepLen<7) out.push(['warn','😴','Poco margen de sueño','Tu ventana de sueño es de '+sleepLen.toFixed(1)+' h. Por debajo de 7 h se acumula deuda. Adelanta el cierre del día para ganar descanso.']);
     else out.push(['good','🛏️','Sueño suficiente','Tu ventana de sueño es de '+sleepLen.toFixed(1)+' h: buen margen. Mantén la hora estable para consolidarlo.']);
     return out;

@@ -25,7 +25,10 @@ navegador (`localStorage`).
 - **Bitácora del día:** combina tres rutinas de reflexión en una pestaña por día:
   - **Ánimo del día:** registra cómo te sientes (1–5 con caritas) y mira una mini
     tendencia de los últimos 30 días.
-  - **Enfoque del día (top 3):** define entre 1 y 3 prioridades para el día y márcalas.
+  - **Enfoque (planifica mañana, marca hoy):** define entre 1 y 3 prioridades **para
+    mañana** (distintas de tus hábitos). Al día siguiente esas prioridades aparecen arriba
+    como una **checklist** —«Enfoque de hoy»— para que marques las que lograste. Así
+    planificas la noche anterior y revisas al día siguiente.
   - **Bitácora:** preguntas guiadas — cómo estuvo el día, una victoria, algo para mejorar
     o aprender, y gratitud.
   - En el calendario de Progreso, los días con entrada de bitácora llevan un puntito.

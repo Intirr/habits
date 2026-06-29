@@ -484,6 +484,35 @@
   .sys-card-del:hover{border-color:var(--cuerpo);color:var(--cuerpo)}
   .sys-custom-empty{color:var(--muted);font-size:.9rem;text-align:center;padding:18px;border:1px dashed var(--line);border-radius:10px;margin-top:14px}
 
+  /* IDENTITY (vote for who you want to be) */
+  .ident-add{margin-top:14px}
+  .ident-list{display:flex;flex-direction:column;gap:14px;margin-top:18px}
+  .ident-card{background:var(--ink-1);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:12px;padding:14px 16px}
+  .ident-head{display:flex;align-items:flex-start;gap:9px;margin-bottom:11px}
+  .ident-titles{flex:1 1 auto;min-width:0;display:flex;flex-direction:column;gap:3px}
+  .ident-name{font-family:var(--serif);font-weight:600;font-size:1.12rem;color:var(--head);background:transparent;border:1px solid transparent;border-radius:7px;padding:3px 8px}
+  .ident-name:hover{background:var(--ink-2)}
+  .ident-name:focus{outline:none;background:var(--ink);border-color:var(--accent-line)}
+  .ident-stmt{font-family:var(--sans);font-style:italic;font-size:.86rem;color:var(--text-2);background:transparent;border:1px solid transparent;border-radius:7px;padding:2px 8px}
+  .ident-stmt:hover{background:var(--ink-2)}
+  .ident-stmt:focus{outline:none;background:var(--ink);border-color:var(--accent-line);font-style:normal}
+  .ident-del{flex:0 0 auto;width:28px;height:28px;border-radius:7px;border:1px solid var(--line);background:transparent;color:var(--muted);font-size:1.2rem;line-height:1;cursor:pointer;transition:all .15s ease}
+  .ident-del:hover{border-color:var(--cuerpo);color:var(--cuerpo)}
+  .ident-votes{display:flex;align-items:center;gap:11px;margin-bottom:12px}
+  .ident-votes .lbl{font-family:var(--mono);font-size:.62rem;letter-spacing:.06em;text-transform:uppercase;color:var(--text-2);white-space:nowrap}
+  .ident-votes .lbl b{color:var(--accent)}
+  .ident-votes .progress{flex:1 1 auto;margin:0;min-width:60px}
+  .ident-habits{list-style:none;display:flex;flex-direction:column;gap:6px;margin-bottom:10px}
+  .ident-hab{display:flex;align-items:center;gap:9px;background:var(--ink);border:1px solid var(--line);border-radius:9px;padding:7px 10px}
+  .ident-hab.done .ih-text{color:var(--muted);text-decoration:line-through}
+  .ih-text{flex:1 1 auto;min-width:0;font-size:.92rem;color:var(--text)}
+  .ih-unlink{flex:0 0 auto;width:24px;height:24px;border-radius:6px;border:1px solid var(--line);background:transparent;color:var(--muted);font-size:1rem;line-height:1;cursor:pointer;transition:all .15s ease}
+  .ih-unlink:hover{border-color:var(--cuerpo);color:var(--cuerpo)}
+  .ident-none{color:var(--muted);font-size:.85rem;font-style:italic;margin-bottom:9px}
+  .ident-link{font-family:var(--mono);font-size:.72rem;color:var(--accent);background:var(--ink);border:1px solid var(--line);border-radius:8px;padding:8px 9px;color-scheme:dark;cursor:pointer;max-width:100%}
+  .ident-link:focus{outline:none;border-color:var(--accent-line)}
+  .ident-empty{color:var(--muted);font-size:.9rem;text-align:center;padding:24px;border:1px dashed var(--line);border-radius:12px;margin-top:14px}
+
   /* READING (books in progress) */
   .reading-add{margin-top:14px}
   .book-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;margin-top:18px}
@@ -614,6 +643,7 @@
           <button type="button" class="tab active" id="tab-inicio" role="tab"><span class="tab-label" data-ui="tabInicio">Home</span></button>
           <button type="button" class="tab" id="tab-tracker" role="tab"><span class="tab-label" data-ui="tabTracker">Habits</span></button>
           <button type="button" class="tab" id="tab-sistemas" role="tab"><span class="tab-label" data-ui="tabSistemas">Systems</span></button>
+          <button type="button" class="tab" id="tab-identity" role="tab"><span class="tab-label" data-ui="tabIdentity">Identity</span></button>
           <button type="button" class="tab" id="tab-bita" role="tab"><span class="tab-label" data-ui="tabBita">Journal</span></button>
           <button type="button" class="tab" id="tab-notes" role="tab"><span class="tab-label" data-ui="tabNotes">Notes</span></button>
           <button type="button" class="tab" id="tab-reading" role="tab"><span class="tab-label" data-ui="tabReading">Reading</span></button>
@@ -721,6 +751,22 @@
           <div class="sys-section-title" data-ui="lblSysByHabit">Systems by habit</div>
           <div class="sys-list" id="sys-list"></div>
         </div>
+      </section>
+    </div>
+
+    <!-- ===================== VIEW: IDENTITY ===================== -->
+    <div id="view-identity" hidden>
+      <section class="panel identity" aria-label="Identity">
+        <div class="rem-head">
+          <div class="panel-title" data-ui="lblIdentity">Identity · vote for who you want to be</div>
+          <button type="button" class="tool-btn png-btn" title="Download PNG of this tab">📷 PNG</button>
+        </div>
+        <p class="hint" data-ui="identityHint">Every habit you complete is a vote for the type of person you want to be. Create your identities and link the daily habits that reinforce them.</p>
+        <div class="addbar ident-add">
+          <div class="field field-text"><label class="fl" for="ident-name" data-ui="lblIdentNew">New identity</label><input id="ident-name" class="inp" type="text" placeholder="E.g. Healthy person, Writer, Athlete…" autocomplete="off"></div>
+          <button type="button" class="add-btn" id="ident-add-btn"><span data-ui="btnIdentAdd">Create</span></button>
+        </div>
+        <div class="ident-list" id="ident-list"></div>
       </section>
     </div>
 
@@ -1014,7 +1060,7 @@
   /* ============ state ============ */
   const DEFAULT_UI = {};   // captured from DOM
   const template = Object.assign({}, DEFAULT_TEMPLATE);
-  let state = { ui:{}, frentes: clone(DEFAULT_FRENTES), habits: [], log: {}, reminders: [], notes: [], goals: [], journal: {}, weekly: {}, books: [], systems: [], theme: clone(DEFAULT_THEME), money: clone(DEFAULT_MONEY) };
+  let state = { ui:{}, frentes: clone(DEFAULT_FRENTES), habits: [], log: {}, reminders: [], notes: [], goals: [], journal: {}, weekly: {}, books: [], systems: [], identities: [], theme: clone(DEFAULT_THEME), money: clone(DEFAULT_MONEY) };
   let editing = false;
   let rangeMonths = 3;          // history range (1, 3, 6 or 12 months) — view setting
   let currentView = "inicio";  // landing view (home dashboard)
@@ -1047,7 +1093,7 @@
   function startOfMonth(d){ return new Date(d.getFullYear(), d.getMonth(), 1); }
 
   /* ============ persistence ============ */
-  function dataPayload(){ return { ui:state.ui, template, frentes:state.frentes, habits:state.habits, log:state.log, reminders:state.reminders, notes:state.notes, goals:state.goals, journal:state.journal, weekly:state.weekly, books:state.books, systems:state.systems, theme:state.theme, money:state.money }; }
+  function dataPayload(){ return { ui:state.ui, template, frentes:state.frentes, habits:state.habits, log:state.log, reminders:state.reminders, notes:state.notes, goals:state.goals, journal:state.journal, weekly:state.weekly, books:state.books, systems:state.systems, identities:state.identities, theme:state.theme, money:state.money }; }
   function save(){
     try{ localStorage.setItem(STORE_KEY, JSON.stringify(Object.assign({ v:1 }, dataPayload(), { rangeMonths, view:currentView }))); }catch(e){}
   }
@@ -1068,11 +1114,12 @@
       if(d.weekly && typeof d.weekly==="object") state.weekly=d.weekly;
       if(Array.isArray(d.books)) state.books=d.books;
       if(Array.isArray(d.systems)) state.systems=d.systems;
+      if(Array.isArray(d.identities)) state.identities=d.identities;
       if(Array.isArray(d.goals)) state.goals=d.goals;
       if(d.money && typeof d.money==="object"){ state.money=Object.assign(clone(DEFAULT_MONEY), d.money); if(!Array.isArray(state.money.jars)) state.money.jars=[]; if(!Array.isArray(state.money.tx)) state.money.tx=[]; }
       if(d.theme && typeof d.theme==="object") state.theme=Object.assign(clone(DEFAULT_THEME), d.theme);
       if([1,3,6,12].includes(d.rangeMonths)) rangeMonths=d.rangeMonths;
-      if(["inicio","tracker","sistemas","bita","notes","reading","reminders","progress","money","settings"].includes(d.view)) currentView=d.view;
+      if(["inicio","tracker","sistemas","identity","bita","notes","reading","reminders","progress","money","settings"].includes(d.view)) currentView=d.view;
       return true;
     }catch(e){ return false; }
   }
@@ -1139,6 +1186,14 @@
         { id:uid("a"), text:"Write down the 3 priorities of the day" }
       ] }
     ];
+    // example identities, with a few habits linked to each
+    const _idSalud=uid("i"), _idMente=uid("i");
+    state.identities = [
+      { id:_idSalud, name:"Healthy person", statement:"I’m someone who takes care of their body and energy" },
+      { id:_idMente, name:"Clear mind", statement:"I’m someone who trains their mind every day" }
+    ];
+    [0,1,3].forEach(function(i){ if(state.habits[i]) state.habits[i].identities=[_idSalud]; });
+    [7,8].forEach(function(i){ if(state.habits[i]) state.habits[i].identities=[_idMente]; });
   }
   /* migrate any unified weekly/monthly habits back into separate goals */
   function migrateHabitGoalsBack(){
@@ -1172,6 +1227,7 @@
     state.weekly = (d.weekly && typeof d.weekly==="object") ? d.weekly : {};
     state.books = Array.isArray(d.books) ? d.books : [];
     state.systems = Array.isArray(d.systems) ? d.systems : [];
+    state.identities = Array.isArray(d.identities) ? d.identities : [];
     state.money = Object.assign(clone(DEFAULT_MONEY), (d.money && typeof d.money==="object") ? d.money : {}); if(!Array.isArray(state.money.jars)) state.money.jars=[]; if(!Array.isArray(state.money.tx)) state.money.tx=[];
     state.theme = Object.assign(clone(DEFAULT_THEME), d.theme || {});
   }
@@ -1732,7 +1788,7 @@
   }
 
   /* ============ views ============ */
-  const VIEWS = ["inicio","tracker","sistemas","bita","notes","reading","reminders","progress","money","settings"];
+  const VIEWS = ["inicio","tracker","sistemas","identity","bita","notes","reading","reminders","progress","money","settings"];
   function renderView(){
     VIEWS.forEach(v=>{
       const view=document.getElementById("view-"+v), tab=document.getElementById("tab-"+v);
@@ -2059,6 +2115,68 @@
   function moveCustomAction(sid, aid, dir){ if(editing) return; const s=sysById(sid); if(!s) return; const acts=ensureSysActions(s), idx=acts.findIndex(a=>a.id===aid), j=idx+dir; if(idx<0||j<0||j>=acts.length) return; pushUndo("sysactionmove"); moveInArray(acts, idx, dir); renderCustomSystems(); save(); }
   function moveCustomSystem(sid, dir){ if(editing) return; const idx=state.systems.findIndex(s=>s.id===sid), j=idx+dir; if(idx<0||j<0||j>=state.systems.length) return; pushUndo("sysmove"); moveInArray(state.systems, idx, dir); renderCustomSystems(); save(); }
 
+  /* ============ identity (every habit is a vote for who you want to be) ============ */
+  const identListEl = document.getElementById("ident-list");
+  function identityById(id){ return state.identities.find(x=>x.id===id); }
+  function habitIdentities(h){ return Array.isArray(h.identities)?h.identities:[]; }
+  function identityHabits(iid){ return state.habits.filter(h=>habitIdentities(h).includes(iid)); }
+  function identityVotes(iid){
+    const hs=identityHabits(iid).filter(h=>scheduledDaily(h,selectedKey) || isDone(h.id,selectedKey));
+    return { done: hs.filter(h=>isDone(h.id,selectedKey)).length, total: hs.length };
+  }
+  function identityTotalVotes(iid){ const hs=identityHabits(iid); let n=0; for(const k in state.log){ const m=state.log[k]; if(!m) continue; for(let i=0;i<hs.length;i++){ if(m[hs[i].id]) n++; } } return n; }
+  function identityCardHTML(idn){
+    const hs=identityHabits(idn.id), v=identityVotes(idn.id), pct=v.total?Math.round(v.done/v.total*100):0, tot=identityTotalVotes(idn.id);
+    const linked=hs.map(h=>h.id);
+    const habitsHTML = hs.length
+      ? hs.map(h=>{ const done=isDone(h.id,selectedKey); return '<li class="ident-hab'+(done?' done':'')+'">'+
+          '<label class="chk"><input type="checkbox" data-ivote="'+h.id+'"'+(done?' checked':'')+' aria-label="Done today"><span class="box" aria-hidden="true"></span></label>'+
+          '<span class="ih-text">'+escapeHTML(h.text)+'</span>'+
+          '<button type="button" class="ih-unlink" data-iunlink="'+h.id+'" data-iid="'+idn.id+'" aria-label="Remove from identity" title="Remove">×</button>'+
+        '</li>'; }).join("")
+      : '<div class="ident-none">No habits linked yet. Link one below.</div>';
+    const unlinked=state.habits.filter(h=>!linked.includes(h.id));
+    const linkSel = unlinked.length
+      ? '<select class="ident-link" data-ilink="'+idn.id+'" aria-label="Link habit"><option value="">+ Link habit…</option>'+unlinked.map(h=>'<option value="'+h.id+'">'+escapeHTML(h.text)+'</option>').join("")+'</select>'
+      : '';
+    return '<div class="ident-card" data-iid="'+idn.id+'">'+
+      '<div class="ident-head"><div class="ident-titles">'+
+        '<input class="ident-name" type="text" data-iname="'+idn.id+'" value="'+escapeHTML(idn.name||"")+'" placeholder="Identity" aria-label="Identity name">'+
+        '<input class="ident-stmt" type="text" data-istmt="'+idn.id+'" value="'+escapeHTML(idn.statement||"")+'" placeholder="I’m someone who…" aria-label="Statement">'+
+      '</div><button type="button" class="ident-del" data-identdel="'+idn.id+'" aria-label="Delete identity">×</button></div>'+
+      '<div class="ident-votes"><span class="lbl">Votes today · <b>'+v.done+'/'+v.total+'</b></span><div class="progress"><div class="progress-track"><div class="progress-fill" style="width:'+pct+'%"></div></div></div><span class="lbl">'+tot+' en total</span></div>'+
+      '<ul class="ident-habits">'+habitsHTML+'</ul>'+
+      linkSel+
+    '</div>';
+  }
+  function renderIdentities(){
+    identListEl.innerHTML = state.identities.length
+      ? state.identities.map(identityCardHTML).join("")
+      : '<div class="ident-empty">You don’t have any identities yet. Create one above (e.g. «Healthy person») and link the habits that reinforce it.</div>';
+  }
+  function addIdentity(){
+    if(editing) return;
+    const inp=document.getElementById("ident-name"); const name=(inp.value||"").trim(); if(!name){ inp.focus(); return; }
+    pushUndo("identadd"); state.identities.push({ id:uid("i"), name, statement:"" });
+    inp.value=""; renderIdentities(); save(); inp.focus();
+  }
+  function linkHabitToIdentity(iid, hid){
+    const h=habitById(hid); if(!h) return; if(!Array.isArray(h.identities)) h.identities=[];
+    if(!h.identities.includes(iid)){ pushUndo("identlink"); h.identities.push(iid); renderIdentities(); save(); }
+  }
+  function unlinkHabitFromIdentity(iid, hid){
+    const h=habitById(hid); if(!h||!Array.isArray(h.identities)) return;
+    pushUndo("identunlink"); h.identities=h.identities.filter(x=>x!==iid); renderIdentities(); save();
+  }
+  function deleteIdentity(id){
+    const idn=identityById(id); if(!idn) return;
+    if(!editing && (idn.name || identityHabits(id).length) && !confirm("Delete the identity «"+(idn.name||"")+"»? The habits aren’t deleted, just unlinked.")) return;
+    pushUndo("identdel");
+    state.habits.forEach(h=>{ if(Array.isArray(h.identities)) h.identities=h.identities.filter(x=>x!==id); });
+    state.identities=state.identities.filter(x=>x.id!==id);
+    renderIdentities(); save();
+  }
+
   /* ============ notes (diary · ideas and plans) ============ */
   const notesListEl = document.getElementById("notes-list");
   function noteById(id){ return state.notes.find(n=>n.id===id); }
@@ -2306,6 +2424,11 @@
     if(!secs.length) secs.push({ heading:"Systems", items:[], empty:"You haven’t designed any actions yet." });
     return secs;
   }
+  function pngIdentity(){
+    if(!state.identities.length) return [{ heading:"Identity", items:[], empty:"You don’t have any identities yet." }];
+    return state.identities.map(idn=>{ const v=identityVotes(idn.id), hs=identityHabits(idn.id);
+      return { heading:(idn.name||"Identity"), note:(v.total?(v.done+"/"+v.total+" today"):""), items: hs.length? hs.map(h=>({ text:h.text, done:isDone(h.id,selectedKey) })) : [], empty:"No habits linked." }; });
+  }
   function pngBita(){
     const j=state.journal[selectedKey]||{}, secs=[];
     if(j.mood!=null) secs.push({ heading:"Mood", items:[{ text:MOODS[j.mood-1][1]+"  "+MOODS[j.mood-1][2] }] });
@@ -2320,7 +2443,7 @@
   function downloadCurrentPNG(){
     if(editing) return;
     if(currentView==="tracker"){ downloadPNG(); return; }
-    const M={ inicio:["Home","Today’s summary","home",pngHome], sistemas:["Systems","Actions for your habits","systems",pngSystems], bita:["Journal", prettyDate(selectedKey), "journal", pngBita], notes:["Notes","Ideas and plans","notes",pngNotes], reading:["Reading","Books in progress","reading",pngReading], reminders:["Reminders","Scheduled activities","reminders",pngReminders], progress:["Progress","Goals, history and streaks","progress",pngProgress], money:["Finances","Account, jars and goals","finances",pngMoney] };
+    const M={ inicio:["Home","Today’s summary","home",pngHome], sistemas:["Systems","Actions for your habits","systems",pngSystems], identity:["Identity","Vote for who you want to be","identity",pngIdentity], bita:["Journal", prettyDate(selectedKey), "journal", pngBita], notes:["Notes","Ideas and plans","notes",pngNotes], reading:["Reading","Books in progress","reading",pngReading], reminders:["Reminders","Scheduled activities","reminders",pngReminders], progress:["Progress","Goals, history and streaks","progress",pngProgress], money:["Finances","Account, jars and goals","finances",pngMoney] };
     const m=M[currentView]; if(!m) return;
     downloadCardPNG({ eyebrow:"BYMCYL · "+m[0], title:(template.title||"My personal diary").trim()||"My personal diary", subtitle:m[1], sections:m[3](), filename:"diary-"+m[2]+".png" });
   }
@@ -2329,7 +2452,7 @@
   function renderAll(){
     applyUI(); renderThemeControls(); applyTheme(state.theme); applyAccent(template.accent); syncHero();
     renderFrentesEditor(); rebuildAddFrente();
-    renderList(); renderSystems(); renderCustomSystems(); renderBitacora(); renderNotes(); renderReading(); renderReminders(); renderGoals(); renderMoney(); renderDateNav(); renderHistory(); renderHome(); renderView();
+    renderList(); renderSystems(); renderCustomSystems(); renderIdentities(); renderBitacora(); renderNotes(); renderReading(); renderReminders(); renderGoals(); renderMoney(); renderDateNav(); renderHistory(); renderHome(); renderView();
     updateUndoButtons();
   }
 
@@ -2397,6 +2520,7 @@
         state.weekly = (d.weekly && typeof d.weekly==="object") ? d.weekly : {};
         state.books = Array.isArray(d.books) ? d.books : [];
         state.systems = Array.isArray(d.systems) ? d.systems : [];
+        state.identities = Array.isArray(d.identities) ? d.identities : [];
         state.goals = Array.isArray(d.goals) ? d.goals : [];
         state.money = (d.money && typeof d.money==="object") ? Object.assign(clone(DEFAULT_MONEY), d.money) : clone(DEFAULT_MONEY); if(!Array.isArray(state.money.jars)) state.money.jars=[]; if(!Array.isArray(state.money.tx)) state.money.tx=[];
         state.theme = d.theme && typeof d.theme==="object" ? Object.assign(clone(DEFAULT_THEME), d.theme) : clone(DEFAULT_THEME);
@@ -2655,6 +2779,24 @@
     else if(t.matches("[data-satext]")){ const s=sysById(t.getAttribute("data-sysid")); if(s){ const a=ensureSysActions(s).find(x=>x.id===t.getAttribute("data-satext")); if(a){ pushUndo("sysactiontext:"+a.id); a.text=t.value; saveSoon(); } } }
   });
 
+  /* ============ events: identity ============ */
+  document.getElementById("ident-add-btn").addEventListener("click", addIdentity);
+  document.getElementById("ident-name").addEventListener("keydown", e=>{ if(e.key==="Enter"){ e.preventDefault(); addIdentity(); } });
+  identListEl.addEventListener("click", e=>{
+    const del=e.target.closest("[data-identdel]"); if(del){ deleteIdentity(del.getAttribute("data-identdel")); return; }
+    const ul=e.target.closest("[data-iunlink]"); if(ul){ if(editing) return; unlinkHabitFromIdentity(ul.getAttribute("data-iid"), ul.getAttribute("data-iunlink")); return; }
+  });
+  identListEl.addEventListener("change", e=>{
+    const t=e.target;
+    if(t.matches("[data-ivote]")){ if(editing){ t.checked=!t.checked; return; } pushUndo("done"); setDone(t.getAttribute("data-ivote"), selectedKey, t.checked); renderIdentities(); renderList(); renderHistory(); save(); }
+    else if(t.matches("[data-ilink]")){ const hid=t.value; if(hid){ linkHabitToIdentity(t.getAttribute("data-ilink"), hid); } }
+  });
+  identListEl.addEventListener("input", e=>{
+    const t=e.target;
+    if(t.matches("[data-iname]")){ const idn=identityById(t.getAttribute("data-iname")); if(idn){ pushUndo("identname:"+idn.id); idn.name=t.value; saveSoon(); } }
+    else if(t.matches("[data-istmt]")){ const idn=identityById(t.getAttribute("data-istmt")); if(idn){ pushUndo("identstmt:"+idn.id); idn.statement=t.value; saveSoon(); } }
+  });
+
   /* ============ events: notes ============ */
   document.getElementById("note-add-btn").addEventListener("click", addNote);
   document.getElementById("note-search").addEventListener("input", e=>{ noteQuery=e.target.value; renderNotes(); });
@@ -2756,7 +2898,7 @@
   document.getElementById("btn-import").addEventListener("click", ()=>{ if(editing) return; document.getElementById("file-import").click(); });
   document.getElementById("file-import").addEventListener("change", e=>{ const f=e.target.files[0]; if(f) importData(f); e.target.value=""; });
   document.getElementById("btn-reset").addEventListener("click", ()=>{ if(editing) return; if(!confirm("Restore the example habits? This replaces your habits and clears the history.")) return; pushUndo("reset"); seedExample(); selectedKey=TODAY_KEY; renderAll(); save(); });
-  document.getElementById("btn-clear").addEventListener("click", ()=>{ if(editing) return; if(!confirm("Clear the diary? Habits, goals, history and reminders are removed, and the title, categories, colors and interface texts are reset to defaults.")) return; pushUndo("clear"); state.habits=[]; state.log={}; state.reminders=[]; state.goals=[]; state.systems=[]; state.ui={}; Object.assign(template, clone(DEFAULT_TEMPLATE)); state.theme=clone(DEFAULT_THEME); state.frentes=clone(DEFAULT_FRENTES); openGoals.clear(); selectedKey=TODAY_KEY; renderAll(); save(); });
+  document.getElementById("btn-clear").addEventListener("click", ()=>{ if(editing) return; if(!confirm("Clear the diary? Habits, goals, history and reminders are removed, and the title, categories, colors and interface texts are reset to defaults.")) return; pushUndo("clear"); state.habits=[]; state.log={}; state.reminders=[]; state.goals=[]; state.systems=[]; state.identities=[]; state.ui={}; Object.assign(template, clone(DEFAULT_TEMPLATE)); state.theme=clone(DEFAULT_THEME); state.frentes=clone(DEFAULT_FRENTES); openGoals.clear(); selectedKey=TODAY_KEY; renderAll(); save(); });
   /* data menu: close after running an action (unless editing the labels) or when clicking away */
   const dataMenu=document.getElementById("data-menu");
   dataMenu.addEventListener("click", e=>{ if(!editing && e.target.closest(".menu-item")) dataMenu.open=false; });

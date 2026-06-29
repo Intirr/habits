@@ -11,13 +11,13 @@ navegador (`localStorage`).
 
 ## Características
 
-- **Diez vistas (pestañas):** **«Inicio»** (resumen del día), **«Hábitos»** (rutina del
-  día), **«Sistemas»** (las acciones para cada hábito), **«Bitácora»** (ánimo, enfoque y
-  diario), **«Notas»** (ideas y planes), **«Lecturas»** (libros en curso),
-  **«Recordatorios»** (actividades programadas, con contador de pendientes), **«Progreso»**
-  (metas semanales/mensuales, reflexión semanal, historial y rachas), **«Finanzas»**
-  (ingresos, gastos, estado de la cuenta, alcancías y metas) y **«Personalizar»** (contenido,
-  colores y edición de la interfaz).
+- **Once vistas (pestañas):** **«Inicio»** (resumen del día), **«Hábitos»** (rutina del
+  día), **«Sistemas»** (las acciones para cada hábito), **«Identidad»** (vota por quien
+  quieres ser), **«Bitácora»** (ánimo, enfoque y diario), **«Notas»** (ideas y planes),
+  **«Lecturas»** (libros en curso), **«Recordatorios»** (actividades programadas, con
+  contador de pendientes), **«Progreso»** (metas semanales/mensuales, reflexión semanal,
+  historial y rachas), **«Finanzas»** (ingresos, gastos, estado de la cuenta, alcancías y
+  metas) y **«Personalizar»** (contenido, colores y edición de la interfaz).
 - **Inicio / Resumen del día:** un panel de inicio con un saludo y seis tarjetas que
   resumen tu día y enlazan a cada sección: progreso de hábitos de hoy, ánimo y top 3,
   recordatorios pendientes (y vencidos), lectura actual, saldo de la cuenta y próxima meta, y tu racha
@@ -47,6 +47,13 @@ navegador (`localStorage`).
   - **Sistemas propios:** crea sistemas **independientes de los hábitos** —rutinas o procesos
     con su propio nombre y sus propias acciones (p. ej. «Rutina de mañana» o «Cierre del
     día»).
+- **Identidad (vota por quien quieres ser):** «cada hábito es un voto por el tipo de persona
+  que quieres ser». En la pestaña **«Identidad»** creas las **identidades** que persigues
+  (p. ej. «Persona saludable», «Mente clara», «Atleta»), cada una con una frase de quién eres,
+  y **vinculas los hábitos diarios** que la refuerzan. Para cada identidad ves los **votos de
+  hoy** (cuántos de sus hábitos has cumplido), una barra de progreso y el **total de votos**
+  acumulados. Puedes marcar un hábito desde aquí (se sincroniza con «Hábitos»), vincular o
+  desvincular hábitos y descargar el PNG.
 - **Metas semanales y mensuales:** en **«Progreso»**, separadas de los hábitos. Define una
   meta «X veces por semana o por mes», pulsa **«+ Hecho»** cada vez que la cumplas y mira tu
   progreso del periodo y tu **racha** por periodos.
@@ -99,8 +106,8 @@ navegador (`localStorage`).
   **Importar datos**, **Restaurar ejemplo** y **Vaciar**.
   - **Exportar / Importar datos** en `.json` para respaldar o mover tus datos entre
     dispositivos. El respaldo incluye **todo**: el título y la personalización de la interfaz,
-    las categorías y colores, los hábitos y sus sistemas, las metas, la bitácora, las
-    reflexiones, las lecturas, los recordatorios y las finanzas.
+    las categorías y colores, los hábitos y sus sistemas, las identidades, las metas, la
+    bitácora, las reflexiones, las lecturas, los recordatorios y las finanzas.
   - **Restaurar ejemplo** y **Vaciar** para empezar de cero. **Vaciar** borra los hábitos,
     metas, historial y recordatorios, y **restablece** el título, las categorías, los colores
     y los textos de la interfaz a los originales.
@@ -113,7 +120,8 @@ navegador (`localStorage`).
    inglés).
 2. **«Inicio»**: mira el resumen del día y salta a cualquier sección. **«Hábitos»**: marca
    los que cumplas hoy (cada uno con su frecuencia). **«Sistemas»**: diseña las acciones de
-   cada hábito. **«Bitácora»**: registra tu ánimo, tu top 3 y tu diario del día.
+   cada hábito. **«Identidad»**: crea identidades y vincula los hábitos que las refuerzan.
+   **«Bitácora»**: registra tu ánimo, tu top 3 y tu diario del día.
    **«Notas»**: apunta ideas y planes (con buscador). **«Lecturas»**: lleva tus libros en
    curso. **«Recordatorios»**: actividades programadas con fecha y hora. **«Progreso»**:
    metas semanales/mensuales, reflexión semanal e historial y rachas. **«Finanzas»**:

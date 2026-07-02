@@ -57,6 +57,24 @@ navegador (`localStorage`).
   - **Sistemas propios:** crea sistemas **independientes de los hábitos** —rutinas o procesos
     con su propio nombre y sus propias acciones (p. ej. «Rutina de mañana» o «Cierre del
     día»).
+  - **Checklist diaria:** cada acción tiene su **casilla del día**: márcalas a medida que las
+    haces y, al completar todas las acciones de un hábito, **el hábito se marca solo**. Cada
+    tarjeta muestra su progreso («hoy 2/3» o «✓ hecho hoy»).
+  - **Acciones desde Hábitos:** en la lista de hábitos, el chip **«⚙ 2/3»** despliega la
+    checklist del sistema ahí mismo, para ver el «cómo» en el momento de hacerlo.
+  - **Plantillas:** añade con un toque un sistema de ejemplo (Rutina de mañana, Cierre del
+    día, Sesión de gimnasio, Estudio profundo) y adáptalo.
+- **Pausar hábitos:** el botón **⏸** suspende un hábito (viaje, lesión…) sin borrarlo: no
+  cuenta para el día, no se marca «sin hacer» y **no rompe la racha**; reanúdalo con **▶**.
+- **Racha flexible:** activable en Preferencias (viene activada): tus rachas **toleran 1
+  fallo por semana** antes de romperse — un mal día no borra semanas de constancia.
+- **Notificaciones (opcional):** actívalas en Preferencias; con el diario abierto, te avisa
+  cuando llega la hora de un **recordatorio** o de un **hábito con horario**.
+- **Aviso de respaldo:** si pasan más de 7 días sin exportar tus datos, aparece un aviso
+  para respaldarlos (con «Exportar ahora» o «Más tarde»).
+- **Instalable en el móvil:** incluye manifest e iconos; desde el navegador puedes usar
+  «Añadir a pantalla de inicio» para abrirlo como app. (Para la instalación PWA completa
+  con Chrome hace falta servir el archivo por https, p. ej. GitHub Pages.)
 - **Identidad (vota por quien quieres ser):** «cada hábito es un voto por el tipo de persona
   que quieres ser». En la pestaña **«Identidad»** creas las **identidades** que persigues
   (p. ej. «Persona saludable», «Mente clara», «Atleta»), cada una con una frase de quién eres,

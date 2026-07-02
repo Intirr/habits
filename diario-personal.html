@@ -1,11 +1,19 @@
 <!DOCTYPE html>
-<html lang="es">
-<head>
+<html lang="es"><head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Diario personal · BYMCYL</title>
+<meta name="description" content="Tu diario personal para registrar hábitos, notas, lecturas, finanzas y metas — un día a la vez. Un sistema de BYMCYL.">
+<meta name="color-scheme" content="dark light">
+<meta name="theme-color" content="#0E1116" id="meta-theme-color">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Diario">
+<meta name="format-detection" content="telephone=no">
+<meta name="robots" content="noindex">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230E1116'/%3E%3Ctext x='16' y='22' font-family='Georgia,serif' font-size='18' font-weight='700' fill='%23E8C66A' text-anchor='middle'%3ED%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
   :root{
@@ -31,9 +39,12 @@
   }
   *{box-sizing:border-box;margin:0;padding:0}
   html{-webkit-text-size-adjust:100%}
-  body{background:var(--ink);color:var(--text);font-family:var(--sans);line-height:1.6;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+  @media (prefers-reduced-motion: reduce){
+    *,*::before,*::after{transition-duration:.01ms!important;animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important}
+  }
+  body{background:var(--ink);color:var(--text);font-family:var(--sans);line-height:1.6;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;padding-bottom:env(safe-area-inset-bottom)}
   body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;background:radial-gradient(1100px 520px at 78% -8%, var(--accent-soft), transparent 60%)}
-  .wrap{max-width:900px;margin:0 auto;padding:0 22px;position:relative;z-index:1}
+  .wrap{max-width:900px;margin:0 auto;padding:0 max(22px,env(safe-area-inset-right)) 0 max(22px,env(safe-area-inset-left));position:relative;z-index:1}
 
   .eyebrow{font-family:var(--mono);font-size:.66rem;letter-spacing:.22em;text-transform:uppercase;color:var(--accent);display:inline-flex;align-items:center;gap:.5em}
   .eyebrow .dot{width:7px;height:7px;border-radius:50%;background:var(--accent);flex:0 0 auto}
@@ -603,7 +614,7 @@
     .rem-head .datenav{margin-left:auto}
   }
   @media (max-width:560px){
-    .wrap{padding:0 14px}
+    .wrap{padding:0 max(14px,env(safe-area-inset-right)) 0 max(14px,env(safe-area-inset-left))}
     .hero{padding:36px 0 16px}
     .panel,.history{padding:15px}
     .pgrid{grid-template-columns:1fr}
@@ -630,47 +641,162 @@
   @media (prefers-reduced-motion:reduce){
     *{transition:none!important;animation:none!important;scroll-behavior:auto!important}
   }
+
+  /* ===== NUEVAS VISUALIZACIONES (rachas · progreso · finanzas) ===== */
+  .viz-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(252px,1fr));gap:14px}
+  .viz-card{background:rgba(0,0,0,.18);border:1px solid var(--line);border-radius:14px;padding:16px 17px;display:flex;flex-direction:column;gap:13px;min-width:0}
+  .viz-card.span2{grid-column:1 / -1}
+  .viz-head{font-family:var(--mono);font-size:.58rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:.55em}
+  .viz-head::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--c,var(--accent));flex:0 0 auto}
+  .viz-svg{display:block}
+  .viz-num{font-family:var(--serif);font-weight:600;color:var(--head);line-height:1}
+  .viz-insight{display:flex;gap:9px;align-items:flex-start;margin-top:auto;background:var(--accent-soft);border:1px solid var(--accent-line);border-radius:11px;padding:9px 12px}
+  .viz-insight .vi-lead{font-family:var(--mono);font-size:.54rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:700;white-space:nowrap;padding-top:2px}
+  .viz-insight .vi-txt{font-size:.83rem;color:var(--text);line-height:1.45}
+  .viz-insight b{color:var(--accent);font-weight:700}
+  .viz-readout{display:flex;justify-content:space-between;align-items:center;gap:8px;min-height:20px;font-family:var(--mono);font-size:.62rem;letter-spacing:.04em}
+  .viz-legend{display:flex;flex-direction:column;gap:8px;flex:1 1 auto;min-width:120px}
+  .viz-legend .lg-row{display:flex;align-items:center;gap:9px}
+  .viz-legend .lg-dot{width:10px;height:10px;border-radius:3px;flex:0 0 auto}
+  .viz-legend .lg-name{font-size:.86rem;color:var(--text);flex:1 1 auto;min-width:0}
+  .viz-legend .lg-val{font-family:var(--mono);font-size:.76rem;font-weight:700}
+  /* cinta de días (1B) */
+  .ribbon{display:flex;gap:4px;align-items:stretch}
+  .ribbon .rb{flex:1 1 0;height:38px;border-radius:7px;cursor:pointer;transition:transform .12s ease}
+  .ribbon .rb:hover{transform:scaleY(1.14)}
+  .ribbon-foot{display:flex;justify-content:space-between;font-family:var(--mono);font-size:.52rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+  /* brasas por hábito (1C) */
+  .ember-row{display:flex;align-items:center;gap:12px}
+  .ember-main{flex:1 1 auto;min-width:0}
+  .ember-top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:5px;gap:8px}
+  .ember-name{font-size:.9rem;color:var(--text);font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .ember-streak{font-family:var(--mono);font-size:.74rem;font-weight:700;flex:0 0 auto}
+  .ember-track{height:7px;border-radius:999px;background:var(--line);overflow:hidden}
+  .ember-track span{display:block;height:100%;border-radius:999px}
+  .ember-dots{display:flex;gap:4px;flex:0 0 auto}
+  .ember-dots i{width:9px;height:9px;border-radius:50%;display:block;border:1.5px solid var(--line)}
+  /* anillos finanzas (1J) */
+  .jar-ringwrap{flex:0 0 auto;position:relative;width:62px;height:62px}
+  /* barras ingresos/gastos (1I) */
+  .flow-row{display:flex;flex-direction:column;gap:5px}
+  .flow-top{display:flex;justify-content:space-between;align-items:baseline}
+  .flow-lbl{font-family:var(--mono);font-size:.56rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+  .flow-val{font-family:var(--mono);font-size:.8rem;font-weight:700}
+  .flow-track{height:7px;border-radius:999px;background:var(--line);overflow:hidden}
+  .flow-track span{display:block;height:100%;border-radius:999px}
+  .cal-cell.full{box-shadow:0 0 8px -1px var(--accent-line)}
+  .seg.seg-range{margin-left:8px}
+  @media (max-width:560px){ .viz-grid{grid-template-columns:1fr} }
+
+  /* ===== APP SHELL (cabecera · subnav de área · dock inferior) ===== */
+  .wrap{padding-bottom:calc(104px + env(safe-area-inset-bottom))}
+  .appbar{padding:30px 0 4px}
+  .appbar-row{display:flex;align-items:flex-start;gap:16px}
+  .brand{flex:1 1 auto;min-width:0}
+  .appbar .brand h1{margin-top:9px;font-size:clamp(1.9rem,5vw,2.7rem)}
+  .appbar-tools{display:flex;align-items:center;gap:7px;flex:0 0 auto}
+  .icon-btn{width:38px;height:38px;border-radius:11px;border:1px solid var(--line);background:rgba(0,0,0,.2);color:var(--text-2);font-size:1.05rem;line-height:1;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;transition:all .15s ease;padding:0}
+  .icon-btn:hover:not(:disabled){border-color:var(--accent-line);color:var(--text);background:var(--ink-2)}
+  .icon-btn:disabled{opacity:.3;cursor:not-allowed}
+  .appbar .data-menu>summary.icon-btn{list-style:none}
+  .appbar .data-menu>summary.icon-btn::-webkit-details-marker{display:none}
+  .appbar .data-menu .data-menu-pop{right:0;left:auto}
+
+  .subnav{position:sticky;top:0;z-index:6;display:flex;align-items:center;gap:5px;overflow-x:auto;scrollbar-width:none;padding:11px 0 12px;margin-bottom:2px}
+  .subnav::-webkit-scrollbar{display:none}
+  .subnav[hidden]{display:none}
+  .subnav .subnav-area{font-family:var(--mono);font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);display:inline-flex;align-items:center;gap:.55em;padding:0 10px 0 2px;white-space:nowrap;flex:0 0 auto}
+  .subnav .subnav-area::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--accent)}
+  .subnav .subnav-area.solo{padding-left:2px}
+  .subnav button{font-family:var(--mono);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;color:var(--text-2);background:transparent;border:1px solid var(--line);border-radius:999px;padding:8px 14px;cursor:pointer;white-space:nowrap;transition:all .15s ease;flex:0 0 auto}
+  .subnav button:hover{border-color:var(--accent-line);color:var(--text)}
+  .subnav button.active{color:var(--on-accent);background:var(--accent);border-color:var(--accent);font-weight:700}
+  .subnav .sn-sep{flex:1 1 auto}
+
+  .dock{position:fixed;left:50%;transform:translateX(-50%);bottom:max(16px,env(safe-area-inset-bottom));z-index:50;display:flex;gap:2px;background:rgba(18,22,29,.84);backdrop-filter:blur(18px) saturate(1.3);-webkit-backdrop-filter:blur(18px) saturate(1.3);border:1px solid var(--line);border-radius:20px;padding:7px;box-shadow:0 14px 44px -14px rgba(0,0,0,.75)}
+  .dock-btn{position:relative;display:flex;flex-direction:column;align-items:center;gap:4px;min-width:66px;padding:9px 13px 7px;border:0;background:transparent;border-radius:14px;color:var(--muted);cursor:pointer;transition:color .18s ease,background .18s ease;font-family:var(--sans)}
+  .dock-btn:hover{color:var(--text);background:rgba(255,255,255,.04)}
+  .dock-btn.active{color:var(--on-accent);background:var(--accent)}
+  .dock-btn svg{width:21px;height:21px;display:block}
+  .dock-lbl{font-family:var(--mono);font-size:.52rem;letter-spacing:.07em;text-transform:uppercase;font-weight:700}
+  .dock-badge{position:absolute;top:3px;right:9px;min-width:15px;height:15px;padding:0 4px;border-radius:999px;background:var(--cuerpo);color:#fff;font-family:var(--mono);font-size:.5rem;font-weight:700;display:flex;align-items:center;justify-content:center;border:2px solid var(--ink-1)}
+  .dock-badge[hidden]{display:none}
+  .dock-btn.active .dock-badge{border-color:var(--accent)}
+
+  /* más profundidad y ritmo: el shell se siente ordenado, no plano */
+  .panel{box-shadow:0 1px 0 rgba(255,255,255,.02),0 22px 48px -34px rgba(0,0,0,.7)}
+  .history{box-shadow:0 1px 0 rgba(255,255,255,.02),0 22px 48px -34px rgba(0,0,0,.7)}
+
+  @media (max-width:560px){
+    .appbar{padding:22px 0 2px}
+    .dock{left:0;right:0;transform:none;bottom:0;width:100%;border-radius:16px 16px 0 0;justify-content:space-around;padding:8px 6px calc(8px + env(safe-area-inset-bottom));gap:0}
+    .dock-btn{min-width:0;flex:1 1 0;padding:7px 3px 5px}
+    .dock-lbl{font-size:.47rem}
+    .dock-badge{right:auto;left:calc(50% + 7px)}
+  }
+
+  /* ===== MOTION · animaciones y transiciones ===== */
+  @keyframes viewIn{from{opacity:0;transform:translateY(10px)}}
+  [id^="view-"]:not([hidden]){animation:viewIn .3s cubic-bezier(.22,.9,.35,1)}
+  #subnav:not([hidden]){animation:subnavIn .28s ease}
+  @keyframes subnavIn{from{opacity:0;transform:translateY(-4px)}}
+  /* charts: bars grow with stagger, line draws itself, area and dots fade in */
+  @keyframes barRise{from{transform:scaleY(0)}}
+  .ch-svg .ch-bar{transform-box:fill-box;transform-origin:50% 100%;animation:barRise .55s cubic-bezier(.22,.9,.35,1) both;animation-delay:var(--d,0ms)}
+  .ch-svg .ch-line{stroke-dasharray:1;stroke-dashoffset:1;animation:lineDraw .9s cubic-bezier(.45,0,.25,1) .08s forwards}
+  @keyframes lineDraw{to{stroke-dashoffset:0}}
+  .ch-svg .ch-area{opacity:0;animation:chFade .5s ease .45s forwards}
+  @keyframes chFade{to{opacity:1}}
+  .ch-svg .ch-dot{transform-box:fill-box;transform-origin:center;animation:dotIn .28s cubic-bezier(.34,1.56,.64,1) both;animation-delay:var(--d,0ms)}
+  @keyframes dotIn{from{opacity:0;transform:scale(0)}}
+  /* progress rings sweep in from empty */
+  .viz-anim{animation:ringSweep .8s cubic-bezier(.22,.9,.35,1)}
+  @keyframes ringSweep{from{stroke-dashoffset:var(--C)}}
+  /* mood trend bars rise left-to-right */
+  .mt-bar{transform-origin:bottom;animation:barRise .5s cubic-bezier(.22,.9,.35,1) both;animation-delay:var(--d,0ms)}
+  /* home cards enter staggered */
+  @keyframes cardIn{from{opacity:0;transform:translateY(9px)}}
+  .home-card{animation:cardIn .38s cubic-bezier(.22,.9,.35,1) both;animation-delay:calc(var(--i,0)*45ms)}
+  /* micro-interactions */
+  .dock-badge:not([hidden]){animation:badgeIn .3s cubic-bezier(.34,1.56,.64,1)}
+  @keyframes badgeIn{from{transform:scale(0)}}
+  .chk input:checked+.box::after{animation:checkDraw .18s ease-out}
+  @keyframes checkDraw{from{height:0;opacity:.3}}
+  .mood-btn.on{animation:moodPop .3s cubic-bezier(.34,1.56,.64,1)}
+  @keyframes moodPop{45%{transform:scale(1.14)}}
+  .dock-btn:active,.icon-btn:active,.add-btn:active,.empty-cta:active,.subnav button:active{transform:scale(.94)}
+  .dock-btn svg{transition:transform .18s ease}
+  .dock-btn.active svg{transform:translateY(-1px) scale(1.06)}
+  .progress-fill{transition:width .45s cubic-bezier(.22,.9,.35,1)}
 </style>
 </head>
 <body>
+  
   <div class="wrap">
-    <header class="hero">
-      <span class="eyebrow"><span class="dot"></span><span data-ui="eyebrow" data-ph="Texto superior">BYMCYL · Diario personal</span></span>
-      <h1 id="tpl-title" data-tpl="title" data-ph="Título">Mi diario personal</h1>
-      <p class="hero-sub" id="tpl-subtitle" data-tpl="subtitle" data-ph="Subtítulo"></p>
-      <p class="hero-quote" id="tpl-quote" data-tpl="quote" data-ph="Frase" hidden></p>
-
-      <div class="topbar">
-        <div class="tabs" role="tablist" aria-label="Vistas">
-          <button type="button" class="tab active" id="tab-inicio" role="tab"><span class="tab-label" data-ui="tabInicio">Inicio</span></button>
-          <button type="button" class="tab" id="tab-tracker" role="tab"><span class="tab-label" data-ui="tabTracker">Hábitos</span></button>
-          <button type="button" class="tab" id="tab-sistemas" role="tab"><span class="tab-label" data-ui="tabSistemas">Sistemas</span></button>
-          <button type="button" class="tab" id="tab-identity" role="tab"><span class="tab-label" data-ui="tabIdentity">Identidad</span></button>
-          <button type="button" class="tab" id="tab-bita" role="tab"><span class="tab-label" data-ui="tabBita">Bitácora</span></button>
-          <button type="button" class="tab" id="tab-notes" role="tab"><span class="tab-label" data-ui="tabNotes">Notas</span></button>
-          <button type="button" class="tab" id="tab-reading" role="tab"><span class="tab-label" data-ui="tabReading">Lecturas</span></button>
-          <button type="button" class="tab" id="tab-reminders" role="tab"><span class="tab-label" data-ui="tabReminders">Recordatorios</span><span class="tab-count" id="rem-count" hidden></span></button>
-          <button type="button" class="tab" id="tab-progress" role="tab"><span class="tab-label" data-ui="tabProgress">Progreso</span></button>
-          <button type="button" class="tab" id="tab-money" role="tab"><span class="tab-label" data-ui="tabMoney">Finanzas</span></button>
-          <button type="button" class="tab" id="tab-settings" role="tab"><span class="tab-label" data-ui="tabSettings">Personalizar</span></button>
+    <header class="appbar">
+      <div class="appbar-row">
+        <div class="brand">
+          <span class="eyebrow"><span class="dot"></span><span data-ui="eyebrow" data-ph="Texto superior">BYMCYL · Diario personal</span></span>
+          <h1 id="tpl-title" data-tpl="title" data-ph="Título">Mi diario personal</h1>
         </div>
-        <div class="top-tools">
+        <div class="appbar-tools">
           <details class="data-menu" id="data-menu">
-            <summary class="tool-btn data-summary" title="Datos: exportar, importar, restaurar o vaciar">⤓ <span data-ui="btnData">Datos</span></summary>
+            <summary class="icon-btn data-summary" title="Datos: exportar, importar, restaurar o vaciar" aria-label="Datos">⤓</summary>
             <div class="data-menu-pop">
               <button type="button" class="menu-item" id="btn-export"><span data-ui="btnExport">Exportar datos</span></button>
               <button type="button" class="menu-item" id="btn-import"><span data-ui="btnImport">Importar datos</span></button>
               <button type="button" class="menu-item" id="btn-reset"><span data-ui="btnReset">Restaurar ejemplo</span></button>
               <button type="button" class="menu-item danger" id="btn-clear"><span data-ui="btnClear">Vaciar</span></button>
-              <input type="file" id="file-import" accept="application/json,.json" hidden>
+              <input type="file" id="file-import" accept="application/json,.json" hidden="">
             </div>
           </details>
-          <div class="undo-group">
-            <button type="button" class="tool-btn" id="btn-undo" disabled title="Deshacer (Ctrl+Z)">↶ <span data-ui="btnUndo">Deshacer</span></button>
-            <button type="button" class="tool-btn" id="btn-redo" disabled title="Rehacer (Ctrl+Mayús+Z)">↷ <span data-ui="btnRedo">Rehacer</span></button>
-          </div>
+          <button type="button" class="icon-btn" id="btn-undo" disabled="" title="Deshacer (Ctrl+Z)" aria-label="Deshacer">↶</button>
+          <button type="button" class="icon-btn" id="btn-redo" disabled="" title="Rehacer (Ctrl+Mayús+Z)" aria-label="Rehacer">↷</button>
+          <button type="button" class="icon-btn" id="btn-settings" title="Personalizar" aria-label="Personalizar">⚙</button>
         </div>
       </div>
+      <p class="hero-sub" id="tpl-subtitle" data-tpl="subtitle" data-ph="Subtítulo"></p>
+      <p class="hero-quote" id="tpl-quote" data-tpl="quote" data-ph="Frase" hidden=""></p>
 
       <div class="edit-banner">
         <span class="eb-text" data-ui="editHint">Modo edición · toca cualquier texto para cambiarlo</span>
@@ -679,8 +805,10 @@
       </div>
     </header>
 
+    <div class="subnav" id="subnav" role="tablist" aria-label="Secciones"></div>
+
     <!-- ===================== VISTA: INICIO ===================== -->
-    <div id="view-inicio" hidden>
+    <div id="view-inicio" hidden="">
       <section class="panel home" aria-label="Resumen de hoy">
         <div class="rem-head">
           <div class="panel-title" data-ui="lblHome">Resumen de hoy</div>
@@ -701,7 +829,7 @@
         </div>
       </div>
 
-      <div class="notice" id="day-notice" hidden>
+      <div class="notice" id="day-notice" hidden="">
         <span id="day-notice-text"></span>
         <button type="button" class="mini" id="day-today"><span data-ui="btnBackToday">Volver a hoy</span></button>
       </div>
@@ -720,7 +848,7 @@
         <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
       </div>
 
-      <div class="list-toolbar" id="habit-filter" hidden></div>
+      <div class="list-toolbar" id="habit-filter" hidden=""></div>
 
       <main id="list"></main>
 
@@ -731,7 +859,7 @@
     </div>
 
     <!-- ===================== VISTA: SISTEMAS ===================== -->
-    <div id="view-sistemas" hidden>
+    <div id="view-sistemas" hidden="">
       <section class="panel systems" aria-label="Sistemas">
         <div class="rem-head">
           <div class="panel-title" data-ui="lblSystems">Sistemas · diseña tus acciones</div>
@@ -757,7 +885,7 @@
     </div>
 
     <!-- ===================== VISTA: IDENTIDAD ===================== -->
-    <div id="view-identity" hidden>
+    <div id="view-identity" hidden="">
       <section class="panel identity" aria-label="Identidad">
         <div class="rem-head">
           <div class="panel-title" data-ui="lblIdentity">Identidad · vota por quien quieres ser</div>
@@ -773,7 +901,7 @@
     </div>
 
     <!-- ===================== VISTA: BITÁCORA ===================== -->
-    <div id="view-bita" hidden>
+    <div id="view-bita" hidden="">
       <section class="panel bita-panel" aria-label="Bitácora">
         <div class="rem-head">
           <div class="panel-title" data-ui="lblBita">Bitácora del día</div>
@@ -820,7 +948,7 @@
     </div>
 
     <!-- ===================== VISTA: NOTAS ===================== -->
-    <div id="view-notes" hidden>
+    <div id="view-notes" hidden="">
       <section class="panel notes-panel" aria-label="Notas">
         <div class="rem-head">
           <div class="panel-title" data-ui="lblNotes">Notas · ideas y planes</div>
@@ -832,13 +960,13 @@
           <div class="field full" style="margin-top:10px"><label class="fl" for="note-text" data-ui="lblNoteText">Contenido</label><textarea id="note-text" class="inp" placeholder="Escribe tu idea o plan…"></textarea></div>
           <button type="button" class="add-btn" id="note-add-btn" style="margin-top:11px;align-self:flex-start"><span data-ui="btnNoteAdd">Agregar nota</span></button>
         </div>
-        <div class="notes-search" id="notes-search-wrap" hidden><input id="note-search" class="search-inp" type="search" placeholder="Buscar en tus notas…" aria-label="Buscar notas" autocomplete="off"></div>
+        <div class="notes-search" id="notes-search-wrap" hidden=""><input id="note-search" class="search-inp" type="search" placeholder="Buscar en tus notas…" aria-label="Buscar notas" autocomplete="off"></div>
         <div class="notes-list" id="notes-list"></div>
       </section>
     </div>
 
     <!-- ===================== VISTA: LECTURAS ===================== -->
-    <div id="view-reading" hidden>
+    <div id="view-reading" hidden="">
       <section class="panel reading" aria-label="Lecturas">
         <div class="rem-head">
           <div class="panel-title" data-ui="lblReading">Lecturas · libros en curso</div>
@@ -857,7 +985,7 @@
     </div>
 
     <!-- ===================== VISTA: RECORDATORIOS ===================== -->
-    <div id="view-reminders" hidden>
+    <div id="view-reminders" hidden="">
       <section class="panel reminders" aria-label="Recordatorios">
         <div class="rem-head">
           <div class="panel-title" data-ui="lblReminders">Recordatorios · actividades programadas</div>
@@ -875,7 +1003,7 @@
     </div>
 
     <!-- ===================== VISTA: PROGRESO ===================== -->
-    <div id="view-progress" hidden>
+    <div id="view-progress" hidden="">
       <section class="panel goals" aria-label="Metas semanales y mensuales">
         <div class="rem-head">
           <div class="panel-title" data-ui="lblGoals">Metas semanales y mensuales</div>
@@ -907,6 +1035,10 @@
           <div class="field full"><label class="fl" for="wk-next" data-ui="lblWkNext">Enfoque para la próxima semana</label><textarea id="wk-next" class="inp" data-wk="next" placeholder="1–3 prioridades para la semana que viene…"></textarea></div>
         </div>
       </section>
+      <section class="panel rachas-panel" aria-label="Rachas y constancia">
+        <div class="panel-title" data-ui="lblRachas">Rachas y constancia</div>
+        <div class="viz-grid" id="rachas-grid"></div>
+      </section>
       <section class="history" aria-label="Historial y rachas">
         <div class="hist-head">
           <div class="panel-title" data-ui="histTitle">Historial y rachas de hábitos</div>
@@ -914,6 +1046,7 @@
           <button type="button" class="tool-btn png-btn" title="Descargar PNG de esta pestaña">📷 PNG</button>
         </div>
         <div class="stats" id="stats"></div>
+        <div class="viz-readout" style="margin:14px 0 10px"><span id="heat-readout" style="color:var(--muted)">Pasa el cursor por un día</span><span></span></div>
         <div class="cal-months" id="cal-months"></div>
         <div class="heat-foot">
           <span data-ui="calLegend">Toca un día para verlo o completarlo</span>
@@ -925,6 +1058,7 @@
         <div class="hist-head">
           <div class="panel-title" data-ui="lblCharts">Gráficas de progreso</div>
           <div class="seg" id="chart-seg" role="group" aria-label="Métrica"></div>
+          <div class="seg seg-range" id="chart-range" role="group" aria-label="Rango"></div>
         </div>
         <div class="chart-area" id="chart-area"></div>
         <div class="chart-foot" id="chart-foot"></div>
@@ -932,7 +1066,7 @@
     </div>
 
     <!-- ===================== VISTA: DINERO ===================== -->
-    <div id="view-money" hidden>
+    <div id="view-money" hidden="">
       <section class="panel money" aria-label="Finanzas">
         <div class="rem-head">
           <div class="panel-title" data-ui="lblMoney">Finanzas</div>
@@ -943,7 +1077,7 @@
         <div class="sys-section">
           <div class="sys-section-title" data-ui="lblAccount">Estado de la cuenta</div>
           <p class="hint" data-ui="accountHint">Registra tus ingresos y gastos para ver el saldo de tu cuenta.</p>
-          <div class="stats" id="account-stats"></div>
+          <div id="account-stats"></div>
           <div class="addbar tx-add">
             <div class="field field-time"><label class="fl" for="tx-type" data-ui="lblTxType">Tipo</label><select id="tx-type" class="sel"><option value="in">Ingreso</option><option value="out">Gasto</option></select></div>
             <div class="field field-text"><label class="fl" for="tx-desc" data-ui="lblTxDesc">Concepto</label><input id="tx-desc" class="inp" type="text" placeholder="Ej. Sueldo, Mercado, Transporte…" autocomplete="off"></div>
@@ -970,7 +1104,7 @@
     </div>
 
     <!-- ===================== VISTA: PERSONALIZAR ===================== -->
-    <div id="view-settings" hidden>
+    <div id="view-settings" hidden="">
       <section class="panel" aria-label="Personalizar tracker">
         <div class="panel-title" data-ui="panelTitle">Personaliza tu diario</div>
         <div class="pgrid">
@@ -991,6 +1125,8 @@
         </div>
       </section>
     </div>
+
+    <nav class="dock" id="dock" aria-label="Navegación principal"></nav>
 
     <footer>
       <div class="foot-mark" data-ui="footMark">break your mind, change your life</div>
@@ -1291,7 +1427,8 @@
   function firstFrenteId(){ return state.frentes.length ? state.frentes[0].id : "cuerpo"; }
   function timeToMin(t){ if(!t) return null; const p=t.split(":"); return (+p[0])*60+(+p[1]); }
   function sortByTime(list){ return list.slice().sort((a,b)=>{ const ta=timeToMin(a.start), tb=timeToMin(b.start); if(ta==null && tb==null) return 0; if(ta==null) return 1; if(tb==null) return -1; return ta-tb; }); }
-  function hexToRgba(hex,a){ const n=hex.replace('#',''); const r=parseInt(n.slice(0,2),16),g=parseInt(n.slice(2,4),16),b=parseInt(n.slice(4,6),16); return "rgba("+r+","+g+","+b+","+a+")"; }
+  function normHex(hex){ let n=String(hex==null?"":hex).trim().replace(/^#/,""); if(/^[0-9a-fA-F]{3}$/.test(n)) n=n.split("").map(c=>c+c).join(""); return /^[0-9a-fA-F]{6}$/.test(n) ? n.toLowerCase() : "000000"; }
+  function hexToRgba(hex,a){ const n=normHex(hex); const r=parseInt(n.slice(0,2),16),g=parseInt(n.slice(2,4),16),b=parseInt(n.slice(4,6),16); return "rgba("+r+","+g+","+b+","+a+")"; }
 
   function isDone(habitId, key){ return !!(state.log[key] && state.log[key][habitId]); }
   function setDone(habitId, key, on){
@@ -1470,7 +1607,7 @@
   function unmarkGoal(id){ if(editing) return; const g=goalById(id); if(!g||!(g.marks&&g.marks.length)) return; pushUndo("gunmark"); g.marks.pop(); renderGoals(); save(); }
 
   /* ============ accent + theme ============ */
-  function isLight(hex){ const n=hex.replace('#',''); const r=parseInt(n.slice(0,2),16),g=parseInt(n.slice(2,4),16),b=parseInt(n.slice(4,6),16); return (r*299+g*587+b*114)/1000 > 150; }
+  function isLight(hex){ const n=normHex(hex); const r=parseInt(n.slice(0,2),16),g=parseInt(n.slice(2,4),16),b=parseInt(n.slice(4,6),16); return (r*299+g*587+b*114)/1000 > 150; }
   function applyAccent(hex){
     template.accent=hex;
     const root=document.documentElement.style;
@@ -1489,6 +1626,7 @@
     THEME_VARS.forEach(([key,cssVar])=>{ if(theme[key]) root.setProperty(cssVar, theme[key]); });
     THEME_VARS.forEach(([key])=>{ const inp=document.getElementById('tc-'+key); if(inp && theme[key]) inp.value=theme[key]; });
     document.querySelectorAll('.theme-chip[data-theme]').forEach(c=>c.setAttribute('aria-pressed', themeEquals(THEMES[+c.getAttribute('data-theme')], theme)?"true":"false"));
+    const ink=theme.ink||"#0E1116"; const mc=document.getElementById('meta-theme-color'); if(mc) mc.setAttribute('content', ink); document.documentElement.style.colorScheme = isLight(ink) ? "light" : "dark";
     paintHeatScale();
   }
   function renderThemeControls(){
@@ -1680,10 +1818,7 @@
     ).join("");
   }
   function renderStats(){
-    const gs=globalStreak(), bs=bestGlobalStreak();
     const stats=[
-      {k:"Racha actual", v:gs, s:plural(gs,"día","días")},
-      {k:"Mejor racha",  v:bs, s:plural(bs,"día","días")},
       {k:"Días activos", v:activeDays(), s:""},
       {k:"Completados", v:totalCompletions(), s:""},
       {k:"Constancia", v:consistencyRange(), s:"%"}
@@ -1704,7 +1839,7 @@
       for(let day=1; day<=days; day++){
         const d=new Date(year,mon,day), k=dateKey(d), future=d>today, r=dayRatio(k);
         const bg=(future||r<=0)?"transparent":hexToRgba(a,.14+r*0.86);
-        const cls="cal-cell"+(future?" future":"")+(k===TODAY_KEY?" today":"")+(k===selectedKey?" sel":"")+(dayHasJournal(k)?" has-journal":"");
+        const cls="cal-cell"+(future?" future":"")+(k===TODAY_KEY?" today":"")+(k===selectedKey?" sel":"")+(dayHasJournal(k)?" has-journal":"")+((!future&&r>=0.85)?" full":"");
         cells+='<span class="'+cls+'"'+(future?'':' data-jump="'+k+'"')+' title="'+prettyDate(k)+' · '+dayDoneCount(k)+'/'+state.habits.length+'" style="background:'+bg+'"><span class="n">'+day+'</span></span>';
       }
       html+='<div class="cal-month"><div class="cal-mh">'+MON_FULL[mon]+' '+year+'</div><div class="cal-grid">'+cells+'</div></div>';
@@ -1712,11 +1847,77 @@
     document.getElementById("cal-months").innerHTML=html;
     paintHeatScale();
   }
-  function renderHistory(){ renderRangeSeg(); renderStats(); renderCalendar(); renderWeekly(); renderCharts(); }
+  function renderHistory(){ renderRangeSeg(); renderRachas(); renderStats(); renderCalendar(); renderWeekly(); renderCharts(); }
+
+  /* ============ nuevas visualizaciones: rachas (1A·1B·1C·1D) ============ */
+  function vizRing(cx,cy,r,stroke,w,pct,glow){ const C=2*Math.PI*r, off=C*(1-Math.max(0,Math.min(1,pct))); return '<circle cx="'+cx+'" cy="'+cy+'" r="'+r+'" fill="none" stroke="'+stroke+'" stroke-width="'+w+'" stroke-linecap="round" stroke-dasharray="'+C.toFixed(1)+'" stroke-dashoffset="'+off.toFixed(1)+'" transform="rotate(-90 '+cx+' '+cy+')"'+(glow?(' class="viz-anim" style="--C:'+C.toFixed(1)+';filter:drop-shadow(0 0 4px '+stroke+')"'):'')+'></circle>'; }
+  function vizInsight(lead,txt){ return '<div class="viz-insight"><span class="vi-lead">'+lead+'</span><span class="vi-txt">'+txt+'</span></div>'; }
+  function frenteWeekRatio(fid){
+    const mon=startOfWeek(new Date()), today=new Date(); today.setHours(0,0,0,0);
+    let done=0, sched=0;
+    for(let d=0;d<7;d++){ const day=addDays(mon,d); if(day>today) break; const k=dateKey(day);
+      state.habits.forEach(h=>{ if(h.domain===fid && scheduledDaily(h,k)){ sched++; if(isDone(h.id,k)) done++; } }); }
+    return sched? done/sched : 0;
+  }
+  function cardStreakRing(){
+    const a=template.accent, gs=globalStreak(), bs=Math.max(gs,bestGlobalStreak()), pct=bs?gs/bs:0, left=Math.max(0,bs-gs);
+    return '<div class="viz-card"><div class="viz-head">Racha actual</div>'+
+      '<svg viewBox="0 0 150 150" class="viz-svg" style="width:150px;height:150px;margin:0 auto" role="img" aria-label="Racha de '+gs+' días">'+
+        vizRing(75,75,60,'var(--line)',12,1,false)+vizRing(75,75,60,a,12,pct,true)+
+        '<text x="75" y="72" text-anchor="middle" style="font-family:var(--serif);font-weight:600;font-size:38px;fill:var(--head)">'+gs+'</text>'+
+        '<text x="75" y="92" text-anchor="middle" style="font-family:var(--mono);font-size:8px;letter-spacing:1.5px;fill:var(--muted)">DÍAS SEGUIDOS</text></svg>'+
+      '<div style="display:flex;justify-content:center;gap:16px">'+
+        '<div style="text-align:center"><div class="viz-num" style="font-size:1.15rem;color:var(--accent)">'+bs+'</div><div class="flow-lbl">Mejor marca</div></div>'+
+        '<div style="width:1px;background:var(--line)"></div>'+
+        '<div style="text-align:center"><div class="viz-num" style="font-size:1.15rem">'+left+'</div><div class="flow-lbl">Para el récord</div></div></div>'+
+      vizInsight('Racha', gs>0 ? ('Llevas <b>'+gs+(gs===1?' día':' días')+'</b> seguidos'+(left>0?(' — a <b>'+left+'</b> de tu mejor marca.'):' — ¡estás en tu mejor marca!')) : 'Hoy es un buen día para empezar una racha.')+'</div>';
+  }
+  function cardFrenteRings(){
+    const fr=state.frentes.slice(0,5); if(!fr.length) return '';
+    const ratios=fr.map(f=>frenteWeekRatio(f.id)), avg=Math.round(ratios.reduce((s,r)=>s+r,0)/fr.length*100);
+    let rings=''; fr.forEach((f,i)=>{ rings+=vizRing(75,75,64-i*15,'var(--line)',10,1,false); });
+    fr.forEach((f,i)=>{ rings+=vizRing(75,75,64-i*15,f.color,10,ratios[i],true); });
+    const svg='<svg viewBox="0 0 150 150" class="viz-svg" style="width:150px;height:150px;flex:0 0 auto" role="img">'+rings+
+      '<text x="75" y="72" text-anchor="middle" style="font-family:var(--serif);font-weight:600;font-size:26px;fill:var(--head)">'+avg+'%</text>'+
+      '<text x="75" y="90" text-anchor="middle" style="font-family:var(--mono);font-size:7px;letter-spacing:1.5px;fill:var(--muted)">EQUILIBRIO</text></svg>';
+    const legend='<div class="viz-legend">'+fr.map((f,i)=>'<div class="lg-row"><span class="lg-dot" style="background:'+f.color+'"></span><span class="lg-name">'+escapeHTML(f.name)+'</span><span class="lg-val" style="color:'+f.color+'">'+Math.round(ratios[i]*100)+'%</span></div>').join("")+'</div>';
+    let si=0; ratios.forEach((r,i)=>{ if(r>ratios[si]) si=i; }); const strong=fr[si];
+    return '<div class="viz-card"><div class="viz-head">Equilibrio semanal</div>'+
+      '<div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap">'+svg+legend+'</div>'+
+      vizInsight('Frentes', 'Tu frente más fuerte esta semana es <b style="color:'+strong.color+'">'+escapeHTML(strong.name)+'</b> ('+Math.round(ratios[si]*100)+'%).')+'</div>';
+  }
+  function cardRibbon(){
+    const a=template.accent, today=new Date(); today.setHours(0,0,0,0); let cells='', active=0;
+    for(let i=27;i>=0;i--){ const k=dateKey(addDays(today,-i)), r=dayRatio(k), on=r>0; if(on) active++;
+      const bg=on?hexToRgba(a,.30+r*0.70):'var(--ink)', bd=on?hexToRgba(a,.5):'var(--line)', sh=on?('box-shadow:0 0 9px -3px '+hexToRgba(a,.7)+';'):'';
+      cells+='<span class="rb" data-jump="'+k+'" data-rb="'+k+'" title="'+prettyDate(k)+' · '+Math.round(r*100)+'%" style="background:'+bg+';border:1px solid '+bd+';'+sh+'"></span>'; }
+    return '<div class="viz-card span2"><div class="viz-head">Cinta de los últimos 28 días</div>'+
+      '<div class="viz-readout"><span id="ribbon-readout" style="color:var(--muted)">Pasa el cursor por los días</span></div>'+
+      '<div class="ribbon">'+cells+'</div>'+
+      '<div class="ribbon-foot"><span>Hace 28 días</span><span>Hoy</span></div>'+
+      vizInsight('Constancia', '<b>'+active+' de 28 días</b> activos en este periodo.')+'</div>';
+  }
+  function cardEmber(){
+    if(!state.habits.length) return '';
+    const today=new Date(); today.setHours(0,0,0,0);
+    const list=state.habits.map(h=>({h, s:habitStreak(h.id)})).sort((x,y)=>y.s-x.s).slice(0,6);
+    const max=Math.max(1, ...list.map(o=>o.s));
+    const rows=list.map(o=>{ const h=o.h, col=frenteColor(h.domain); let dots='';
+      for(let i=6;i>=0;i--){ const on=isDone(h.id,dateKey(addDays(today,-i))); dots+='<i style="'+(on?('background:'+col+';border-color:'+col+';box-shadow:0 0 5px -1px '+col):'')+'"></i>'; }
+      return '<div class="ember-row"><div class="ember-main"><div class="ember-top"><span class="ember-name">'+escapeHTML(h.text)+'</span><span class="ember-streak" style="color:'+col+'">'+o.s+'d</span></div>'+
+        '<div class="ember-track"><span style="width:'+(o.s/max*100)+'%;background:linear-gradient(90deg,'+hexToRgba(col,.5)+','+col+')"></span></div></div>'+
+        '<div class="ember-dots">'+dots+'</div></div>'; }).join("");
+    const top=list[0];
+    return '<div class="viz-card span2"><div class="viz-head">Rachas por hábito</div>'+
+      '<div style="display:flex;flex-direction:column;gap:13px">'+rows+'</div>'+
+      (top.s>0?vizInsight('Tu ancla', 'Tu hábito más constante es <b style="color:'+frenteColor(top.h.domain)+'">'+escapeHTML(top.h.text)+'</b> con <b>'+top.s+(top.s===1?' día':' días')+'</b> seguidos.'):'')+'</div>';
+  }
+  function renderRachas(){ const el=document.getElementById("rachas-grid"); if(!el) return; el.innerHTML = cardStreakRing()+cardFrenteRings()+cardRibbon()+cardEmber(); }
 
   /* ============ progress charts (SVG) ============ */
   const CHART_SEG = [["habits","Hábitos"],["mood","Ánimo"],["consistency","Constancia"]];
-  let chartMetric = "habits";
+  let chartMetric = "consistency";
+  let chartRange = 30;
   function weeklyCompletions(weeks){
     const out=[], mon=startOfWeek(new Date());
     for(let i=weeks-1;i>=0;i--){ const start=addDays(mon,-i*7); let sum=0;
@@ -1730,34 +1931,42 @@
     return out;
   }
   function barChartSVG(data, color){
-    const W=620,H=170,pL=6,pR=6,pT=12,pB=24,iw=W-pL-pR,ih=H-pT-pB;
+    const W=600,H=178,pL=6,pR=6,pT=16,pB=22,iw=W-pL-pR,ih=H-pT-pB;
     const n=data.length, bw=iw/n, max=Math.max(1,...data.map(d=>d.value));
-    let s='<line x1="'+pL+'" y1="'+(pT+ih)+'" x2="'+(W-pR)+'" y2="'+(pT+ih)+'" class="ch-base"/>';
+    const gid='bg'+Math.random().toString(36).slice(2,7);
+    let s='<defs><linearGradient id="'+gid+'" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="'+color+'" stop-opacity="0.92"/><stop offset="100%" stop-color="'+color+'" stop-opacity="0.30"/></linearGradient></defs>';
+    s+='<line x1="'+pL+'" y1="'+(pT+ih)+'" x2="'+(W-pR)+'" y2="'+(pT+ih)+'" class="ch-base"/>';
     data.forEach((d,i)=>{ const bh=ih*(d.value/max), x=pL+i*bw+bw*0.16, y=pT+ih-bh, w=bw*0.68, last=i===n-1;
-      s+='<rect x="'+x.toFixed(1)+'" y="'+y.toFixed(1)+'" width="'+w.toFixed(1)+'" height="'+Math.max(0,bh).toFixed(1)+'" rx="2.5" fill="'+color+'"'+(last?'':' opacity="0.72"')+'><title>'+escapeHTML(d.label)+': '+d.value+'</title></rect>';
+      s+='<rect x="'+x.toFixed(1)+'" y="'+y.toFixed(1)+'" width="'+w.toFixed(1)+'" height="'+Math.max(0,bh).toFixed(1)+'" rx="3" class="ch-bar" fill="'+(last?color:'url(#'+gid+')')+'" style="--d:'+(i*32)+'ms'+(last?(';filter:drop-shadow(0 0 6px '+hexToRgba(color,.6)+')'):'')+'"><title>'+escapeHTML(d.label)+': '+d.value+'</title></rect>';
       if(n<=14 || i%2===1) s+='<text x="'+(pL+i*bw+bw/2).toFixed(1)+'" y="'+(H-7)+'" text-anchor="middle" class="ch-x">'+escapeHTML(d.label)+'</text>'; });
     return '<svg viewBox="0 0 '+W+' '+H+'" class="ch-svg" preserveAspectRatio="xMidYMid meet" role="img">'+s+'</svg>';
   }
+  function vizSpline(pts){ if(pts.length<2) return pts.length?('M'+pts[0].x.toFixed(1)+' '+pts[0].y.toFixed(1)):''; let d='M'+pts[0].x.toFixed(1)+' '+pts[0].y.toFixed(1); for(let i=0;i<pts.length-1;i++){ const p0=pts[i-1]||pts[i],p1=pts[i],p2=pts[i+1],p3=pts[i+2]||p2; const c1x=p1.x+(p2.x-p0.x)/6,c1y=p1.y+(p2.y-p0.y)/6,c2x=p2.x-(p3.x-p1.x)/6,c2y=p2.y-(p3.y-p1.y)/6; d+=' C'+c1x.toFixed(1)+' '+c1y.toFixed(1)+' '+c2x.toFixed(1)+' '+c2y.toFixed(1)+' '+p2.x.toFixed(1)+' '+p2.y.toFixed(1); } return d; }
   function lineChartSVG(data, opts){
-    const W=620,H=170,pL=8,pR=8,pT=12,pB=24,iw=W-pL-pR,ih=H-pT-pB;
+    const W=600,H=178,pL=8,pR=8,pT=16,pB=20,iw=W-pL-pR,ih=H-pT-pB;
     const n=data.length, min=opts.min, max=opts.max, range=(max-min)||1;
     const X=i=>pL+(n<=1?iw/2:iw*i/(n-1)), Y=v=>pT+ih-ih*((v-min)/range);
-    const pts=data.map((d,i)=>({ x:X(i), y:d.value==null?null:Y(d.value), v:d.value, label:d.label }));
-    const valid=pts.filter(p=>p.y!=null);
-    let s='<line x1="'+pL+'" y1="'+(pT+ih)+'" x2="'+(W-pR)+'" y2="'+(pT+ih)+'" class="ch-base"/>';
-    if(opts.area && valid.length){ s+='<path d="M'+valid[0].x.toFixed(1)+' '+(pT+ih).toFixed(1)+' '+valid.map(p=>'L'+p.x.toFixed(1)+' '+p.y.toFixed(1)).join(' ')+' L'+valid[valid.length-1].x.toFixed(1)+' '+(pT+ih).toFixed(1)+' Z" fill="'+opts.color+'" opacity="0.13"/>'; }
-    if(valid.length){ s+='<path d="'+valid.map((p,i)=>(i?'L':'M')+p.x.toFixed(1)+' '+p.y.toFixed(1)).join(' ')+'" fill="none" stroke="'+opts.color+'" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>'; }
-    valid.forEach(p=>s+='<circle cx="'+p.x.toFixed(1)+'" cy="'+p.y.toFixed(1)+'" r="2.6" fill="'+opts.color+'"><title>'+escapeHTML(p.label)+': '+p.v+(opts.unit||'')+'</title></circle>');
+    const valid=[]; data.forEach((d,i)=>{ if(d.value!=null) valid.push({x:X(i),y:Y(d.value),v:d.value,label:d.label}); });
+    const a=opts.color, gid='lg'+Math.random().toString(36).slice(2,7);
+    let s='';
+    [0,.25,.5,.75,1].forEach(t=>{ const y=(pT+ih-ih*t).toFixed(1); s+='<line x1="'+pL+'" y1="'+y+'" x2="'+(W-pR)+'" y2="'+y+'" stroke="var(--line)" stroke-width="'+(t===0?1:.5)+'"'+(t===0?'':' stroke-dasharray="2 4" opacity="0.55"')+'/>'; });
+    if(valid.length){ const line=vizSpline(valid);
+      s+='<defs><linearGradient id="'+gid+'" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="'+a+'" stop-opacity="0.30"/><stop offset="100%" stop-color="'+a+'" stop-opacity="0"/></linearGradient></defs>';
+      s+='<path d="'+line+' L'+valid[valid.length-1].x.toFixed(1)+' '+(pT+ih)+' L'+valid[0].x.toFixed(1)+' '+(pT+ih)+' Z" class="ch-area" fill="url(#'+gid+')"/>';
+      s+='<path d="'+line+'" pathLength="1" class="ch-line" fill="none" stroke="'+a+'" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round" style="filter:drop-shadow(0 2px 5px '+hexToRgba(a,.4)+')"/>';
+      valid.forEach((p,pi)=>s+='<circle cx="'+p.x.toFixed(1)+'" cy="'+p.y.toFixed(1)+'" r="2.4" class="ch-dot" fill="'+a+'" style="--d:'+Math.round(120+pi*(560/valid.length))+'ms"><title>'+escapeHTML(p.label)+': '+p.v+(opts.unit||'')+'</title></circle>'); }
     const step=Math.max(1,Math.ceil(n/6));
-    data.forEach((d,i)=>{ if(i%step===0) s+='<text x="'+X(i).toFixed(1)+'" y="'+(H-7)+'" text-anchor="middle" class="ch-x">'+escapeHTML(d.label.replace(/^[a-záéíóú]+\s/i,""))+'</text>'; });
+    data.forEach((d,i)=>{ if(i%step===0) s+='<text x="'+X(i).toFixed(1)+'" y="'+(H-5)+'" text-anchor="middle" class="ch-x">'+escapeHTML(d.label.replace(/^[a-záéíóú]+\s/i,""))+'</text>'; });
     return '<svg viewBox="0 0 '+W+' '+H+'" class="ch-svg" preserveAspectRatio="xMidYMid meet" role="img">'+s+'</svg>';
   }
   function renderCharts(){
     const seg=document.getElementById("chart-seg"); if(!seg) return;
     seg.innerHTML = CHART_SEG.map(m=>'<button type="button" data-chart="'+m[0]+'"'+(chartMetric===m[0]?' class="active"':'')+'>'+m[1]+'</button>').join("");
     const area=document.getElementById("chart-area"), foot=document.getElementById("chart-foot"), a=template.accent;
-    if(chartMetric==="mood"){ area.innerHTML=lineChartSVG(dailyMetric(30,k=>{const j=state.journal[k];return (j&&j.mood)?j.mood:null;}),{min:1,max:5,unit:"",color:a,area:true}); foot.textContent="Ánimo del día (1–5) · últimos 30 días"; }
-    else if(chartMetric==="consistency"){ area.innerHTML=lineChartSVG(dailyMetric(30,k=>Math.round(dayRatio(k)*100)),{min:0,max:100,unit:"%",color:a,area:true}); foot.textContent="Constancia diaria (% de hábitos del día) · últimos 30 días"; }
+    const daily = chartMetric!=="habits", rseg=document.getElementById("chart-range");
+    if(rseg){ rseg.style.display=daily?"inline-flex":"none"; if(daily) rseg.innerHTML=[7,30,90].map(d=>'<button type="button" data-crange="'+d+'"'+(chartRange===d?' class="active"':'')+'>'+d+'d</button>').join(""); }
+    if(chartMetric==="mood"){ area.innerHTML=lineChartSVG(dailyMetric(chartRange,k=>{const j=state.journal[k];return (j&&j.mood)?j.mood:null;}),{min:1,max:5,unit:"",color:a}); foot.textContent="Ánimo del día (1–5) · últimos "+chartRange+" días"; }
+    else if(chartMetric==="consistency"){ area.innerHTML=lineChartSVG(dailyMetric(chartRange,k=>Math.round(dayRatio(k)*100)),{min:0,max:100,unit:"%",color:a}); foot.textContent="Constancia diaria (%) · últimos "+chartRange+" días"; }
     else { area.innerHTML=barChartSVG(weeklyCompletions(12), a); foot.textContent="Hábitos completados por semana · últimas 12 semanas"; }
   }
 
@@ -1808,16 +2017,60 @@
     renderReminders(); save(); t.focus();
   }
 
-  /* ============ views ============ */
+  /* ============ views & navegación por áreas ============ */
   const VIEWS = ["inicio","tracker","sistemas","identity","bita","notes","reading","reminders","progress","money","settings"];
-  function renderView(){
-    VIEWS.forEach(v=>{
-      const view=document.getElementById("view-"+v), tab=document.getElementById("tab-"+v);
-      if(view) view.hidden = currentView!==v;
-      if(tab) tab.classList.toggle("active", currentView===v);
-    });
+  const ICONS = {
+    inicio:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.2 12 3l9 7.2"/><path d="M5 9.5V20h14V9.5"/><path d="M9.5 20v-5.5h5V20"/></svg>',
+    habitos:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m8.5 12 2.4 2.4 4.6-4.8"/></svg>',
+    diario:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4.5A1.5 1.5 0 0 1 6.5 3H19v15H6.5A1.5 1.5 0 0 0 5 19.5z"/><path d="M5 19.5A1.5 1.5 0 0 1 6.5 21H19"/><path d="M9 7.5h6M9 10.5h4"/></svg>',
+    progreso:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V5M20 19H4"/><path d="m7 15 3.2-3.4 2.6 2 4.2-4.8"/></svg>',
+    finanzas:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5C3 7 4 6 5.5 6H17a2 2 0 0 1 2 2v0H5.5"/><path d="M3 8.5V17a2 2 0 0 0 2 2h13a2 2 0 0 0 2-2v-2.5"/><path d="M21 11h-4a1.8 1.8 0 0 0 0 3.5h4z"/></svg>'
+  };
+  const AREAS = [
+    {id:"inicio",   label:"Inicio",   views:[["inicio","Inicio"]]},
+    {id:"habitos",  label:"Hábitos",  views:[["tracker","Hábitos"],["sistemas","Sistemas"],["identity","Identidad"]]},
+    {id:"diario",   label:"Diario",   views:[["bita","Bitácora"],["notes","Notas"],["reading","Lecturas"],["reminders","Recordatorios"]]},
+    {id:"progreso", label:"Progreso", views:[["progress","Progreso"]]},
+    {id:"finanzas", label:"Finanzas", views:[["money","Finanzas"]]}
+  ];
+  const VIEW_AREA = {}; AREAS.forEach(a=>a.views.forEach(v=>VIEW_AREA[v[0]]=a.id));
+  const areaLastView = {};
+  function areaOf(v){ return VIEW_AREA[v] || null; }
+
+  function renderDock(){
+    const dock=document.getElementById("dock"); if(!dock) return;
+    const area=areaOf(currentView);
+    dock.innerHTML = AREAS.map(a=>{
+      const on=a.id===area, badge = a.id==="diario" ? '<span class="dock-badge" id="rem-count" hidden></span>' : '';
+      return '<button type="button" class="dock-btn'+(on?' active':'')+'" data-area="'+a.id+'" aria-label="'+a.label+'" aria-current="'+(on?'page':'false')+'">'+ICONS[a.id]+'<span class="dock-lbl">'+a.label+'</span>'+badge+'</button>';
+    }).join("");
+    updateRemCount();
   }
-  function setView(v){ currentView=v; if(v==="inicio") renderHome(); renderView(); const tb=document.getElementById("tab-"+v); if(tb && tb.scrollIntoView) try{ tb.scrollIntoView({inline:"center",block:"nearest"}); }catch(e){} save(); }
+  function renderSubnav(){
+    const sub=document.getElementById("subnav"); if(!sub) return;
+    const area=AREAS.find(a=>a.id===areaOf(currentView));
+    if(!area || area.views.length<2){ sub.hidden=true; sub.innerHTML=""; return; }
+    sub.hidden=false;
+    sub.innerHTML = '<span class="subnav-area">'+area.label+'</span>' + area.views.map(v=>
+      '<button type="button" role="tab" data-subview="'+v[0]+'"'+(currentView===v[0]?' class="active" aria-selected="true"':' aria-selected="false"')+'>'+v[1]+'</button>'
+    ).join("");
+  }
+  function renderView(){
+    VIEWS.forEach(v=>{ const view=document.getElementById("view-"+v); if(view) view.hidden = currentView!==v; });
+    renderDock(); renderSubnav();
+  }
+  function setView(v){
+    currentView=v;
+    const a=areaOf(v); if(a) areaLastView[a]=v;
+    if(v==="inicio") renderHome();
+    renderView();
+    window.scrollTo({top:0,behavior:"auto"});
+    save();
+  }
+  function setArea(aid){
+    const a=AREAS.find(x=>x.id===aid); if(!a) return;
+    setView(areaLastView[aid] || a.views[0][0]);
+  }
 
   /* ============ money (alcancías y metas para compras) ============ */
   const jarListEl = document.getElementById("jar-list");
@@ -1826,21 +2079,26 @@
   function jarPct(j){ return hasTarget(j) ? Math.min(100, Math.round(j.saved/j.target*100)) : 0; }
   function jarById(id){ return state.money.jars.find(j=>j.id===id); }
   function jarHTML(j){
-    const t=hasTarget(j), done = t && j.saved>=j.target;
-    return '<div class="jar" style="--c:'+(j.color||"#7FB39A")+'" data-jid="'+j.id+'">'+
-      '<div class="jar-head">'+
-        '<input class="jar-name" type="text" data-jname="'+j.id+'" value="'+escapeHTML(j.name)+'" aria-label="Nombre de la alcancía">'+
-        '<button type="button" class="jar-del" data-jdel="'+j.id+'" aria-label="Eliminar alcancía">×</button>'+
+    const t=hasTarget(j), pct=jarPct(j), done=t&&j.saved>=j.target, col=j.color||"#7FB39A";
+    const ring=t?('<div class="jar-ringwrap"><svg viewBox="0 0 62 62" style="width:62px;height:62px" role="img">'+vizRing(31,31,25,'var(--line)',7,1,false)+vizRing(31,31,25,col,7,pct/100,true)+'<text x="31" y="35" text-anchor="middle" style="font-family:var(--mono);font-size:12px;font-weight:700;fill:var(--head)">'+pct+'%</text></svg></div>'):'';
+    return '<div class="jar" style="--c:'+col+'" data-jid="'+j.id+'">'+
+      '<div class="jar-head" style="align-items:center;gap:13px">'+ring+
+        '<div style="flex:1 1 auto;min-width:0;display:flex;flex-direction:column;gap:7px">'+
+          '<div style="display:flex;align-items:center;gap:8px">'+
+            '<input class="jar-name" type="text" data-jname="'+j.id+'" value="'+escapeHTML(j.name)+'" aria-label="Nombre de la alcancía">'+
+            '<button type="button" class="jar-del" data-jdel="'+j.id+'" aria-label="Eliminar alcancía">×</button>'+
+          '</div>'+
+          '<div class="jar-amounts"><b>'+fmtMoney(j.saved)+'</b>'+(t?(' <span class="tg">/ '+fmtMoney(j.target)+'</span>'+(done?' <span class="done-tag">¡Meta cumplida! ✓</span>':'')):'')+'</div>'+
+        '</div>'+
       '</div>'+
-      '<div class="jar-amounts"><b>'+fmtMoney(j.saved)+'</b>'+(t?(' <span class="tg">/ '+fmtMoney(j.target)+' · '+jarPct(j)+'%</span>'+(done?' <span class="done-tag">¡Meta cumplida! ✓</span>':'')):'')+'</div>'+
-      (t?('<div class="progress"><div class="progress-track"><div class="progress-fill" style="width:'+jarPct(j)+'%"></div></div></div>'):'')+
+      (t?('<div class="progress"><div class="progress-track"><div class="progress-fill" style="width:'+pct+'%;background:'+col+'"></div></div></div>'):'')+
       '<div class="jar-controls">'+
         '<input class="jar-amt" type="number" min="0" step="any" data-jamt="'+j.id+'" placeholder="0" aria-label="Cantidad">'+
         '<button type="button" class="jbtn dep" data-jdep="'+j.id+'">+ Guardar</button>'+
         '<button type="button" class="jbtn" data-jwd="'+j.id+'">– Retirar</button>'+
         '<span class="jar-meta"><span class="fl">Meta</span>'+
           '<input class="jar-target" type="number" min="0" step="any" data-jtarget="'+j.id+'" value="'+(t?j.target:"")+'" placeholder="—" aria-label="Meta de compra">'+
-          '<input class="jar-color" type="color" data-jcolor="'+j.id+'" value="'+(j.color||"#7FB39A")+'" aria-label="Color">'+
+          '<input class="jar-color" type="color" data-jcolor="'+j.id+'" value="'+col+'" aria-label="Color">'+
         '</span>'+
       '</div>'+
     '</div>';
@@ -1893,14 +2151,20 @@
   function txStamp(t){ return t.date ? parseKey(t.date).getTime() : 0; }
   function sortedTx(){ return ensureTx().slice().sort((a,b)=> txStamp(b)-txStamp(a)); }
   function renderAccountStats(){
-    const bal=txBalance();
-    const stats=[
-      {k:"Saldo de la cuenta", v:fmtMoney(bal), cls: bal<0?"neg":(bal>0?"pos":"")},
-      {k:"Ingresos", v:fmtMoney(txTotal("in")), cls:"pos"},
-      {k:"Gastos", v:fmtMoney(txTotal("out")), cls:"neg"}
-    ];
-    const el=document.getElementById("account-stats");
-    if(el) el.innerHTML = stats.map(t=>'<div class="stat"><span class="v'+(t.cls?" "+t.cls:"")+'">'+t.v+'</span><span class="k">'+t.k+'</span></div>').join("");
+    const el=document.getElementById("account-stats"); if(!el) return;
+    const inc=txTotal("in"), exp=txTotal("out"), bal=inc-exp, mx=Math.max(inc,exp,1);
+    const rate=inc>0?Math.round((inc-exp)/inc*100):0;
+    const donut='<svg viewBox="0 0 130 130" class="viz-svg" style="width:116px;height:116px;flex:0 0 auto" role="img">'+
+      vizRing(65,65,52,'var(--line)',12,1,false)+vizRing(65,65,52,(rate>=0?'var(--valor)':'var(--cuerpo)'),12,Math.abs(rate)/100,true)+
+      '<text x="65" y="62" text-anchor="middle" style="font-family:var(--serif);font-weight:600;font-size:24px;fill:var(--head)">'+rate+'%</text>'+
+      '<text x="65" y="80" text-anchor="middle" style="font-family:var(--mono);font-size:7px;letter-spacing:1.5px;fill:var(--muted)">AHORRO</text></svg>';
+    const flow=(lbl,val,col)=>'<div class="flow-row"><div class="flow-top"><span class="flow-lbl">'+lbl+'</span><span class="flow-val" style="color:'+col+'">'+fmtMoney(val)+'</span></div><div class="flow-track"><span style="width:'+(val/mx*100)+'%;background:'+col+'"></span></div></div>';
+    el.innerHTML='<div style="display:flex;flex-direction:column;gap:15px">'+
+      '<div style="display:flex;gap:16px;align-items:center;flex-wrap:wrap">'+donut+
+        '<div style="display:flex;flex-direction:column;gap:3px;flex:1 1 150px"><span class="flow-lbl">Saldo de la cuenta</span>'+
+          '<span class="viz-num" style="font-size:1.85rem;color:'+(bal<0?'var(--cuerpo)':(bal>0?'var(--valor)':'var(--head)'))+'">'+fmtMoney(bal)+'</span></div></div>'+
+      '<div style="display:flex;flex-direction:column;gap:11px">'+flow("Ingresos",inc,"var(--valor)")+flow("Gastos",exp,"var(--cuerpo)")+'</div>'+
+      vizInsight('Salud', inc>0?('Ahorras el <b>'+rate+'%</b> de tus ingresos — <b>'+fmtMoney(inc-exp)+'</b> libres.'):'Registra un ingreso para ver tu tasa de ahorro.')+'</div>';
   }
   function txHTML(t){
     const isIn=t.type==="in";
@@ -1986,11 +2250,13 @@
 
   /* ============ inicio / resumen (home dashboard) ============ */
   function homeBar(ratio){ return '<div class="progress"><div class="progress-track"><div class="progress-fill" style="width:'+Math.round(Math.min(1,Math.max(0,ratio))*100)+'%"></div></div></div>'; }
+  let _hcIdx=0;
   function homeCard(goto, color, label, bodyHTML){
-    return '<button type="button" class="home-card" data-goto="'+goto+'"'+(color?(' style="--c:'+color+'"'):'')+'>'+
+    return '<button type="button" class="home-card" data-goto="'+goto+'" style="--i:'+(_hcIdx++)+(color?(';--c:'+color):'')+'">'+
       '<div class="hc-top"><span class="hc-label">'+label+'</span><span class="hc-go" aria-hidden="true">›</span></div>'+bodyHTML+'</button>';
   }
   function renderHome(){
+    _hcIdx=0;
     const d=new Date(), hr=d.getHours();
     const part = (hr<6||hr>=20)?"Buenas noches":hr<12?"Buenos días":hr<19?"Buenas tardes":"Buenas noches";
     const greet=document.getElementById("home-greet");
@@ -2296,7 +2562,7 @@
   function renderMoodTrend(){
     let h=""; const today=new Date(); today.setHours(0,0,0,0);
     for(let i=29;i>=0;i--){ const k=dateKey(addDays(today,-i)), j=state.journal[k], m=j&&j.mood; const ht=m?(20+m*16):4;
-      h+='<span class="mt-cell'+(k===selectedKey?' sel':'')+'" data-jump="'+k+'" title="'+prettyDate(k)+(m?(" · "+MOODS[m-1][1]):" · sin ánimo")+'"><span class="mt-bar" style="height:'+ht+'%;--c:'+(m?moodColor(m):'var(--line)')+'"></span></span>'; }
+      h+='<span class="mt-cell'+(k===selectedKey?' sel':'')+'" data-jump="'+k+'" title="'+prettyDate(k)+(m?(" · "+MOODS[m-1][1]):" · sin ánimo")+'"><span class="mt-bar" style="height:'+ht+'%;--c:'+(m?moodColor(m):'var(--line)')+';--d:'+((29-i)*8)+'ms"></span></span>'; }
     document.getElementById("mood-trend").innerHTML=h;
   }
   function renderBitacora(){ renderBitaDate(); renderMoodRow(); renderTodayFocus(); renderTop3(); renderJournalFields(); renderMoodTrend(); }
@@ -2893,11 +3159,26 @@
   });
 
   /* ============ events: tabs + undo/redo + edit ============ */
-  /* one delegated handler; tabs always navigate. In edit mode the label also gets focus
-     (see the mousedown handler) so you can rename the tab in place after moving to it. */
-  document.querySelector(".tabs").addEventListener("click", e=>{
-    const tab=e.target.closest(".tab"); if(tab && tab.id) setView(tab.id.slice(4));
+  /* navegación: dock (áreas) + subnav (vistas dentro del área) */
+  document.getElementById("dock").addEventListener("click", e=>{
+    const b=e.target.closest(".dock-btn"); if(b) setArea(b.getAttribute("data-area"));
   });
+  document.getElementById("subnav").addEventListener("click", e=>{
+    const b=e.target.closest("[data-subview]"); if(b) setView(b.getAttribute("data-subview"));
+  });
+  document.getElementById("subnav").addEventListener("keydown", e=>{
+    const nav=["ArrowLeft","ArrowRight","Home","End"]; if(nav.indexOf(e.key)<0) return;
+    const btns=Array.prototype.slice.call(document.querySelectorAll("#subnav [data-subview]"));
+    const here=document.activeElement && document.activeElement.closest && document.activeElement.closest("[data-subview]");
+    const cur=btns.indexOf(here); if(cur<0) return;
+    e.preventDefault();
+    let i=cur;
+    if(e.key==="ArrowLeft") i=(cur-1+btns.length)%btns.length;
+    else if(e.key==="ArrowRight") i=(cur+1)%btns.length;
+    else if(e.key==="Home") i=0; else if(e.key==="End") i=btns.length-1;
+    const t=btns[i]; if(t){ setView(t.getAttribute("data-subview")); t.focus(); }
+  });
+  document.getElementById("btn-settings").addEventListener("click", ()=> setView("settings"));
   document.getElementById("home-grid").addEventListener("click", e=>{ const c=e.target.closest("[data-goto]"); if(c) setView(c.getAttribute("data-goto")); });
   document.querySelectorAll(".png-btn").forEach(b=>b.addEventListener("click", downloadCurrentPNG));
   document.getElementById("btn-undo").addEventListener("click", undo);
@@ -2922,6 +3203,13 @@
   document.getElementById("cal-months").addEventListener("click", e=>{ const c=e.target.closest("[data-jump]"); if(c) selectDate(c.getAttribute("data-jump")); });
   document.getElementById("range-seg").addEventListener("click", e=>{ const b=e.target.closest("[data-range]"); if(b){ rangeMonths=+b.getAttribute("data-range"); renderHistory(); save(); } });
   document.getElementById("chart-seg").addEventListener("click", e=>{ const b=e.target.closest("[data-chart]"); if(b){ chartMetric=b.getAttribute("data-chart"); renderCharts(); } });
+  document.getElementById("chart-range").addEventListener("click", e=>{ const b=e.target.closest("[data-crange]"); if(b){ chartRange=+b.getAttribute("data-crange"); renderCharts(); } });
+  (function(){ const rg=document.getElementById("rachas-grid"); if(!rg) return;
+    rg.addEventListener("click", e=>{ const j=e.target.closest("[data-jump]"); if(j) selectDate(j.getAttribute("data-jump")); });
+    rg.addEventListener("mouseover", e=>{ const c=e.target.closest("[data-rb]"), ro=document.getElementById("ribbon-readout"); if(c&&ro){ const k=c.getAttribute("data-rb"); ro.innerHTML=prettyDate(k)+' · <b style="color:var(--accent)">'+Math.round(dayRatio(k)*100)+'%</b>'; ro.style.color="var(--text)"; } });
+    rg.addEventListener("mouseout", e=>{ const c=e.target.closest("[data-rb]"), ro=document.getElementById("ribbon-readout"); if(c&&ro){ ro.textContent="Pasa el cursor por los días"; ro.style.color="var(--muted)"; } });
+  })();
+  document.getElementById("cal-months").addEventListener("mouseover", e=>{ const c=e.target.closest("[data-jump]"), ro=document.getElementById("heat-readout"); if(c&&ro){ const k=c.getAttribute("data-jump"); ro.innerHTML=prettyDate(k)+' · <b style="color:var(--accent)">'+Math.round(dayRatio(k)*100)+'%</b> · '+dayDoneCount(k)+' háb.'; ro.style.color="var(--text)"; } });
 
   /* ============ events: theme (page colors) ============ */
   document.getElementById("theme-presets").addEventListener("click", e=>{ const c=e.target.closest("[data-theme]"); if(c){ pushUndo("themepreset"); applyTheme(clone(THEMES[+c.getAttribute("data-theme")])); save(); } });
@@ -2958,5 +3246,6 @@
   }
   init();
 </script>
-</body>
-</html>
+
+
+</body></html>

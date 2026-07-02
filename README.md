@@ -11,13 +11,20 @@ navegador (`localStorage`).
 
 ## Características
 
-- **Once vistas (pestañas):** **«Inicio»** (resumen del día), **«Hábitos»** (rutina del
-  día), **«Sistemas»** (las acciones para cada hábito), **«Identidad»** (vota por quien
-  quieres ser), **«Bitácora»** (ánimo, enfoque y diario), **«Notas»** (ideas y planes),
-  **«Lecturas»** (libros en curso), **«Recordatorios»** (actividades programadas, con
-  contador de pendientes), **«Progreso»** (metas semanales/mensuales, reflexión semanal,
-  historial y rachas), **«Finanzas»** (ingresos, gastos, estado de la cuenta, alcancías y
-  metas) y **«Personalizar»** (contenido, colores y edición de la interfaz).
+- **Navegación por dock (estilo app):** una barra fija abajo con **cinco áreas** — **Inicio**,
+  **Hábitos** (Hábitos · Sistemas · Identidad), **Diario** (Bitácora · Notas · Lecturas ·
+  Recordatorios, con contador de pendientes), **Progreso** y **Finanzas** — más un subnavegador
+  para moverte dentro de cada área y el engranaje **⚙** para **Personalizar** (contenido,
+  colores y edición de la interfaz). Once vistas en total.
+- **Animaciones y transiciones:** las vistas entran con una transición suave, las tarjetas de
+  Inicio aparecen en cascada, las barras de las gráficas crecen escalonadas, la línea de
+  tendencia se dibuja sola, los anillos de progreso barren desde cero, la tendencia de ánimo
+  sube de izquierda a derecha y hay micro-interacciones (checkbox, dock, botones). Todo
+  respeta `prefers-reduced-motion`.
+- **Visualizaciones de rachas y finanzas:** tarjetas con **anillo de racha actual** (vs. tu
+  mejor marca), **equilibrio semanal por frentes** (anillos concéntricos), **cinta de los
+  últimos 28 días**, **rachas por hábito** (top 6 con sus últimos 7 días) y **salud financiera**
+  (tasa de ahorro, ingresos vs. gastos).
 - **Inicio / Resumen del día:** un panel de inicio con un saludo y seis tarjetas que
   resumen tu día y enlazan a cada sección: progreso de hábitos de hoy, ánimo y top 3,
   recordatorios pendientes (y vencidos), lectura actual, saldo de la cuenta y próxima meta, y tu racha
@@ -121,17 +128,13 @@ navegador (`localStorage`).
 
 1. Abre `diario-personal.html` en tu navegador (o `personal-diary.html` para la versión en
    inglés).
-2. **«Inicio»**: mira el resumen del día y salta a cualquier sección. **«Hábitos»**: marca
-   los que cumplas hoy (cada uno con su frecuencia). **«Sistemas»**: diseña las acciones de
-   cada hábito. **«Identidad»**: crea identidades y vincula los hábitos que las refuerzan.
-   **«Bitácora»**: registra tu ánimo, tu top 3 y tu diario del día.
-   **«Notas»**: apunta ideas y planes (con buscador). **«Lecturas»**: lleva tus libros en
-   curso. **«Recordatorios»**: actividades programadas con fecha y hora. **«Progreso»**:
-   metas semanales/mensuales, reflexión semanal e historial y rachas. **«Finanzas»**:
-   ingresos, gastos, estado de la cuenta, alcancías y metas. Todo se guarda solo (y puedes
-   bajar un PNG de cada vista).
-3. En la pestaña **«Personalizar»**: cambia título, categorías y colores (tema), y activa
-   **«Editar interfaz»** para reescribir cualquier texto de la pantalla.
+2. Muévete con el **dock de abajo**: **Inicio** (resumen del día), **Hábitos** (marca tu
+   rutina; en el subnavegador están **Sistemas** e **Identidad**), **Diario** (Bitácora,
+   Notas, Lecturas y Recordatorios), **Progreso** (metas, reflexión semanal, historial,
+   rachas y gráficas) y **Finanzas** (ingresos, gastos, alcancías y metas). Todo se guarda
+   solo (y puedes bajar un PNG de cada vista).
+3. Con el engranaje **⚙** entras a **«Personalizar»**: cambia título, categorías y colores
+   (tema), y activa **«Editar interfaz»** para reescribir cualquier texto de la pantalla.
 4. ¿Te equivocaste? Usa **«↶ Deshacer»** (o `Ctrl/Cmd+Z`).
 5. Respalda con **«⤓ Datos» → «Exportar datos»** (desde cualquier pestaña) cuando quieras.
 

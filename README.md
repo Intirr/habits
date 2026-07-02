@@ -68,8 +68,6 @@ navegador (`localStorage`).
   cuenta para el día, no se marca «sin hacer» y **no rompe la racha**; reanúdalo con **▶**.
 - **Racha flexible:** activable en Preferencias (viene activada): tus rachas **toleran 1
   fallo por semana** antes de romperse — un mal día no borra semanas de constancia.
-- **Notificaciones (opcional):** actívalas en Preferencias; con el diario abierto, te avisa
-  cuando llega la hora de un **recordatorio** o de un **hábito con horario**.
 - **Aviso de respaldo:** si pasan más de 7 días sin exportar tus datos, aparece un aviso
   para respaldarlos (con «Exportar ahora» o «Más tarde»).
 - **Instalable en el móvil:** incluye manifest e iconos; desde el navegador puedes usar

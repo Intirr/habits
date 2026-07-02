@@ -766,32 +766,32 @@
 
   /* ===== MOTION · animaciones y transiciones ===== */
   @keyframes viewIn{from{opacity:0;transform:translateY(10px)}}
-  [id^="view-"]:not([hidden]){animation:viewIn .3s cubic-bezier(.22,.9,.35,1)}
-  #subnav:not([hidden]){animation:subnavIn .28s ease}
+  [id^="view-"]:not([hidden]){animation:viewIn .45s cubic-bezier(.22,.9,.35,1)}
+  #subnav:not([hidden]){animation:subnavIn .4s ease}
   @keyframes subnavIn{from{opacity:0;transform:translateY(-4px)}}
   /* charts: bars grow with stagger, line draws itself, area and dots fade in */
   @keyframes barRise{from{transform:scaleY(0)}}
-  .ch-svg .ch-bar{transform-box:fill-box;transform-origin:50% 100%;animation:barRise .55s cubic-bezier(.22,.9,.35,1) both;animation-delay:var(--d,0ms)}
-  .ch-svg .ch-line{stroke-dasharray:1;stroke-dashoffset:1;animation:lineDraw .9s cubic-bezier(.45,0,.25,1) .08s forwards}
+  .ch-svg .ch-bar{transform-box:fill-box;transform-origin:50% 100%;animation:barRise .85s cubic-bezier(.22,.9,.35,1) both;animation-delay:var(--d,0ms)}
+  .ch-svg .ch-line{stroke-dasharray:1;stroke-dashoffset:1;animation:lineDraw 1.35s cubic-bezier(.45,0,.25,1) .1s forwards}
   @keyframes lineDraw{to{stroke-dashoffset:0}}
-  .ch-svg .ch-area{opacity:0;animation:chFade .5s ease .45s forwards}
+  .ch-svg .ch-area{opacity:0;animation:chFade .8s ease .7s forwards}
   @keyframes chFade{to{opacity:1}}
-  .ch-svg .ch-dot{transform-box:fill-box;transform-origin:center;animation:dotIn .28s cubic-bezier(.34,1.56,.64,1) both;animation-delay:var(--d,0ms)}
+  .ch-svg .ch-dot{transform-box:fill-box;transform-origin:center;animation:dotIn .42s cubic-bezier(.34,1.56,.64,1) both;animation-delay:var(--d,0ms)}
   @keyframes dotIn{from{opacity:0;transform:scale(0)}}
   /* progress rings sweep in from empty */
-  .viz-anim{animation:ringSweep .8s cubic-bezier(.22,.9,.35,1)}
+  .viz-anim{animation:ringSweep 1.25s cubic-bezier(.22,.9,.35,1)}
   @keyframes ringSweep{from{stroke-dashoffset:var(--C)}}
   /* mood trend bars rise left-to-right */
-  .mt-bar{transform-origin:bottom;animation:barRise .5s cubic-bezier(.22,.9,.35,1) both;animation-delay:var(--d,0ms)}
+  .mt-bar{transform-origin:bottom;animation:barRise .75s cubic-bezier(.22,.9,.35,1) both;animation-delay:var(--d,0ms)}
   /* home cards enter staggered */
   @keyframes cardIn{from{opacity:0;transform:translateY(9px)}}
-  .home-card{animation:cardIn .38s cubic-bezier(.22,.9,.35,1) both;animation-delay:calc(var(--i,0)*45ms)}
+  .home-card{animation:cardIn .55s cubic-bezier(.22,.9,.35,1) both;animation-delay:calc(var(--i,0)*70ms)}
   /* micro-interactions */
-  .dock-badge:not([hidden]){animation:badgeIn .3s cubic-bezier(.34,1.56,.64,1)}
+  .dock-badge:not([hidden]){animation:badgeIn .45s cubic-bezier(.34,1.56,.64,1)}
   @keyframes badgeIn{from{transform:scale(0)}}
-  .chk input:checked+.box::after{animation:checkDraw .18s ease-out}
+  .chk input:checked+.box::after{animation:checkDraw .25s ease-out}
   @keyframes checkDraw{from{height:0;opacity:.3}}
-  .mood-btn.on{animation:moodPop .3s cubic-bezier(.34,1.56,.64,1)}
+  .mood-btn.on{animation:moodPop .45s cubic-bezier(.34,1.56,.64,1)}
   @keyframes moodPop{45%{transform:scale(1.14)}}
   .dock-btn:active,.icon-btn:active,.add-btn:active,.empty-cta:active,.subnav button:active{transform:scale(.94)}
   .dock-btn svg{transition:transform .18s ease}
@@ -1172,13 +1172,6 @@
         </div>
         <div class="pref-row">
           <div class="pref-info">
-            <div class="pref-name" data-ui="prefNotifyName">Notificaciones</div>
-            <div class="pref-desc" data-ui="prefNotifyDesc">Con el diario abierto, avisa cuando llega la hora de un recordatorio o de un hábito con horario. Requiere permiso del navegador.</div>
-          </div>
-          <button type="button" class="pref-toggle" id="pref-notify" aria-pressed="false">—</button>
-        </div>
-        <div class="pref-row">
-          <div class="pref-info">
             <div class="pref-name" data-ui="prefBackupName">Aviso de respaldo</div>
             <div class="pref-desc" id="pref-backup-desc">Si pasan más de 7 días sin exportar tus datos, verás un aviso arriba para respaldarlos.</div>
           </div>
@@ -1265,7 +1258,7 @@
   /* ============ state ============ */
   const DEFAULT_UI = {};   // captured from DOM
   const template = Object.assign({}, DEFAULT_TEMPLATE);
-  const DEFAULT_PREFS = { flexStreak:true, notify:false, lastExport:null, backupSnooze:null };
+  const DEFAULT_PREFS = { flexStreak:true, lastExport:null, backupSnooze:null };
   let state = { ui:{}, frentes: clone(DEFAULT_FRENTES), habits: [], log: {}, actlog: {}, reminders: [], notes: [], goals: [], journal: {}, weekly: {}, books: [], systems: [], identities: [], theme: clone(DEFAULT_THEME), money: clone(DEFAULT_MONEY), prefs: clone(DEFAULT_PREFS) };
   let editing = false;
   let rangeMonths = 3;          // history range (1, 3, 6 or 12 months) — view setting
@@ -2071,7 +2064,7 @@
     let s='<defs><linearGradient id="'+gid+'" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="'+color+'" stop-opacity="0.92"/><stop offset="100%" stop-color="'+color+'" stop-opacity="0.30"/></linearGradient></defs>';
     s+='<line x1="'+pL+'" y1="'+(pT+ih)+'" x2="'+(W-pR)+'" y2="'+(pT+ih)+'" class="ch-base"/>';
     data.forEach((d,i)=>{ const bh=ih*(d.value/max), x=pL+i*bw+bw*0.16, y=pT+ih-bh, w=bw*0.68, last=i===n-1;
-      s+='<rect x="'+x.toFixed(1)+'" y="'+y.toFixed(1)+'" width="'+w.toFixed(1)+'" height="'+Math.max(0,bh).toFixed(1)+'" rx="3" class="ch-bar" fill="'+(last?color:'url(#'+gid+')')+'" style="--d:'+(i*32)+'ms'+(last?(';filter:drop-shadow(0 0 6px '+hexToRgba(color,.6)+')'):'')+'"><title>'+escapeHTML(d.label)+': '+d.value+'</title></rect>';
+      s+='<rect x="'+x.toFixed(1)+'" y="'+y.toFixed(1)+'" width="'+w.toFixed(1)+'" height="'+Math.max(0,bh).toFixed(1)+'" rx="3" class="ch-bar" fill="'+(last?color:'url(#'+gid+')')+'" style="--d:'+(i*48)+'ms'+(last?(';filter:drop-shadow(0 0 6px '+hexToRgba(color,.6)+')'):'')+'"><title>'+escapeHTML(d.label)+': '+d.value+'</title></rect>';
       if(n<=14 || i%2===1) s+='<text x="'+(pL+i*bw+bw/2).toFixed(1)+'" y="'+(H-7)+'" text-anchor="middle" class="ch-x">'+escapeHTML(d.label)+'</text>'; });
     return '<svg viewBox="0 0 '+W+' '+H+'" class="ch-svg" preserveAspectRatio="xMidYMid meet" role="img">'+s+'</svg>';
   }
@@ -2088,7 +2081,7 @@
       s+='<defs><linearGradient id="'+gid+'" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="'+a+'" stop-opacity="0.30"/><stop offset="100%" stop-color="'+a+'" stop-opacity="0"/></linearGradient></defs>';
       s+='<path d="'+line+' L'+valid[valid.length-1].x.toFixed(1)+' '+(pT+ih)+' L'+valid[0].x.toFixed(1)+' '+(pT+ih)+' Z" class="ch-area" fill="url(#'+gid+')"/>';
       s+='<path d="'+line+'" pathLength="1" class="ch-line" fill="none" stroke="'+a+'" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round" style="filter:drop-shadow(0 2px 5px '+hexToRgba(a,.4)+')"/>';
-      valid.forEach((p,pi)=>s+='<circle cx="'+p.x.toFixed(1)+'" cy="'+p.y.toFixed(1)+'" r="2.4" class="ch-dot" fill="'+a+'" style="--d:'+Math.round(120+pi*(560/valid.length))+'ms"><title>'+escapeHTML(p.label)+': '+p.v+(opts.unit||'')+'</title></circle>'); }
+      valid.forEach((p,pi)=>s+='<circle cx="'+p.x.toFixed(1)+'" cy="'+p.y.toFixed(1)+'" r="2.4" class="ch-dot" fill="'+a+'" style="--d:'+Math.round(180+pi*(820/valid.length))+'ms"><title>'+escapeHTML(p.label)+': '+p.v+(opts.unit||'')+'</title></circle>'); }
     const step=Math.max(1,Math.ceil(n/6));
     data.forEach((d,i)=>{ if(i%step===0) s+='<text x="'+X(i).toFixed(1)+'" y="'+(H-5)+'" text-anchor="middle" class="ch-x">'+escapeHTML(d.label.replace(/^[a-záéíóú]+\s/i,""))+'</text>'; });
     return '<svg viewBox="0 0 '+W+' '+H+'" class="ch-svg" preserveAspectRatio="xMidYMid meet" role="img">'+s+'</svg>';
@@ -2725,7 +2718,7 @@
   function renderMoodTrend(){
     let h=""; const today=new Date(); today.setHours(0,0,0,0);
     for(let i=29;i>=0;i--){ const k=dateKey(addDays(today,-i)), j=state.journal[k], m=j&&j.mood; const ht=m?(20+m*16):4;
-      h+='<span class="mt-cell'+(k===selectedKey?' sel':'')+'" data-jump="'+k+'" title="'+prettyDate(k)+(m?(" · "+MOODS[m-1][1]):" · sin ánimo")+'"><span class="mt-bar" style="height:'+ht+'%;--c:'+(m?moodColor(m):'var(--line)')+';--d:'+((29-i)*8)+'ms"></span></span>'; }
+      h+='<span class="mt-cell'+(k===selectedKey?' sel':'')+'" data-jump="'+k+'" title="'+prettyDate(k)+(m?(" · "+MOODS[m-1][1]):" · sin ánimo")+'"><span class="mt-bar" style="height:'+ht+'%;--c:'+(m?moodColor(m):'var(--line)')+';--d:'+((29-i)*12)+'ms"></span></span>'; }
     document.getElementById("mood-trend").innerHTML=h;
   }
   function renderBitacora(){ renderBitaDate(); renderMoodRow(); renderTodayFocus(); renderTop3(); renderJournalFields(); renderMoodTrend(); }
@@ -2922,10 +2915,8 @@
 
   /* ============ preferencias: racha flexible · notificaciones · respaldo ============ */
   function renderPrefs(){
-    const fx=document.getElementById("pref-flex"), nt=document.getElementById("pref-notify");
+    const fx=document.getElementById("pref-flex");
     if(fx){ const on=flexOn(); fx.textContent=on?"Activada":"Desactivada"; fx.classList.toggle("on",on); fx.setAttribute("aria-pressed",on?"true":"false"); }
-    if(nt){ const on=!!state.prefs.notify && ("Notification" in window) && Notification.permission==="granted";
-      nt.textContent=on?"Activadas":"Desactivadas"; nt.classList.toggle("on",on); nt.setAttribute("aria-pressed",on?"true":"false"); }
     const bd=document.getElementById("pref-backup-desc");
     if(bd){ const le=state.prefs.lastExport;
       bd.textContent = le ? ("Último respaldo: "+new Date(le).toLocaleDateString("es-CO")+". Si pasan más de 7 días con cambios, verás un aviso para exportar.")
@@ -2936,39 +2927,6 @@
     state.prefs.flexStreak=!flexOn();
     renderPrefs(); renderList(); renderHistory(); renderHome(); save();
   }
-  async function toggleNotify(){
-    if(editing) return;
-    if(!("Notification" in window)){ alert("Este navegador no soporta notificaciones."); return; }
-    if(state.prefs.notify){ state.prefs.notify=false; renderPrefs(); save(); return; }
-    let perm=Notification.permission;
-    if(perm==="default"){ try{ perm=await Notification.requestPermission(); }catch(e){ perm="denied"; } }
-    if(perm==="granted"){
-      state.prefs.notify=true;
-      try{ new Notification("Diario personal", { body:"Notificaciones activadas. Te avisaré de tus recordatorios y horarios con el diario abierto." }); }catch(e){}
-    } else {
-      alert("El navegador no dio permiso para notificar. Revisa los permisos del sitio.");
-    }
-    renderPrefs(); save();
-  }
-  /* scheduler: while the diary is open, fire a notification when a reminder or a scheduled habit reaches its time */
-  const _notified = new Set();
-  function notifyDue(){
-    if(!state.prefs.notify || !("Notification" in window) || Notification.permission!=="granted") return;
-    const now=Date.now(), win=10*60*1000;                     // only things due in the last 10 minutes
-    state.reminders.forEach(r=>{
-      if(r.done || !r.date || !r.time) return;
-      const t=parseKey(r.date).getTime()+timeToMin(r.time)*60000, id="r:"+r.id+":"+r.date;
-      if(t<=now && (now-t)<win && !_notified.has(id)){ _notified.add(id);
-        try{ new Notification("Recordatorio", { body:r.text+(r.time?(" · "+r.time):"") }); }catch(e){} }
-    });
-    state.habits.forEach(h=>{
-      if(!h.start || isPaused(h) || !dueOn(h,TODAY_KEY) || isDone(h.id,TODAY_KEY)) return;
-      const t=parseKey(TODAY_KEY).getTime()+timeToMin(h.start)*60000, id="h:"+h.id+":"+TODAY_KEY;
-      if(t<=now && (now-t)<win && !_notified.has(id)){ _notified.add(id);
-        try{ new Notification("Hora de tu hábito", { body:h.text+" · "+h.start }); }catch(e){} }
-    });
-  }
-  setInterval(notifyDue, 30000);
   /* backup notice: shown when there are data and >7 days without exporting (snoozable) */
   const BACKUP_MS = 7*24*60*60*1000;
   function renderBackupNotice(){
@@ -3486,7 +3444,6 @@
 
   /* ============ events: preferencias + aviso de respaldo ============ */
   document.getElementById("pref-flex").addEventListener("click", toggleFlexStreak);
-  document.getElementById("pref-notify").addEventListener("click", toggleNotify);
   document.getElementById("pref-export-now").addEventListener("click", exportData);
   document.getElementById("backup-export").addEventListener("click", exportData);
   document.getElementById("backup-later").addEventListener("click", ()=>{ state.prefs.backupSnooze=Date.now(); renderBackupNotice(); save(); });
